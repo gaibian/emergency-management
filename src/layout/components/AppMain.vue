@@ -28,7 +28,7 @@ export default {
   },
   methods:{
     resizeMain() {
-      let height = parseInt(this.autoMainHeight.split(':')[1])
+      let height = parseInt(this.autoMainHeight)
       this.$store.dispatch('setAppMainHeight',height)
     }
   },
@@ -49,8 +49,9 @@ export default {
 <style lang="scss" scoped>
 .app-main {
   /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  // min-height: calc(100vh - 50px);
   width: 100%;
+  //height:100%;
   position: relative;
   overflow: hidden;
   //background:#e5e5e5;

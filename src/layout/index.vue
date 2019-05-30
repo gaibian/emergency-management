@@ -57,14 +57,14 @@ export default {
   },
   created() {
     let height = 50 + 34;
-    this.appMainHeight = `height:${this.fullHeight - height}px`;
+    this.appMainHeight = `${this.fullHeight - height}px`;
     window.addEventListener('resize',this.handleResize)
   },
   methods: {
     handleResize(event){
       this.fullHeight = document.documentElement.clientHeight;
       let height = 50 + 34;
-      this.appMainHeight = `height:${this.fullHeight - height}px`;
+      this.appMainHeight = `${this.fullHeight - height}px`;
     },
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })

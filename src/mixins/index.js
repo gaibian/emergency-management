@@ -2,9 +2,6 @@ import { debounce } from '@/utils'
 import store from '@/store'
 
 export default {
-    mounted() {
-        
-    },
     watch:{
         appMainHeight() {
             if(this.appMainHeight != 0) {
@@ -16,6 +13,9 @@ export default {
         appMainHeight() {
             return store.state.global.appMainHeight;
         }
+    },
+    mounted() {
+        this.init();        
     },
     methods: {
         init() {
