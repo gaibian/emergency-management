@@ -26,7 +26,7 @@ export default {
 
                 this.valHandle(_btmHeight, _addHeight);
             }, 100);
-            window.addEventListener('resize', this.__resizeMainHanlder)
+            // window.addEventListener('resize', this.__resizeMainHanlder)
         },
         valHandle(_btmHeight, _addHeight) {
             let _height = this.appMainHeight - 40;
@@ -45,8 +45,8 @@ export default {
             this.tableHeight = _heightVal;
         }
     },
-    beforeDestroy() {
-        window.removeEventListener('resize', this.__resizeMainHanlder)
-    }
+    // beforeDestroy() {
+    //     window.removeEventListener('resize', this.__resizeMainHanlder)
+    // }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main" ref="appMain">
+  <section class="app-main" ref="appMain" :style="{height:autoMainHeight,margin:0}">
     <el-row class="page-loading" v-loading="pageLoading" v-show="pageLoading" element-loading-text="数据正在加载中..."></el-row>
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
@@ -9,17 +9,28 @@
   </section>
 </template>
 <script>
+import { debounce } from '@/utils'
 export default {
   name: 'AppMain',
+  props:['autoMainHeight'],
   data() {
     return {
 
     }
   },
+  watch:{
+    autoMainHeight() {
+      this.resizeMain()
+    }
+  },
   mounted() {
-    let appMainHeight = this.$refs.appMain.offsetHeight;
-    console.log(appMainHeight)
-    this.$store.dispatch('setAppMainHeight',appMainHeight)
+    this.resizeMain()
+  },
+  methods:{
+    resizeMain() {
+      let height = parseInt(this.autoMainHeight.split(':')[1])
+      this.$store.dispatch('setAppMainHeight',height)
+    }
   },
   computed: {
     cachedViews() {

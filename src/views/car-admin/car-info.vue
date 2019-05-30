@@ -9,7 +9,7 @@
             </div>
         </div>
         <select-car :flag="flag" :radio="true" @change="handleChange"></select-car>
-        <el-table :data="tableData" border stripe :maxHeight="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
+        <el-table :data="tableData" border stripe :max-height="tableHeight" :height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
             <el-table-column label="急救中心" prop="jijiu"></el-table-column>
             <el-table-column label="车牌号" prop="plate"></el-table-column>
             <el-table-column label="车编号" prop="num"></el-table-column>
