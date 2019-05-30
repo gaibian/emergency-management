@@ -46,6 +46,7 @@ export default {
             fenbu:'',
             flag:false,
             plate:'',
+            value6:'',
             tableLoading:true,
             tableHeight:null,
             tableData:[],
