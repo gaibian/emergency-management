@@ -6,6 +6,9 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
+import { carAdmin } from './module/carAdmin'
+import { carArticle } from './module/carArticle'
+
 /* Router Modules */
 // import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
@@ -84,29 +87,18 @@ export const constantRoutes = [
       }
     ]
   },
+  carAdmin,
+  carArticle,
   {
-    path: '/car-admin',
+    path: '/icon',
     component: Layout,
-    meta:{ title:'车辆管理',icon: 'car-admin' },
     children: [
       {
-        path: 'carAdmin',
-        name:'carAdmin',
-        component: () => import('@/views/car-admin/car-info.vue'),
-        meta: { title: '车辆信息',icon:'car-info' },
-      },
-      {
-        path: 'gisInfo',
-        name:'gisInfo',
-        component: () => import('@/views/car-admin/GIS-info.vue'),
-        meta: { title: 'GIS实时信息',icon: 'car-location' }
-      },
-      {
-        path: 'wheelPath',
-        name:'wheelPath',
-        component: () => import('@/views/car-admin/wheel-path.vue'),
-        meta: { title: '行车轨迹',icon: 'car-locus' }
-      },
+        path: 'svgicon',
+        component: () => import('@/views/icons/index'),
+        name: 'svgIcon',
+        meta: { title: 'svg图标', icon: 'home' }
+      }
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
