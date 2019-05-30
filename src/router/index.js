@@ -8,6 +8,8 @@ import Layout from '@/layout'
 
 import { carAdmin } from './module/carAdmin'
 import { carArticle } from './module/carArticle'
+import { carPersonnel } from './module/carPersonnel'
+
 
 /* Router Modules */
 // import componentsRouter from './modules/components'
@@ -89,6 +91,7 @@ export const constantRoutes = [
   },
   carAdmin,
   carArticle,
+  carPersonnel,
   {
     path: '/icon',
     component: Layout,

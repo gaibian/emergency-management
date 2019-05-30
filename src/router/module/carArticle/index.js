@@ -3,7 +3,7 @@ import Layout from '@/layout'
 export const carArticle = {
   path: '/car-article',
   component: Layout,
-  meta: { title: '车辆物品管理', icon: 'excel' },
+  meta: { title: '车载物品管理', icon: 'excel' },
   children: [{
     path: 'carArticleInfo',
     name: 'carArticleInfo',

@@ -16,28 +16,31 @@
                     </el-date-picker>
                 </div>
         </div>
-        <select-car :flag="flag" :radio="true" @change="handleChange"></select-car>
+        <select-presonnel :flag="flag" @change="handleChange"></select-presonnel>
         <el-table :data="tableData" border stripe :maxHeight="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
             <el-table-column label="急救中心" prop="jijiu"></el-table-column>
             <el-table-column label="车牌号" prop="plate"></el-table-column>
             <el-table-column label="车编号" prop="num"></el-table-column>
-            <el-table-column label="物品名称" prop="articleName"></el-table-column>
+            <el-table-column label="姓名" prop="name"></el-table-column>
+            <el-table-column label="员工编号" prop="peoplenum"></el-table-column>
+            <el-table-column label="性别" prop="sex"></el-table-column>
+            <el-table-column label="职务" prop="job"></el-table-column>
             <el-table-column label="状态" prop="state"></el-table-column>
             <el-table-column label="时间" prop="time"></el-table-column>
         </el-table>
         <div ref="btmGroup" class="btm-group">
-            <pagination :total="4" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+            <pagination :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
         </div>
     </div>
 </template>
 <script>
-import selectCar from '@/components/selectCar'
+import selectPresonnel from '@/components/selectPresonnel'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 export default {
     name:'carAdmin',
     components:{
-        selectCar,
+        selectPresonnel,
         Pagination
     },
     mixins:[pageMixins],
@@ -70,36 +73,19 @@ export default {
     },
     created() {
         this.tableLoading = false;
+        for(let i=0;i<30;i++){
             this.tableData.push({
                 jijiu:'中医院急救点',
                 plate:'浙B542WX',
                 num:'0128',
-                articleName:'软担架',
-                state:'上车',
-                time:'2019-5-30 11:51:01'
-            },{
-                jijiu:'中医院急救点',
-                plate:'浙B542WX',
-                num:'0128',
-                articleName:'软担架',
-                state:'取下',
-                time:'2019-5-30 11:58:01'
-            },{
-                jijiu:'中医院急救点',
-                plate:'浙B542WX',
-                num:'0128',
-                articleName:'负压式骨折固定垫',
-                state:'取下',
-                time:'2019-5-30 11:55:01'
-            },{
-                jijiu:'中医院急救点',
-                plate:'浙B542WX',
-                num:'0128',
-                articleName:'铲式担架',
-                state:'上车',
-                time:'2019-5-30 11:58:01'
+                name:'张三',
+                peoplenum:'0211',
+                sex:'女',
+                job:'急救医生',
+                state:'上班',
+                time:'2019-5-30 08:51:01'
             })
-        
+        } 
     },
     methods:{
         handlePag(data) {
