@@ -35,28 +35,34 @@
             <pagination :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
         </div>
         <!-- 编辑 -->
-  <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+  <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
     <el-form :model="form" label-width="100px">
         <el-form-item label="姓名" :label-width="formLabelWidth">
-          <el-input v-model="form.name" class="w09"></el-input>
+          <el-input v-model="form.name" clearable></el-input>
         </el-form-item>
         <el-form-item label="员工编号" :label-width="formLabelWidth">
-          <el-input v-model="form.num" class="w09"></el-input>
+          <el-input v-model="form.num" clearable></el-input>
         </el-form-item>
         <el-form-item label="性别" :label-width="formLabelWidth">
-          <el-input v-model="form.sex" class="w09"></el-input>
+          <el-select v-model="form.sex" clearable placeholder="请选择">
+            <el-option v-for="item in optionSex" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="急救中心" :label-width="formLabelWidth">
-          <el-input v-model="form.jijiu" class="w09"></el-input>
+          <el-select v-model="form.jijiu" clearable placeholder="请选择">
+            <el-option v-for="item in optionJijiu" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="职务" :label-width="formLabelWidth">
-          <el-input v-model="form.job" class="w09"></el-input>
+          <el-select v-model="form.job" clearable placeholder="请选择">
+            <el-option v-for="item in optionJob" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="卡号" :label-width="formLabelWidth">
-          <el-input v-model="form.card" class="w09"></el-input>
+          <el-input v-model="form.card" clearable></el-input>
         </el-form-item>
-        <el-form-item label="对应行数" :label-width="formLabelWidth">
-          <el-input v-model="form.index" class="w09"></el-input>
+        <el-form-item label="对应行数" :label-width="formLabelWidth" style="display:none;">
+          <el-input v-model="form.index"></el-input>
         </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -84,15 +90,25 @@ export default {
             plate:'',
             tableLoading:true,
             tableHeight:null,
-            formLabelWidth: '120px',
+            formLabelWidth: '100px',
             dialogFormVisible: false,
             tableData:[],
-            options:[{
-                label:'本部分中心',
-                value:'1'
+            optionSex:[{
+                value:'男'
             },{
-                label:'江北分中心',
-                value:'2'
+                value:'女'
+            }],
+            optionJijiu:[{
+                value:'本部分中心'
+            },{
+                value:'江北分中心'
+            }],
+             optionJob:[{
+                value:'急救医生'
+            },{
+                value:'担架员'
+            },{
+                value:'驾驶员'
             }],
             form: {
                 jijiu: '',
@@ -182,5 +198,11 @@ export default {
 }
 .top-info-box{
     width:100%;
+}
+.el-dialog__body{
+    padding: 0 !important;
+}
+.el-select{
+    width: 100%;
 }
 </style>

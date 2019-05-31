@@ -7,14 +7,9 @@
                 </el-input>
             </div>
             <div class="filter-item">
-                    <el-date-picker
-                    v-model="value6"
-                    type="daterange"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期">
-                    </el-date-picker>
-                </div>
+                  <el-date-picker v-model="value6" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                  </el-date-picker>
+            </div>
         </div>
         <select-presonnel :flag="flag" @change="handleChange"></select-presonnel>
         <el-table :data="tableData" border stripe :maxHeight="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
