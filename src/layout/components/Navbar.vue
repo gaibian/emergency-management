@@ -1,25 +1,21 @@
 <template>
   <div class="navbar">
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-
     <div class="right-menu">
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-row class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
+          <img :src="require('@/assets/admin-header-img.jpg')" class="user-avatar">
           <span class="name-title">管理员</span>
-          <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
-          <i class="el-icon-caret-bottom" />
         </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>首页</el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">退出登录</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      </el-row>
+      <screenfull id="screenfull" class="right-menu-item hover-effect" style="font-size:16px;" />
+      <div class="right-menu-item" style="font-size:20px">
+        <i class="el-icon-s-tools"></i>
+      </div>
+      <div class="right-menu-item logout-box">
+        <svg-icon :icon-class="'logout'" @click.native="logout"></svg-icon>
+      </div>
     </div>
   </div>
 </template>
@@ -28,10 +24,12 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import screenfull from '@/components/screenfull'
 export default {
   components: {
     Breadcrumb,
     Hamburger,
+    screenfull
   },
   computed: {
     ...mapGetters([
@@ -59,7 +57,10 @@ export default {
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
-
+  .logout-box{
+    cursor: pointer;
+    margin-right:12px;
+  }
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -93,7 +94,7 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
+      padding: 0 14px;
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
@@ -108,25 +109,30 @@ export default {
         }
       }
     }
-
     .avatar-container {
-      margin-right: 12px;
-
+      //margin-right: 12px;
       .avatar-wrapper {
         position: relative;
-        padding-right:20px;
+        height:100%;
+        padding-left:40px;
         box-sizing:border-box;
+        font-size:0;
         .name-title{
           font-size:16px;
+          border-right:1px #e5e5e5 solid;
+          padding-right:14px;
         }
-
         .user-avatar {
+          position: absolute;
+          top:50%;
+          left:0;
+          transform:translate(0,-50%);
+          display:inline-block;
           cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
         }
-
         .el-icon-caret-bottom {
           cursor: pointer;
           position: absolute;

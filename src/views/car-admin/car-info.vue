@@ -22,7 +22,7 @@
                     <span>{{scope.row.status | statusFilters}}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="176">
+            <el-table-column label="操作" width="176" fixed="right">
                 <template slot-scope="scope">
                     <el-button @click="handleEdit">编辑</el-button>
                     <el-button @click="handleDelete" type="danger">删除</el-button>

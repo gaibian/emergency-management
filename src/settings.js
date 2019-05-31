@@ -1,5 +1,5 @@
 module.exports = {
-  title: '救护车急救平台',
+  title: '急救车管理平台',
 
   /**
    * @type {boolean} true | false

@@ -28,7 +28,7 @@ export default {
     mounted() {
         this.map = new AMap.Map('container',{
             zoom:18,
-            center:[121.55,29.87],
+            center:[120.15,30.28],
             viewMode: '2D',  //设置地图模式
             lang:'zh_cn',  //设置地图语言类型
         });
@@ -45,7 +45,7 @@ export default {
     methods:{
         init() {
             let marker = new AMap.Marker({
-                position:[121.55,29.87],
+                position:[121.56,29.88],
                 icon: require('../../assets/j-car.png')
             })
             this.map.add(marker)

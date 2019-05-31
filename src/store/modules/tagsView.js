@@ -5,6 +5,7 @@ const state = {
 
 const mutations = {
   ADD_VISITED_VIEW: (state, view) => {
+    // 是否添加标签页 是根据path来判断  需要增加一个参数来控制是否可以重复添加
     if (state.visitedViews.some(v => v.path === view.path)) return
     state.visitedViews.push(
       Object.assign({}, view, {
