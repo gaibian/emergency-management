@@ -18,14 +18,52 @@
             <el-table-column label="卡号" prop="card"></el-table-column>
             <el-table-column label="操作" width="176">
                 <template slot-scope="scope">
-                    <el-button @click="handleEdit">编辑</el-button>
-                    <el-button @click="handleDelete" type="danger">删除</el-button>
+                    <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-popover placement="top" width="160" v-model="scope.row.visible2">
+                        <p>确定删除吗？</p>
+                        <div style="text-align: right; margin: 0">
+                            <el-button size="mini" type="text" @click="scope.row.visible2 = false">取消</el-button>
+                            <el-button type="primary" size="mini" @click.native.prevent="deleteRow(scope.$index, tableData)">确定</el-button>
+                        </div>
+                        <el-button type="text" size="small" slot="reference">删除</el-button>
+                    </el-popover>   
+                    <!-- <el-button @click="handleDelete" type="danger">删除</el-button> -->
                 </template>
             </el-table-column>
         </el-table>
         <div ref="btmGroup" class="btm-group">
             <pagination :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
         </div>
+        <!-- 编辑 -->
+  <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+    <el-form :model="form" label-width="100px">
+        <el-form-item label="姓名" :label-width="formLabelWidth">
+          <el-input v-model="form.name" class="w09"></el-input>
+        </el-form-item>
+        <el-form-item label="员工编号" :label-width="formLabelWidth">
+          <el-input v-model="form.num" class="w09"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" :label-width="formLabelWidth">
+          <el-input v-model="form.sex" class="w09"></el-input>
+        </el-form-item>
+        <el-form-item label="急救中心" :label-width="formLabelWidth">
+          <el-input v-model="form.jijiu" class="w09"></el-input>
+        </el-form-item>
+        <el-form-item label="职务" :label-width="formLabelWidth">
+          <el-input v-model="form.job" class="w09"></el-input>
+        </el-form-item>
+        <el-form-item label="卡号" :label-width="formLabelWidth">
+          <el-input v-model="form.card" class="w09"></el-input>
+        </el-form-item>
+        <el-form-item label="对应行数" :label-width="formLabelWidth">
+          <el-input v-model="form.index" class="w09"></el-input>
+        </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="handleEditdata(form)">确 定</el-button>
+    </div>
+  </el-dialog>
     </div>
 </template>
 <script>
@@ -46,6 +84,8 @@ export default {
             plate:'',
             tableLoading:true,
             tableHeight:null,
+            formLabelWidth: '120px',
+            dialogFormVisible: false,
             tableData:[],
             options:[{
                 label:'本部分中心',
@@ -53,7 +93,15 @@ export default {
             },{
                 label:'江北分中心',
                 value:'2'
-            }]
+            }],
+            form: {
+                jijiu: '',
+                name: '',
+                num: '',
+                sex: '',
+                job: '',
+                card: ''
+            },
         }
     },
     filters:{
@@ -95,12 +143,29 @@ export default {
             }
             this.flag = data.flag;
         },
-        handleEdit() {
-            console.log('编辑了')
-        },
-        handleDelete() {
-            console.log('删除了')
-        }
+        // handleEdit() {
+        //     console.log('编辑了')
+        // },
+        // handleDelete() {
+        //     console.log('删除了')
+        // }
+        // 删除一行
+      deleteRow(index, rows) {
+        rows.splice(index, 1);
+      },
+      // 编辑
+      handleEdit: function (index, row) {
+				this.dialogFormVisible = true;
+        row["index"]=index;
+				this.form = Object.assign({}, row);
+      },
+      // 更新一行数据
+      handleEditdata: function (data1) {
+        this.dialogFormVisible = false
+        console.log(data1)
+        // js 数据格式   =》 1.按值引用string number  2.按地址引用的 【】 {}
+        this.$set(this.tableData,data1['index'],data1)
+      },
     }
 }
 </script>
