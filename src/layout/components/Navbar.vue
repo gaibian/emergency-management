@@ -9,6 +9,10 @@
           <span class="name-title">管理员</span>
         </div>
       </el-row>
+      <div class="right-menu-item yc-text">
+        <i class="el-icon-warning"></i>
+        <span>共有<em>100</em>辆车异常</span>
+      </div>
       <screenfull id="screenfull" class="right-menu-item hover-effect" style="font-size:16px;" />
       <div class="right-menu-item" style="font-size:20px">
         <i class="el-icon-s-tools"></i>
@@ -51,6 +55,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.yc-text{
+  font-size:16px !important;
+  color:#606266;
+  i{
+    font-size:18px;
+    color:#F56C6C;
+  }
+  span{
+    border-right:1px #e5e5e5 solid;
+    padding-right:14px;
+    em{
+      color:#F56C6C !important;
+      font-style:normal;
+    }
+  }
+}
 .navbar {
   height: 50px;
   overflow: hidden;

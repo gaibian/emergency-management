@@ -25,6 +25,18 @@ export default {
       this.resizeMain()
     }
   },
+  created() {
+    this.$notify.error({
+      title:'1号车异常',
+      dangerouslyUseHTMLString:true,
+      message:'<p class="global-abnormal">点击请查看异常信息</p>',
+      position:'bottom-right',
+      duration:0,
+      onClick() {
+        console.log('跳转页面到异常信息查看')
+      }
+    })
+  },
   mounted() {
     this.resizeMain()
   },
@@ -47,7 +59,14 @@ export default {
   }
 }
 </script>
-
+<style lang="scss">
+.global-abnormal{
+  cursor: pointer;
+  &:hover{
+    color:#F56C6C
+  }
+}
+</style>
 <style lang="scss" scoped>
 .app-main {
   /* 50= navbar  50  */
