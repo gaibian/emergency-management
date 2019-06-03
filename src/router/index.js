@@ -9,7 +9,7 @@ import Layout from '@/layout'
 import { carAdmin } from './module/carAdmin'
 import { carArticle } from './module/carArticle'
 import { carPersonnel } from './module/carPersonnel'
-
+import { Account } from './module/Account'
 
 /* Router Modules */
 // import componentsRouter from './modules/components'
@@ -57,7 +57,7 @@ export const constantRoutes = [
   },
   {
     path: '/login',
-    name:'login',
+    name: 'login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
@@ -92,6 +92,7 @@ export const constantRoutes = [
   carAdmin,
   carArticle,
   carPersonnel,
+  Account,
   {
     path: '/icon',
     component: Layout,

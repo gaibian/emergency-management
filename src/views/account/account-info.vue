@@ -3,19 +3,18 @@
         <div class="top-info-box filter-container" ref="topAdd">
             <el-button class="filter-item" type="primary">添加人员</el-button>
             <div class="filter-item" style="width:300px;">
-                <el-input v-model="plate" placeholder="人员">
-                    <el-button slot="append" icon="el-icon-search" @click="handleClick">选择人员查询</el-button>
+                <el-input v-model="plate" placeholder="请输入人员编号或姓名">
+                    <el-button slot="append" icon="el-icon-search">查询</el-button>
                 </el-input>
             </div>
         </div>
         <select-presonnel :flag="flag" @change="handleChange"></select-presonnel>
         <el-table :data="tableData" border stripe :max-height="tableHeight" :height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
             <el-table-column label="姓名" prop="name"></el-table-column>
-            <el-table-column label="员工编号" prop="num"></el-table-column>
-            <el-table-column label="性别" prop="sex"></el-table-column>
-            <el-table-column label="急救中心" prop="jijiu"></el-table-column>
-            <el-table-column label="职务" prop="job"></el-table-column>
-            <el-table-column label="卡号" prop="card"></el-table-column>
+            <el-table-column label="账号" prop="user"></el-table-column>
+            <el-table-column label="密码" prop="password"></el-table-column>
+            <el-table-column label="角色" prop="role"></el-table-column>
+            <el-table-column label="状态" prop="state"></el-table-column>
             <el-table-column label="操作" width="176">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -40,26 +39,21 @@
         <el-form-item label="姓名" :label-width="formLabelWidth">
           <el-input v-model="form.name" clearable></el-input>
         </el-form-item>
-        <el-form-item label="员工编号" :label-width="formLabelWidth">
-          <el-input v-model="form.num" clearable></el-input>
+        <el-form-item label="账号" :label-width="formLabelWidth">
+          <el-input v-model="form.user" clearable></el-input>
         </el-form-item>
-        <el-form-item label="性别" :label-width="formLabelWidth">
-          <el-select v-model="form.sex" clearable placeholder="请选择">
-            <el-option v-for="item in optionSex" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        <el-form-item label="密码" :label-width="formLabelWidth">
+          <el-input v-model="form.password" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="角色" :label-width="formLabelWidth">
+          <el-select v-model="form.role" clearable placeholder="请选择">
+            <el-option v-for="item in optionrole" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="急救中心" :label-width="formLabelWidth">
-          <el-select v-model="form.jijiu" clearable placeholder="请选择">
-            <el-option v-for="item in optionJijiu" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="职务" :label-width="formLabelWidth">
-          <el-select v-model="form.job" clearable placeholder="请选择">
+        <el-form-item label="状态" :label-width="formLabelWidth">
+          <el-select v-model="form.state" clearable placeholder="请选择">
             <el-option v-for="item in optionJob" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item label="卡号" :label-width="formLabelWidth">
-          <el-input v-model="form.card" clearable></el-input>
         </el-form-item>
         <el-form-item label="对应行数" :label-width="formLabelWidth" style="display:none;">
           <el-input v-model="form.index"></el-input>
@@ -93,30 +87,22 @@ export default {
             formLabelWidth: '100px',
             dialogFormVisible: false,
             tableData:[],
-            optionSex:[{
-                value:'男'
+            optionrole:[{
+                value:'管理员'
             },{
-                value:'女'
+                value:'操作员'
             }],
-            optionJijiu:[{
-                value:'本部分中心'
+            optionJob:[{
+                value:'可用'
             },{
-                value:'江北分中心'
-            }],
-             optionJob:[{
-                value:'急救医生'
-            },{
-                value:'担架员'
-            },{
-                value:'驾驶员'
+                value:'不可用'
             }],
             form: {
-                jijiu: '',
                 name: '',
-                num: '',
-                sex: '',
-                job: '',
-                card: ''
+                user: '',
+                password: '',
+                role: '',
+                state: '',
             },
         }
     },
@@ -133,12 +119,11 @@ export default {
         this.tableLoading = false;
         for(let i=0;i<20;i++){
             this.tableData.push({
-                jijiu:'中医院急救点',
-                name:'张三三',
-                num:'0128',
-                sex:'女',
-                job:'急救医生',
-                card:'621422210001352'
+                name:'张三',
+                user:'admin',
+                password:'123456',
+                role:'管理员',
+                state:'可用',
             })
         }
     },
