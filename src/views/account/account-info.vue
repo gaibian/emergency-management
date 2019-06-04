@@ -26,12 +26,12 @@
                             <el-button type="primary" size="mini" @click.native.prevent="deleteRow(scope.$index, tableData)">确定</el-button>
                         </div>
                         <el-button type="text" size="small" slot="reference">删除</el-button>
-                    </el-popover>    -->
+                    </el-popover>-->
                 </template>
             </el-table-column>
         </el-table>
         <div ref="btmGroup" class="btm-group">
-            <pagination :update="updata" :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+            <pagination :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
         </div>
         <!-- 编辑 -->
     <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
