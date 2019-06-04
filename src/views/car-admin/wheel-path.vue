@@ -59,6 +59,7 @@
                         <el-slider
                         v-model="speedVal"
                         :step="50"
+                        :disabled="progressFlag"
                         :max="1000"
                         show-stops>
                         </el-slider>
