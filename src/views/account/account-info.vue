@@ -77,7 +77,7 @@ export default {
     },
     created() {
         this.tableLoading = false;
-        for(let i=0;i<20;i++){
+        for(let i=0;i<2;i++){
             this.tableData.push({
                 name:'张三',
                 user:'admin',
@@ -105,7 +105,7 @@ export default {
             this.$confirm('确定删除该人员?','提示',{
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                type: 'warning'
+                type: 'warning',
             }).then(()=>{
                 // agencyDelete(scope.row.id).then(res => {
                 //     if(res !== 'error'){
@@ -148,7 +148,10 @@ export default {
         console.log(data1)
         this.$set(this.tableData,data1['index'],data1)
       },
-    }
+    },
+    handleEdit(formName) {
+        this.$refs[formName].resetFields();
+      }
 }
 </script>
 <style lang="scss" scoped>

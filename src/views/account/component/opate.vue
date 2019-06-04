@@ -78,7 +78,7 @@ export default {
             this.$emit('dialogChange',false)
         },
         addSubmit() {
-
+            this.$emit('dialogChange',false)
         },
         editSubmit() {
              this.$emit('dialogChange',false)
@@ -92,7 +92,7 @@ export default {
             // 添加提交
             if(!this.edit) {
                 this.addSubmit();
-                this.tableData.push(this.user)
+                // this.tableData.push(this.user)
             }else{
                 this.editSubmit()
             }
