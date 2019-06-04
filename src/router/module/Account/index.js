@@ -6,8 +6,8 @@ export const Account = {
   meta: { title: '账号管理', icon: 'car-admin' },
   children: [
     {
-      path: 'carAdmin',
-      name: 'carAdmin',
+      path: 'Account',
+      name: 'Account',
       component: () => import('@/views/account/account-info.vue'),
       meta: { title: '账号信息', icon: 'car-info' },
     }] }

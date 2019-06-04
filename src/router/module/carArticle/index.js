@@ -20,5 +20,11 @@ export const carArticle = {
     path: 'carArticleWarn',
     name: 'carArticleWarn',
     component: () => import('@/views/car-article/car-article-warn.vue'),
+    meta: { title: '车辆物品告警记录', icon: 'excel' }
+  },
+  {
+    path: 'carArticleWarninfo',
+    name: 'carArticleWarninfo',
+    component: () => import('@/views/car-article/car-article-warninfo.vue'),
     meta: { title: '车辆物品告警信息', icon: 'excel' }
   }] }

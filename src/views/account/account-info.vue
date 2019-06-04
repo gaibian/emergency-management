@@ -26,7 +26,6 @@
                         </div>
                         <el-button type="text" size="small" slot="reference">删除</el-button>
                     </el-popover>   
-                    <!-- <el-button @click="handleDelete" type="danger">删除</el-button> -->
                 </template>
             </el-table-column>
         </el-table>
