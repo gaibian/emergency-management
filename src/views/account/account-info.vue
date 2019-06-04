@@ -102,7 +102,6 @@ export default {
             this.editFlag = false;
         },
         handleDelete(scope) {
-
             this.$confirm('确定删除该代理人?','提示',{
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -132,13 +131,9 @@ export default {
             }
             this.flag = data.flag;
         },
-        // handleDelete() {
-        //     console.log('删除了')
-        // }
-        // 删除一行
-      deleteRow(index, rows) {
-        rows.splice(index, 1);
-      },
+    //   deleteRow(index, rows) {
+    //     rows.splice(index, 1);
+    //   },
       // 编辑
       handleEdit(index, row) {
         this.dialogFormVisible = true;
