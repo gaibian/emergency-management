@@ -171,9 +171,9 @@ export default {
       },
       // 编辑
       handleEdit: function (index, row) {
-				this.dialogFormVisible = true;
+		this.dialogFormVisible = true;
         row["index"]=index;
-				this.form = Object.assign({}, row);
+		this.form = Object.assign({}, row);
       },
       // 更新一行数据
       handleEditdata: function (data1) {

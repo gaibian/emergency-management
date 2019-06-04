@@ -84,7 +84,7 @@ export default {
                 password:'123456',
                 role:'管理员',
                 state:'可用',
-                id:1,
+                id:2,
             })
         }
     },
@@ -102,7 +102,7 @@ export default {
             this.editFlag = false;
         },
         handleDelete(scope) {
-            this.$confirm('确定删除该代理人?','提示',{
+            this.$confirm('确定删除该人员?','提示',{
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -138,13 +138,16 @@ export default {
       handleEdit(index, row) {
         this.dialogFormVisible = true;
         this.editFlag = true;
-        row["index"]=index;
         this.editId = row.id
         console.log(this.editId)
         this.form = Object.assign({}, row);
       },
       // 更新一行数据
-      
+      handleEditdata: function (data1) {
+        this.dialogFormVisible = false
+        console.log(data1)
+        this.$set(this.tableData,data1['index'],data1)
+      },
     }
 }
 </script>

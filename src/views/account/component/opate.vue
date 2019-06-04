@@ -91,7 +91,8 @@ export default {
             console.log(data1)
             // 添加提交
             if(!this.edit) {
-                this.addSubmit()
+                this.addSubmit();
+                this.tableData.push(this.user)
             }else{
                 this.editSubmit()
             }
