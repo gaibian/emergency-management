@@ -67,7 +67,7 @@
                 <el-row class="speed-row" :gutter="10" type="flex" align="middle">
                     <el-col class="title">进度条:</el-col>
                     <el-col>
-                        <el-slider v-model="progress" :max="progressMax" show-stops></el-slider>
+                        <el-slider v-model="progress" :max="progressMax" show-stops @change="handleProgress"></el-slider>
                     </el-col>
                 </el-row>
             </div>
@@ -90,6 +90,9 @@ export default {
             value6:'',
             speed:0,
             progress:0,
+            countProgress:0,
+            stopProgress:0,
+            moveEnd:false,
             speedVal:50,
             progressMax:100,
             checkedCities1: [],
@@ -98,7 +101,7 @@ export default {
             top:0,
             gps:'',
             marker:null,
-            lineArr:[[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],[116.478912,39.998549],[116.478998,39.998555],[116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],[116.480784,39.998302],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],[116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]],
+            lineArr:[[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],[116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],[116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]],
             newLineArr:[],
             map:null,
             polyline:null,
@@ -107,7 +110,12 @@ export default {
     },
     watch:{
         progress(newVal, oldVal) {
-            this.newLineArr = this.lineArr.slice(this.progress);
+            // 这个进度影响到
+            if(newVal == this.lineArr.length) {
+                this.moveEnd = true;
+            }else{
+                this.moveEnd = false;
+            }
         }
     },
     created() {
@@ -128,7 +136,6 @@ export default {
         
     },
     destroyed() {
-        console.log('注销了轨迹')
         this.polyline = null;
         this.passedPolyline = null;
         this.map.destroy();
@@ -163,8 +170,16 @@ export default {
             });
             this.setLngLat(116.478935,39.997761)
             this.map.setFitView();
+            this.marker.on('moveend',() => {
+                this.progress += 1;
+            })
+            
             // 拖动地图
             this.map.on('dragging', this.showInfoDragging);
+        },
+        handleProgress(progress) {
+            this.newLineArr = this.lineArr.slice(progress);
+            this.stopProgress = progress;
         },
         setLngLat(lon,lat) {
             let lnglat = new AMap.LngLat(lon, lat);
@@ -173,9 +188,19 @@ export default {
             this.top = `${pixel.y + 5}px`;
         },
         handlePlay() {
+            // 播放重置
+            if(this.moveEnd){
+                this.progress = 0;
+            }
+            this.countProgress = this.progress;
             this.marker.on('moving',(e) => {
                 this.passedPolyline.setPath(e.passedPath);
                 let last = e.passedPath.length - 1;
+                if(this.progress == 0) {
+                    this.progress = last;
+                }else{
+                    this.progress = this.countProgress + last
+                }
                 let lon = e.passedPath[last].getLng();
                 let lat = e.passedPath[last].getLat();
                 this.setLngLat(lon,lat)
@@ -190,6 +215,7 @@ export default {
             this.marker.resumeMove();
         },
         handleStop() {
+            this.progress = this.stopProgress;
             this.marker.stopMove();
         },
         showInfoDragging(e) {
@@ -201,7 +227,6 @@ export default {
         handleChange(data) {
             if(data.keys) {
                 this.plate = data.carPlate;
-                console.log(data.keys)
             }
             this.flag = data.flag;
         },
