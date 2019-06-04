@@ -48,8 +48,8 @@
                 <el-row class="speed-row" :gutter="10" type="flex" align="middle">
                     <el-col>
                         <el-button type="primary" size="mini" @click="handlePlay"><svg-icon class="svgIcon" :icon-class="'play'"></svg-icon>开始播放</el-button>
-                        <el-button type="primary" size="mini" @click="handleSuspend"><svg-icon class="svgIcon" :icon-class="'suspend'"></svg-icon>暂停播放</el-button>
-                        <el-button type="primary" size="mini" @click="handleContinue"><svg-icon class="svgIcon" :icon-class="'continue'"></svg-icon>继续播放</el-button>
+                        <el-button type="primary" size="mini" :disabled="btnFlag" @click="handleSuspend"><svg-icon class="svgIcon" :icon-class="'suspend'"></svg-icon>暂停播放</el-button>
+                        <el-button type="primary" size="mini" :disabled="btnFlag" @click="handleContinue"><svg-icon class="svgIcon" :icon-class="'continue'"></svg-icon>继续播放</el-button>
                         <el-button type="primary" size="mini" @click="handleStop"><svg-icon class="svgIcon" :icon-class="'stop'"></svg-icon>停止播放</el-button>
                     </el-col>
                 </el-row>
@@ -95,6 +95,7 @@ export default {
             moveEnd:false,
             speedVal:50,
             progressMax:100,
+            btnFlag:false,
             checkedCities1: [],
             cities: cityOptions,
             left:0,
@@ -189,6 +190,7 @@ export default {
         },
         handlePlay() {
             // 播放重置
+            this.btnFlag = false;
             if(this.moveEnd){
                 this.progress = 0;
             }
@@ -215,6 +217,7 @@ export default {
             this.marker.resumeMove();
         },
         handleStop() {
+            this.btnFlag = true;
             this.progress = this.stopProgress;
             this.marker.stopMove();
         },
