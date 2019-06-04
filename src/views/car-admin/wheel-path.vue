@@ -1,37 +1,40 @@
 <template>
     <div class="wheel-path-container">
-        <div class="choice-bar-container">
-            <div class="choice-bar-box filter-container">
-                <div style="width:300px" class="filter-item">
-                    <el-input v-model="plate" placeholder="请选择车辆">
-                        <el-button slot="append" icon="el-icon-search" @click="handleClick">选择</el-button>
-                    </el-input>
-                </div>
-                <div class="filter-item">
-                    <el-date-picker
-                    v-model="value6"
-                    type="daterange"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期">
-                    </el-date-picker>
-                </div>
-                <div class="filter-item">
-                    <el-button type="primary" icon="el-icon-search">查询</el-button>
-                </div>
-                <div class="status-check-box" style="padding-bottom:0">
-                    <div class="filter-item title">复选条件:</div>
-                    <el-checkbox-group
-                        class="filter-item" 
-                        v-model="checkedCities1"
-                        :min="1"
-                        :max="7">
-                        <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                    </el-checkbox-group>
+        <transition name="fade" mode="out-in" appear>
+            <div class="choice-bar-container" v-show="popupFlag" ref="speedBox">
+                <div class="choice-bar-box filter-container">
+                    <div style="width:300px" class="filter-item">
+                        <el-input v-model="plate" placeholder="请选择车辆">
+                            <el-button slot="append" icon="el-icon-search" @click="handleClick">选择</el-button>
+                        </el-input>
+                    </div>
+                    <div class="filter-item">
+                        <el-date-picker
+                        v-model="value6"
+                        type="daterange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                        </el-date-picker>
+                    </div>
+                    <div class="filter-item">
+                        <el-button type="primary" icon="el-icon-search">查询</el-button>
+                    </div>
+                    <div class="status-check-box" style="padding-bottom:0">
+                        <div class="filter-item title">复选条件:</div>
+                        <el-checkbox-group
+                            class="filter-item" 
+                            v-model="checkedCities1"
+                            :min="1"
+                            :max="7">
+                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                        </el-checkbox-group>
+                    </div>
                 </div>
             </div>
-        </div>
+        </transition>
         <select-car :flag="flag" :radio="true" @change="handleChange"></select-car>
+        <div class="popup-status-btn" :style="{top:`${popupBottom}px`}" @click="handleSpeendBox">{{btmVal}}</div>
         <!--状态显示-->
         <div class="status-popup" :style="{left:left,top:top}">
             <ul>
@@ -43,36 +46,38 @@
             </ul>
         </div>
         <!--速度选择-->
-        <div class="speed-box">
-            <div class="speed">
-                <el-row class="speed-row" :gutter="10" type="flex" align="middle">
-                    <el-col>
-                        <el-button type="primary" size="mini" :disabled="startFlag" @click="handlePlay"><svg-icon class="svgIcon" :icon-class="'play'"></svg-icon>开始播放</el-button>
-                        <el-button type="primary" size="mini" :disabled="btnFlag" @click="handleSuspend"><svg-icon class="svgIcon" :icon-class="'suspend'"></svg-icon>暂停播放</el-button>
-                        <el-button type="primary" size="mini" :disabled="btnFlag" @click="handleContinue"><svg-icon class="svgIcon" :icon-class="'continue'"></svg-icon>继续播放</el-button>
-                        <el-button type="primary" size="mini" @click="handleStop"><svg-icon class="svgIcon" :icon-class="'stop'"></svg-icon>停止播放</el-button>
-                    </el-col>
-                </el-row>
-                <el-row class="speed-row" :gutter="10" type="flex" align="middle">
-                    <el-col class="title">行进速度:</el-col>
-                    <el-col>
-                        <el-slider
-                        v-model="speedVal"
-                        :step="50"
-                        :disabled="progressFlag"
-                        :max="1000"
-                        show-stops>
-                        </el-slider>
-                    </el-col>
-                </el-row>
-                <el-row class="speed-row" :gutter="10" type="flex" align="middle">
-                    <el-col class="title">进度条:</el-col>
-                    <el-col>
-                        <el-slider v-model="progress" :disabled="progressFlag" :max="progressMax" show-stops @change="handleProgress"></el-slider>
-                    </el-col>
-                </el-row>
+        <transition name="fade" mode="out-in" appear>
+            <div class="speed-box" v-show="popupFlag">
+                <div class="speed">
+                    <el-row class="speed-row" :gutter="10" type="flex" align="middle">
+                        <el-col>
+                            <el-button type="primary" size="mini" :disabled="startFlag" @click="handlePlay"><svg-icon class="svgIcon" :icon-class="'play'"></svg-icon>开始播放</el-button>
+                            <el-button type="primary" size="mini" :disabled="btnFlag" @click="handleSuspend"><svg-icon class="svgIcon" :icon-class="'suspend'"></svg-icon>暂停播放</el-button>
+                            <el-button type="primary" size="mini" :disabled="btnFlag" @click="handleContinue"><svg-icon class="svgIcon" :icon-class="'continue'"></svg-icon>继续播放</el-button>
+                            <el-button type="primary" size="mini" @click="handleStop"><svg-icon class="svgIcon" :icon-class="'stop'"></svg-icon>停止播放</el-button>
+                        </el-col>
+                    </el-row>
+                    <el-row class="speed-row" :gutter="10" type="flex" align="middle">
+                        <el-col class="title">行进速度:</el-col>
+                        <el-col>
+                            <el-slider
+                            v-model="speedVal"
+                            :step="50"
+                            :disabled="progressFlag"
+                            :max="1000"
+                            show-stops>
+                            </el-slider>
+                        </el-col>
+                    </el-row>
+                    <el-row class="speed-row" :gutter="10" type="flex" align="middle">
+                        <el-col class="title">进度条:</el-col>
+                        <el-col>
+                            <el-slider v-model="progress" :disabled="progressFlag" :max="progressMax" show-stops @change="handleProgress"></el-slider>
+                        </el-col>
+                    </el-row>
+                </div>
             </div>
-        </div>
+        </transition>
         <div id="wheelPath"></div>
     </div>
 </template>
@@ -91,6 +96,7 @@ export default {
             value6:'',
             speed:0,
             progress:0,
+            btmVal:'隐藏',
             progressFlag:false,
             startFlag:false,
             countProgress:0,
@@ -99,10 +105,13 @@ export default {
             speedVal:50,
             progressMax:100,
             btnFlag:false,
+            popupFlag:true,
             checkedCities1: [],
             cities: cityOptions,
             left:0,
             top:0,
+            popupBottom:20,
+            speedHeight:0,
             gps:'',
             marker:null,
             lineArr:[[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],[116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],[116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]],
@@ -127,7 +136,7 @@ export default {
     },
     mounted() {
         this.map = new AMap.Map('wheelPath',{
-            zoom:17,
+            zoom:14,
             center: [116.397428, 39.90923],
             viewMode: '2D',  //设置地图模式
             lang:'zh_cn',  //设置地图语言类型
@@ -135,6 +144,9 @@ export default {
         this.map.on('complete', () => {
             // 地图图块加载完成后触发
             this.$store.dispatch('setPageLoading',false)
+            let speedPopup = this.$refs.speedBox;
+            this.speedHeight = this.$refs.speedBox.offsetHeight + 20
+            this.popupBottom = this.speedHeight
             this.init();
         });
         
@@ -181,6 +193,16 @@ export default {
             
             // 拖动地图
             this.map.on('dragging', this.showInfoDragging);
+        },
+        handleSpeendBox() {
+            this.popupFlag = !this.popupFlag;
+            if(this.popupFlag) {
+                this.popupBottom = this.speedHeight
+                this.btmVal = '隐藏'
+            }else{
+                this.popupBottom = 20
+                this.btmVal = '显示'
+            }
         },
         handleProgress(progress) {
             this.newLineArr = this.lineArr.slice(progress);
@@ -361,6 +383,22 @@ export default {
         font-size:17px;
         margin-right:4px;
     }
+}
+.popup-status-btn{
+    width:46px;
+    height:46px;
+    line-height:46px;
+    text-align: center;
+    color:#fff;
+    font-size:14px;
+    position: absolute;
+    right:12px;
+    border-radius:50%;
+    background:#1890ff;
+    z-index:99;
+    border:#e5e5e5 2px solid;
+    cursor: pointer;
+    box-shadow:0px 0px 8px rgba(0,0,0,0.1);
 }
 </style>
 

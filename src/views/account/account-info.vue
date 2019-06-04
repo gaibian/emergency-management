@@ -1,7 +1,7 @@
 <template>
     <div class="car-admin-container main-page" ref="mainContainer">
         <div class="top-info-box filter-container" ref="topAdd">
-            <el-button class="filter-item" type="primary">添加人员</el-button>
+            <el-button class="filter-item" type="primary" @click="handleAdd">添加人员</el-button>
             <div class="filter-item" style="width:300px;">
                 <el-input v-model="plate" placeholder="请输入人员编号或姓名">
                     <el-button slot="append" icon="el-icon-search">查询</el-button>
@@ -18,14 +18,15 @@
             <el-table-column label="操作" width="176">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-popover placement="top" width="160" v-model="scope.row.visible2">
+                    <el-button @click="handleDelete(scope)">删除</el-button>
+                    <!-- <el-popover placement="top" width="160" v-model="scope.row.visible2">
                         <p>确定删除吗？</p>
                         <div style="text-align: right; margin: 0">
                             <el-button size="mini" type="text" @click="scope.row.visible2 = false">取消</el-button>
                             <el-button type="primary" size="mini" @click.native.prevent="deleteRow(scope.$index, tableData)">确定</el-button>
                         </div>
                         <el-button type="text" size="small" slot="reference">删除</el-button>
-                    </el-popover>   
+                    </el-popover>-->
                 </template>
             </el-table-column>
         </el-table>
@@ -33,76 +34,36 @@
             <pagination :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
         </div>
         <!-- 编辑 -->
-  <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
-    <el-form :model="form" label-width="100px">
-        <el-form-item label="姓名" :label-width="formLabelWidth">
-          <el-input v-model="form.name" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="账号" :label-width="formLabelWidth">
-          <el-input v-model="form.user" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth">
-          <el-input v-model="form.password" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="角色" :label-width="formLabelWidth">
-          <el-select v-model="form.role" clearable placeholder="请选择">
-            <el-option v-for="item in optionrole" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth">
-          <el-select v-model="form.state" clearable placeholder="请选择">
-            <el-option v-for="item in optionJob" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="对应行数" :label-width="formLabelWidth" style="display:none;">
-          <el-input v-model="form.index"></el-input>
-        </el-form-item>
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="handleEditdata(form)">确 定</el-button>
-    </div>
-  </el-dialog>
+    <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
+        <opate :edit="editFlag" :id="editId" @dialogChange="handleOpate"></opate>
+    </el-dialog>
     </div>
 </template>
 <script>
 import selectPresonnel from '@/components/selectPresonnel'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
+import opate from './component/opate'
+import { setTimeout } from 'timers';
 export default {
     name:'accountInfo',
     components:{
         selectPresonnel,
-        Pagination
+        Pagination,
+        opate
     },
     mixins:[pageMixins],
     data() {
         return {
+            editFlag:false,
             fenbu:'',
             flag:false,
             plate:'',
+            editId:null,
             tableLoading:true,
             tableHeight:null,
-            formLabelWidth: '100px',
             dialogFormVisible: false,
             tableData:[],
-            optionrole:[{
-                value:'管理员'
-            },{
-                value:'操作员'
-            }],
-            optionJob:[{
-                value:'可用'
-            },{
-                value:'不可用'
-            }],
-            form: {
-                name: '',
-                user: '',
-                password: '',
-                role: '',
-                state: '',
-            },
         }
     },
     filters:{
@@ -123,10 +84,37 @@ export default {
                 password:'123456',
                 role:'管理员',
                 state:'可用',
+                id:1,
             })
         }
     },
     methods:{
+        handleOpate(boo){
+            console.log(boo)
+            this.tableLoading = true;
+            setTimeout(() => {
+                this.tableLoading = false;
+            },200)
+            this.dialogFormVisible = false;
+        }, 
+        handleAdd() {
+            this.dialogFormVisible = true;
+            this.editFlag = false;
+        },
+        handleDelete(scope) {
+            this.$confirm('确定删除该代理人?','提示',{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(()=>{
+                // agencyDelete(scope.row.id).then(res => {
+                //     if(res !== 'error'){
+                //         _g.toastMsg('success','删除成功')
+                //         this.update = !this.update;
+                //     }
+                // })
+            })
+        },
         handlePag(data) {
             setTimeout(() => {
                 this.tableLoading = false;
@@ -143,29 +131,20 @@ export default {
             }
             this.flag = data.flag;
         },
-        // handleEdit() {
-        //     console.log('编辑了')
-        // },
-        // handleDelete() {
-        //     console.log('删除了')
-        // }
-        // 删除一行
-      deleteRow(index, rows) {
-        rows.splice(index, 1);
-      },
+    //   deleteRow(index, rows) {
+    //     rows.splice(index, 1);
+    //   },
       // 编辑
-      handleEdit: function (index, row) {
-				this.dialogFormVisible = true;
+      handleEdit(index, row) {
+        this.dialogFormVisible = true;
+        this.editFlag = true;
         row["index"]=index;
-				this.form = Object.assign({}, row);
+        this.editId = row.id
+        console.log(this.editId)
+        this.form = Object.assign({}, row);
       },
       // 更新一行数据
-      handleEditdata: function (data1) {
-        this.dialogFormVisible = false
-        console.log(data1)
-        // js 数据格式   =》 1.按值引用string number  2.按地址引用的 【】 {}
-        this.$set(this.tableData,data1['index'],data1)
-      },
+      
     }
 }
 </script>
