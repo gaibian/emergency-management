@@ -47,7 +47,7 @@
             <div class="speed">
                 <el-row class="speed-row" :gutter="10" type="flex" align="middle">
                     <el-col>
-                        <el-button type="primary" size="mini" @click="handlePlay"><svg-icon class="svgIcon" :icon-class="'play'"></svg-icon>开始播放</el-button>
+                        <el-button type="primary" size="mini" :disabled="startFlag" @click="handlePlay"><svg-icon class="svgIcon" :icon-class="'play'"></svg-icon>开始播放</el-button>
                         <el-button type="primary" size="mini" :disabled="btnFlag" @click="handleSuspend"><svg-icon class="svgIcon" :icon-class="'suspend'"></svg-icon>暂停播放</el-button>
                         <el-button type="primary" size="mini" :disabled="btnFlag" @click="handleContinue"><svg-icon class="svgIcon" :icon-class="'continue'"></svg-icon>继续播放</el-button>
                         <el-button type="primary" size="mini" @click="handleStop"><svg-icon class="svgIcon" :icon-class="'stop'"></svg-icon>停止播放</el-button>
@@ -67,7 +67,7 @@
                 <el-row class="speed-row" :gutter="10" type="flex" align="middle">
                     <el-col class="title">进度条:</el-col>
                     <el-col>
-                        <el-slider v-model="progress" :max="progressMax" show-stops @change="handleProgress"></el-slider>
+                        <el-slider v-model="progress" :disabled="progressFlag" :max="progressMax" show-stops @change="handleProgress"></el-slider>
                     </el-col>
                 </el-row>
             </div>
@@ -90,6 +90,8 @@ export default {
             value6:'',
             speed:0,
             progress:0,
+            progressFlag:false,
+            startFlag:false,
             countProgress:0,
             stopProgress:0,
             moveEnd:false,
@@ -173,6 +175,7 @@ export default {
             this.map.setFitView();
             this.marker.on('moveend',() => {
                 this.progress += 1;
+                this.progressFlag = false;
             })
             
             // 拖动地图
@@ -190,12 +193,14 @@ export default {
         },
         handlePlay() {
             // 播放重置
+            this.startFlag = true;
             this.btnFlag = false;
             if(this.moveEnd){
                 this.progress = 0;
             }
             this.countProgress = this.progress;
             this.marker.on('moving',(e) => {
+                this.progressFlag = true;
                 this.passedPolyline.setPath(e.passedPath);
                 let last = e.passedPath.length - 1;
                 if(this.progress == 0) {
@@ -211,6 +216,7 @@ export default {
             this.marker.moveAlong(this.newLineArr, this.speedVal);
         },
         handleSuspend() {
+            // this.progressFlag = false;
             this.marker.pauseMove();
         },
         handleContinue() {
@@ -219,6 +225,8 @@ export default {
         handleStop() {
             this.btnFlag = true;
             this.progress = this.stopProgress;
+            this.progressFlag = false;
+            this.startFlag = false;
             this.marker.stopMove();
         },
         showInfoDragging(e) {
