@@ -1,7 +1,7 @@
 <template>
   <section class="app-main" ref="appMain" :style="{height:autoMainHeight,margin:0}">
     <el-row class="page-loading" v-loading="pageLoading" v-show="pageLoading" element-loading-text="数据正在加载中..."></el-row>
-    <el-scrollbar style="height:100%">
+    <el-scrollbar style="height:100%;overflow-x:hidden">
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="cachedViews">
           <router-view :key="key" />
