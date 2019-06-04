@@ -35,7 +35,7 @@ import selectCar from '@/components/selectCar'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 export default {
-    name:'carAdmin',
+    name:'carArticleWarn',
     components:{
         selectCar,
         Pagination

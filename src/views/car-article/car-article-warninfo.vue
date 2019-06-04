@@ -28,7 +28,7 @@
 // import selectCar from '@/components/selectCar'
 import { setTimeout } from 'timers';
 export default {
-    name: 'gisInfo',
+    name: 'carArticleWarninfo',
     data() {
         return {
             flag:false,

@@ -31,11 +31,11 @@
     </div>
 </template>
 <script>
-import selectCar from '@/components/selectCar'
+import selectCar from '@/components/selectCar' 
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 export default {
-    name:'carAdmin',
+    name:'carArticleChange',
     components:{
         selectCar,
         Pagination

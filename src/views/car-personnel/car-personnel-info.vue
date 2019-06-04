@@ -77,7 +77,7 @@ import selectPresonnel from '@/components/selectPresonnel'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 export default {
-    name:'carAdmin',
+    name:'carPersonnelInfo',
     components:{
         selectPresonnel,
         Pagination
