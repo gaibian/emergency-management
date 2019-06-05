@@ -9,9 +9,14 @@
           <span class="name-title">管理员</span>
         </div>
       </el-row>
-      <div class="right-menu-item yc-text">
+      <!-- <div class="right-menu-item yc-text">
         <i class="el-icon-warning"></i>
         <span>共有<em>100</em>辆车异常</span>
+      </div> -->
+      <div class="right-menu-item">
+        <el-badge :value="12" class="badge-item">
+          <svg-icon :icon-class="'car-admin'"></svg-icon>
+        </el-badge>
       </div>
       <screenfull id="screenfull" class="right-menu-item hover-effect" style="font-size:16px;" />
       <div class="right-menu-item" style="font-size:20px">
@@ -54,24 +59,16 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.yc-text{
-  font-size:16px !important;
-  color:#606266;
-  i{
-    font-size:18px;
-    color:#F56C6C;
-  }
-  span{
-    border-right:1px #e5e5e5 solid;
-    padding-right:14px;
-    em{
-      color:#F56C6C !important;
-      font-style:normal;
-    }
+<style lang="scss">
+.badge-item{
+  font-size:22px;
+  cursor: pointer;
+  .el-badge__content.is-fixed{
+    top:14px !important;
   }
 }
+</style>
+<style lang="scss" scoped>
 .navbar {
   height: 50px;
   overflow: hidden;

@@ -5,54 +5,83 @@
       <div class="png-box png2"></div>
       <div class="png-box png3"></div>
     </div>
-    <!-- <div class="mark-box"></div> -->
-    <div class="login-form-box">
-      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-        <div class="title-container">
-          <h3 class="title">急救车管理系统</h3>
-        </div>
-        <el-form-item prop="username">
-          <span class="svg-container">
-            <svg-icon icon-class="user" />
-          </span>
-          <el-input
-            ref="username"
-            v-model="loginForm.username"
-            placeholder="请输入用户名"
-            type="text"
-            tabindex="1"
-          />
-        </el-form-item>
-        <el-form-item prop="password">
-            <span class="svg-container">
-              <svg-icon icon-class="password" />
-            </span>
-            <el-input 
-            ref="password" 
-            v-model="loginForm.password" 
-            placeholder="请输入密码" 
-            tabindex="2"
-            :type="passwordType"
-            @keyup.native="checkCapslock"
-            @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
-            ></el-input>
-            <span class="show-pwd" @click="showPwd">
-              <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-            </span>
-          </el-form-item>
+    <el-row class="login-form-box" type="flex">
+      <el-col :span="12" class="login-bg">
+      </el-col>
+      <el-col :span="12" style="position:relative">
+        <div class="login-form" v-show="!loginFlag">
+          <el-form ref="loginForm" :model="loginForm" :rules="loginRules" auto-complete="on" label-position="left">
+            <div class="title-container">
+              <h3 class="title">欢迎登陆</h3>
+            </div>
+            <el-form-item prop="username">
+              <span class="svg-container">
+                <svg-icon icon-class="user" />
+              </span>
+              <el-input
+                ref="username"
+                v-model="loginForm.username"
+                placeholder="请输入用户名"
+                type="text"
+                tabindex="1"
+              />
+            </el-form-item>
+            <el-form-item prop="password" style="margin-bottom:0px">
+                <span class="svg-container">
+                  <svg-icon icon-class="password" />
+                </span>
+                <el-input 
+                ref="password" 
+                v-model="loginForm.password" 
+                placeholder="请输入密码" 
+                tabindex="2"
+                :type="passwordType"
+                @keyup.native="checkCapslock"
+                @blur="capsTooltip = false"
+                @keyup.enter.native="handleLogin"
+                ></el-input>
+                <span class="show-pwd" @click="showPwd">
+                  <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+                </span>
+              </el-form-item>
 
-        <!-- <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        </el-tooltip> -->
-        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">立即登录</el-button>
-      </el-form>
-    </div>
+            <!-- <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
+            </el-tooltip> -->
+          </el-form>
+          <el-row type="flex" class="operate-box">
+            <el-col>
+              <span class="forget-password">记住账号</span>
+            </el-col>
+            <el-col style="text-align:right">
+              <span class="forget-password">忘记密码?</span>
+            </el-col>
+          </el-row>
+          <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">立即登录</el-button>
+        </div>
+        <!--登陆加载动画-->
+        <div class="login-loading" v-show="loginFlag">
+          <div id="loading">
+            <div id="loading-center">
+              <div id="loading-center-absolute">
+                <div class="object" id="object_one"></div>
+                <div class="object" id="object_two"></div>
+                <div class="object" id="object_three"></div>
+                <div class="object" id="object_four"></div>
+              </div>
+            </div>
+            <div class="text">正在登录中...</div>
+          </div>
+          
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
 import { validUsername } from '@/utils/validate'
 import { getToken, setToken } from '@/utils/auth' // get token from cookie
+import { setTimeout } from 'timers';
 
 export default {
   name: 'Login',
@@ -76,6 +105,7 @@ export default {
         username: '',
         password: ''
       },
+      loginFlag:false,
       loginRules: {
         username: [{ required: true, trigger: 'blur',message:'请输入用户名' }],
         password: [{ required: true, trigger: 'blur',message:'请输入密码' }]
@@ -142,15 +172,21 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          this.loginFlag = true;
           this.loading = true
           //this.$router.push('/')
           //  vuex 存储用户名
-          this.$store.dispatch('user/login',this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-            this.loading = false;
-          }).catch(() => {
-            this.loading = false;
-          })
+          setTimeout(() => {
+            this.$store.dispatch('user/login',this.loginForm).then(() => {
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              this.loading = false;
+              this.loginFlag = false;
+            }).catch(() => {
+              this.loading = false;
+              this.loginFlag = false;
+            })
+          },2000)
+          
         } else {
           return false
         }
@@ -171,8 +207,7 @@ export default {
 .login-form-box{
   .el-input {
     display: inline-block;
-    //height: 47px;
-    width: 85%;
+    width: 70%;
     input{
       background:rgba(0,0,0,0);
       outline:none;
@@ -184,10 +219,6 @@ export default {
       box-shadow:0 0 0 60px #e5e5e5 inset;
       -webkit-text-fill-color: #878787;
     }
-    // input:-webkit-autofill {
-    //     -webkit-box-shadow: 0 0 1000px rgba(232,240,254,1) inset !important;
-    //     -webkit-text-fill-color: #606266 !important;
-    // }
   }
 }
 </style>
@@ -205,7 +236,7 @@ $cursor: #fff;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background:#ecf5ff;
+  background:#e6e8eb;
   overflow: hidden;
   .bottom-bg-png{
     width:100%;
@@ -242,12 +273,170 @@ $cursor: #fff;
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
-    width: 80%;
+    width: 75%;
     max-width: 100%;
     padding: 0;
     margin: 0 auto;
     overflow: hidden;
   }
+  .login-loading{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width: 100%;
+    height:100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0 auto;
+    overflow: hidden;
+    .text{
+      position: absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      width:100%;
+      margin-top:50px;
+      text-align:center;
+      font-size:14px;
+      color:#909399
+    }
+  }
+  #loading{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    margin-top: 0px;
+    top: 0px;
+  }
+  #loading-center{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    }
+  #loading-center-absolute {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 60px;
+    width: 60px;
+    margin-top: -30px;
+    margin-left: -30px;
+      -webkit-animation: loading-center-absolute 1s infinite;
+    animation: loading-center-absolute 1s infinite;
+
+  }
+  .object{
+    width: 20px;
+    height: 20px;
+    //background-color: #1890ff;
+    background:linear-gradient( top,#3b9ffc,#1890ff);
+    float: left;
+    -moz-border-radius: 50% 50% 50% 50%;
+    -webkit-border-radius: 50% 50% 50% 50%;
+    border-radius: 50% 50% 50% 50%;
+    margin-right: 20px;
+    margin-bottom: 20px;	
+  }
+  .object:nth-child(2n+0) {
+    margin-right: 0px;
+  }
+  #object_one{
+    -webkit-animation: object_one 2s infinite;
+    animation: object_one 2s infinite;
+  }
+  #object_two{
+    -webkit-animation: object_two 2s infinite;
+    animation: object_two 2s infinite;
+  }	
+  #object_three{
+    -webkit-animation: object_three 2s infinite;
+    animation: object_three 2s infinite;
+  }		
+  #object_four{
+    -webkit-animation: object_four 2s infinite;
+    animation: object_four 2s infinite;
+  }		
+    
+  @-webkit-keyframes loading-center-absolute{
+    100% {
+        -ms-transform: rotate(360deg); 
+        -webkit-transform: rotate(360deg); 
+        transform: rotate(360deg); 
+      }			
+  }		
+  @keyframes loading-center-absolute{
+    100% {
+        -ms-transform: rotate(360deg); 
+        -webkit-transform: rotate(360deg); 
+        transform: rotate(360deg); 
+      }
+  }
+  @-webkit-keyframes object_one{
+    50% {
+        -ms-transform: translate(20px,20px); 
+        -webkit-transform: translate(20px,20px);
+        transform: translate(20px,20px);
+      }
+    }		
+    @keyframes object_one{
+    50% {
+        -ms-transform: translate(20px,20px); 
+        -webkit-transform: translate(20px,20px);
+        transform: translate(20px,20px);
+      }
+    }
+
+
+    @-webkit-keyframes object_two{
+    50% {
+        -ms-transform: translate(-20px,20px); 
+        -webkit-transform: translate(-20px,20px);
+        transform: translate(-20px,20px);
+      }
+    }		
+    @keyframes object_two{
+    50% {
+        -ms-transform: translate(-20px,20px); 
+        -webkit-transform: translate(-20px,20px);
+        transform: translate(-20px,20px);
+      }
+    }
+
+
+
+    @-webkit-keyframes object_three{
+    50% {
+        -ms-transform: translate(20px,-20px); 
+        -webkit-transform: translate(20px,-20px);
+        transform: translate(20px,-20px);
+      }
+    }		
+    @keyframes object_three{
+    50% {
+        -ms-transform: translate(20px,-20px); 
+        -webkit-transform: translate(20px,-20px);
+        transform: translate(20px,-20px);
+      }
+    }
+
+
+
+    @-webkit-keyframes object_four{
+    50% {
+        -ms-transform: translate(-20px,-20px); 
+        -webkit-transform: translate(-20px,-20px);
+        transform: translate(-20px,-20px);
+      }
+    }		
+    @keyframes object_four{
+    50% {
+        -ms-transform: translate(-20px,-20px); 
+        -webkit-transform: translate(-20px,-20px);
+        transform: translate(-20px,-20px);
+      }
+    }	
 
   .tips {
     font-size: 14px;
@@ -275,10 +464,10 @@ $cursor: #fff;
     box-sizing:border-box;
     .title {
       font-size: 26px;
-      color: #409EFF;
+      color: #909399;
       margin: 0px auto 40px auto;
       text-align: center;
-      font-weight: bold;
+      font-weight:normal;
     }
   }
 
@@ -322,15 +511,34 @@ $cursor: #fff;
 }
 .login-form-box{
     position:absolute;
-    top:36%;
+    top:34%;
     left:50%;
     transform:translate(-50%,-36%);
-    width:500px;
-    height:300px;
+    width:800px;
+    height:500px;
     //background:$bg;
+    //border:#fff 2px solid;
+    overflow:hidden;
     background:#fff;
     border-radius:6px;
     z-index:3;
+    .login-bg{
+      height:100%;
+      background:url('../../assets/login-bg.jpg');
+      background-position: center center;
+      overflow:hidden;
+    }
+    .forget-password{
+      font-size:14px;
+      color:#409EFF;
+    }
+    .operate-box{
+      width:100%;
+      margin:12px 0;
+      span{
+        cursor: pointer;
+      }
+    }
   }
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
