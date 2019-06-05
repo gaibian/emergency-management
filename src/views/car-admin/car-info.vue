@@ -81,10 +81,8 @@ export default {
         }
     },
     created() {
-        
         // 进行第一次的表格数据加载
         this.handlePag();
-
         for(let i=0;i<20;i++){
             this.tableData.push({
                 jijiu:'中医院急救点',
@@ -99,11 +97,7 @@ export default {
         }
     },
     methods:{
-        handleUpdate(val) {
-            console.log(val)
-        },
         handlePag() {
-            console.log(this.listQuery)
             this.tableLoading = true;
             setTimeout(() => {
                 this.tableLoading = false;

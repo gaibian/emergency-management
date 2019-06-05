@@ -17,7 +17,7 @@ export default {
   props:['autoMainHeight'],
   data() {
     return {
-
+      instance:null,
     }
   },
   watch:{
@@ -26,7 +26,7 @@ export default {
     }
   },
   created() {
-    this.$notify.error({
+    this.instance = this.$notify.error({
       title:'1号车异常',
       dangerouslyUseHTMLString:true,
       message:'<p class="global-abnormal">点击请查看异常信息</p>',
@@ -36,6 +36,10 @@ export default {
         console.log('跳转页面到异常信息查看')
       }
     })
+  },
+  destroyed() {
+    // 关闭全局的车辆报警事件
+    this.instance.close()
   },
   mounted() {
     this.resizeMain()
