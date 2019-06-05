@@ -30,7 +30,7 @@
             </el-table-column>
         </el-table>
         <div ref="btmGroup" class="btm-group">
-            <pagination :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+            <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
         </div>
     </div>
 </template>
@@ -50,9 +50,18 @@ export default {
             fenbu:'',
             flag:false,
             plate:'',
+            total:30,
             tableLoading:true,
             tableHeight:null,
             tableData:[],
+            listQuery: {
+                page: 1,
+                limit: 20,
+                importance: undefined,
+                title: undefined,
+                type: undefined,
+                sort: '+id'
+            },
             options:[{
                 label:'本部分中心',
                 value:'1'
@@ -72,7 +81,10 @@ export default {
         }
     },
     created() {
-        this.tableLoading = false;
+        
+        // 进行第一次的表格数据加载
+        this.handlePag();
+
         for(let i=0;i<20;i++){
             this.tableData.push({
                 jijiu:'中医院急救点',
@@ -87,11 +99,15 @@ export default {
         }
     },
     methods:{
-        handlePag(data) {
+        handleUpdate(val) {
+            console.log(val)
+        },
+        handlePag() {
+            console.log(this.listQuery)
+            this.tableLoading = true;
             setTimeout(() => {
                 this.tableLoading = false;
             }, 2000);
-            console.log(data)
         },
         handleClick() {
             this.flag = true;

@@ -52,6 +52,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import { getToken, setToken } from '@/utils/auth' // get token from cookie
 
 export default {
   name: 'Login',
@@ -145,9 +146,7 @@ export default {
           //this.$router.push('/')
           //  vuex 存储用户名
           this.$store.dispatch('user/login',this.loginForm).then(() => {
-            console.log(this.redirect)
             this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-            console.log(this.oherQuery);
             this.loading = false;
           }).catch(() => {
             this.loading = false;

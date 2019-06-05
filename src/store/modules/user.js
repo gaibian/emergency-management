@@ -33,14 +33,8 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      // login({ username: username.trim(), password: password }).then(response => {
-      //   const { data } = response
-      //   commit('SET_TOKEN', data.token)
-      //   setToken(data.token)
-      //   resolve()
-      // }).catch(error => {
-      //   reject(error)
-      // })
+      commit('SET_TOKEN', 'xiaojun')
+      setToken('xiaojun')
       resolve()
     })
   },
@@ -48,10 +42,11 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
+      commit('SET_NAME', 'xiaojun')
+      resolve()
       // 获取用户信息
       // getInfo(state.token).then(response => {
       //   const { data } = response
-
       //   if (!data) {
       //     reject('Verification failed, please Login again.')
       //   }
@@ -78,7 +73,9 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       // 退出登录
-
+      commit('SET_TOKEN', '')
+      removeToken()
+      resolve()
       // logout(state.token).then(() => {
       //   commit('SET_TOKEN', '')
       //   commit('SET_ROLES', [])
