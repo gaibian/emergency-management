@@ -61,30 +61,34 @@ export default {
             default:false
         },
         editId:{
-            type:Number,
+            type:[Number,Object],
         }
     },
     created() {
-        console.log(this.edit)
+        console.log(this.editId)
         if(this.edit) {
             //this.form = data
             // edit(this.editId).then(res => {
             //     this.form  = res
             // })
+            this.form = this.editId
         }
     },
     methods:{
         handleCancel() {
             this.$emit('dialogChange',false)
+            this.form={};
         },
         addSubmit() {
             this.$emit('dialogChange',false)
+            this.form={};
         },
         editSubmit() {
              this.$emit('dialogChange',false)
             // editSave(this.editId,this.form).then(res => {
             //     this.$emit('dialogChange',false)
             // })
+            this.form={};
         },
         handleEditdata(data1) {
             this.dialogFormVisible = false
@@ -102,4 +106,6 @@ export default {
     }
 }
 </script>
-
+<style lang="scss" scoped>
+.dialog-footer{padding-bottom: 20px;}
+</style>
