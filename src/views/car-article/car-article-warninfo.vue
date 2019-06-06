@@ -58,7 +58,7 @@ export default {
     },
     created() {
         this.tableLoading = false;
-        for(let i=0;i<2;i++){
+        for(let i=0;i<4;i++){
             this.tableData.push({
                num: '030',
           carnum: '浙B01110',

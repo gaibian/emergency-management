@@ -35,7 +35,7 @@
         </div>
         <!-- 编辑 -->
     <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
-        <opate :edit="editFlag" :id="editId" @dialogChange="handleOpate"></opate>
+        <opate :edit="editFlag" :editId="editId" @dialogChange="handleOpate"></opate>
     </el-dialog>
     </div>
 </template>
@@ -45,6 +45,7 @@ import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import opate from './component/opate'
 import { setTimeout } from 'timers';
+import { debuglog } from 'util';
 export default {
     name:'accountInfo',
     components:{
@@ -138,20 +139,18 @@ export default {
       handleEdit(index, row) {
         this.dialogFormVisible = true;
         this.editFlag = true;
-        this.editId = row.id
-        console.log(this.editId)
-        this.form = Object.assign({}, row);
+        this.editId =  Object.assign({}, row);
       },
       // 更新一行数据
-      handleEditdata: function (data1) {
+      handleEditdata(data1) {
         this.dialogFormVisible = false
         console.log(data1)
         this.$set(this.tableData,data1['index'],data1)
       },
     },
-    handleEdit(formName) {
-        this.$refs[formName].resetFields();
-      }
+    // handleEdit(formName) {
+    //     this.$refs[formName].resetFields();
+    //   }
 }
 </script>
 <style lang="scss" scoped>
