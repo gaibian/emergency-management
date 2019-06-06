@@ -63,10 +63,10 @@
           <div id="loading">
             <div id="loading-center">
               <div id="loading-center-absolute">
-                <div class="object" id="object_one"></div>
-                <div class="object" id="object_two"></div>
-                <div class="object" id="object_three"></div>
-                <div class="object" id="object_four"></div>
+                <div class="object object_one"></div>
+                <div class="object object_two"></div>
+                <div class="object object_three"></div>
+                <div class="object object_four"></div>
               </div>
             </div>
             <div class="text">正在登录中...</div>
@@ -314,7 +314,7 @@ $cursor: #fff;
     width: 100%;
     height: 100%;
     position: relative;
-    }
+  }
   #loading-center-absolute {
     position: absolute;
     left: 50%;
@@ -323,38 +323,36 @@ $cursor: #fff;
     width: 60px;
     margin-top: -30px;
     margin-left: -30px;
-      -webkit-animation: loading-center-absolute 1s infinite;
+    -webkit-animation: loading-center-absolute 1s infinite;
     animation: loading-center-absolute 1s infinite;
-
   }
   .object{
     width: 20px;
     height: 20px;
-    //background-color: #1890ff;
-    background:linear-gradient( top,#3b9ffc,#1890ff);
-    float: left;
+    background:linear-gradient(to top,#3b9ffc,#1890ff);
+    float:left;
     -moz-border-radius: 50% 50% 50% 50%;
     -webkit-border-radius: 50% 50% 50% 50%;
     border-radius: 50% 50% 50% 50%;
     margin-right: 20px;
     margin-bottom: 20px;	
+    &:nth-child(2n+0) {
+      margin-right: 0px;
+    }
   }
-  .object:nth-child(2n+0) {
-    margin-right: 0px;
-  }
-  #object_one{
+  .object_one{
     -webkit-animation: object_one 2s infinite;
     animation: object_one 2s infinite;
   }
-  #object_two{
+  .object_two{
     -webkit-animation: object_two 2s infinite;
     animation: object_two 2s infinite;
   }	
-  #object_three{
+  .object_three{
     -webkit-animation: object_three 2s infinite;
     animation: object_three 2s infinite;
   }		
-  #object_four{
+  .object_four{
     -webkit-animation: object_four 2s infinite;
     animation: object_four 2s infinite;
   }		
@@ -387,8 +385,6 @@ $cursor: #fff;
         transform: translate(20px,20px);
       }
     }
-
-
     @-webkit-keyframes object_two{
     50% {
         -ms-transform: translate(-20px,20px); 
@@ -403,9 +399,6 @@ $cursor: #fff;
         transform: translate(-20px,20px);
       }
     }
-
-
-
     @-webkit-keyframes object_three{
     50% {
         -ms-transform: translate(20px,-20px); 
@@ -420,9 +413,6 @@ $cursor: #fff;
         transform: translate(20px,-20px);
       }
     }
-
-
-
     @-webkit-keyframes object_four{
     50% {
         -ms-transform: translate(-20px,-20px); 
@@ -500,14 +490,11 @@ $cursor: #fff;
       left:0px
     }
   }
-
   @media only screen and (max-width: 470px) {
     .thirdparty-button {
       display: none;
     }
   }
-
-
 }
 .login-form-box{
     position:absolute;
