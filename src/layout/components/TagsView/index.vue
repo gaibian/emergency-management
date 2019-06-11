@@ -196,7 +196,8 @@ export default {
   height: 34px;
   width: 100%;
   background: #fff;
-  border-bottom: 1px solid #d8dce5;
+  //border-bottom: 1px solid #d8dce5;
+  border-bottom: 1px solid #e5e5e5;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tags-view-wrapper {
     .tags-view-item {
@@ -205,6 +206,7 @@ export default {
       cursor: pointer;
       height: 26px;
       line-height: 26px;
+      border-radius:4px;
       border: 1px solid #d8dce5;
       color: #495060;
       background: #fff;

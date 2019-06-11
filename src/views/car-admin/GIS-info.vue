@@ -3,18 +3,19 @@
         <div class="choice-btn" @click="handleClick">车辆信息</div>
         <select-car :flag="flag" @change="handleChange"></select-car>
         <car-collection></car-collection>
-        <div id="container"></div>
+        <div id="container" ref="container"></div>
     </div>
 </template>
 <script>
 import selectCar from '@/components/selectCar'
 import carCollection from './car-collection'
 import { setTimeout } from 'timers';
+import Bus from '@/utils/bus'
 export default {
     name: 'gisInfo',
     components: {
         selectCar,
-        carCollection
+        carCollection,
     },
     data() {
         return {
@@ -26,22 +27,37 @@ export default {
         this.$store.dispatch('setPageLoading',true)
     },
     mounted() {
-        this.map = new AMap.Map('container',{
-            zoom:18,
-            center:[121.56,29.88],
-            viewMode: '2D',  //设置地图模式
-            lang:'zh_cn',  //设置地图语言类型
-        });
-        this.map.on('complete', () => {
-            // 地图图块加载完成后触发
-            this.$store.dispatch('setPageLoading',false)
-            this.init();
-        });
+        //await this.initScript()
+        if(!Bus.map) {
+            console.log('sss')
+            Bus.map = new AMap.Map('container',{
+                zoom:18,
+                showIndoorMap:false,
+                center:[121.56,29.88],
+                viewMode: '2D',  //设置地图模式
+                lang:'zh_cn',  //设置地图语言类型
+            });
+            console.log(Bus.map)
+            Bus.map.on('complete',this.complete);
+        }else{
+            //Bus.map.destroy();
+            console.log('已经存在了')
+            //this.complete()
+        }
+        
     },
     destroyed() {
-        this.map.destroy();
+        // if(this.map) {
+        //     this.map.off('complete',this.complete)
+        //     this.map.destroy();
+        // }
+        //console.log(this.map)
     },
     methods:{
+        complete() {
+            this.$store.dispatch('setPageLoading',false)
+            this.init();
+        },
         init() {
             let data = [{
                 position:[121.564363,29.881213],
@@ -83,8 +99,28 @@ export default {
                 })
                 markerArr.push(marker)
             })
-            this.map.add(markerArr)
-            this.map.setFitView();
+            Bus.map.add(markerArr)
+            // 进行点的聚合
+            // var sts=[{
+            //     url:"imgs/1.png",
+            //     size:new AMap.Size(32,32),
+            //     offset:new AMap.Pixel(-16,-30)
+            // },
+            // {
+            //     url:"imgs/2.png",
+            //     size:new AMap.Size(32,32),
+            //     offset:new AMap.Pixel(-16,-30)
+            // },
+            // {
+            //     url:"imgs/3.png",
+            //     size:new AMap.Size(48,48),
+            //     offset:new AMap.Pixel(-24,-45), 
+            //     textColor:'#CC0066'
+            // }];
+            // this.map.plugin(["AMap.MarkerClusterer"],() => {
+            //     let cluster = new AMap.MarkerClusterer(this.map,markerArr);
+            // })
+            Bus.map.setFitView();
         },
         handleClick() {
             this.flag = true;

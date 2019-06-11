@@ -74,7 +74,8 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  border-bottom:#e5e5e5 1px solid;
+  //box-shadow: 0 1px 4px rgba(0,21,41,.08);
   .logout-box{
     cursor: pointer;
     margin-right:12px;

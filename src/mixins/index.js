@@ -42,7 +42,7 @@ export default {
                 _btmHeight = 0;
             }
             let _heightVal = _height - (_addHeight + _btmHeight);
-            this.tableHeight = _heightVal;
+            this.tableHeight = _heightVal - 24;
         }
     },
     // beforeDestroy() {

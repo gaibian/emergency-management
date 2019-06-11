@@ -136,11 +136,12 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    // if (this.loginForm.username === '') {
-    //   this.$refs.username.focus()
-    // } else if (this.loginForm.password === '') {
-    //   this.$refs.password.focus()
-    // }
+    console.log(this.$el)
+    if (this.loginForm.username === '') {
+      this.$refs.username.focus()
+    } else if (this.loginForm.password === '') {
+      this.$refs.password.focus()
+    }
   },
   // 解除事件绑定
   destroyed() {
@@ -170,6 +171,7 @@ export default {
       })
     },
     handleLogin() {
+      
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loginFlag = true;
@@ -250,7 +252,12 @@ $cursor: #fff;
       top:0;
       width:4000px;
       height:170px;
+      opacity: 0;
       background:url('../../assets/login-png.png');
+      transition:opacity 1s;
+      &.active{
+        opacity: 1
+      }
       &.png1{
         left:0;
         animation: walk 30s infinite;

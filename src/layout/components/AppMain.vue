@@ -76,10 +76,9 @@ export default {
   /* 50= navbar  50  */
   // min-height: calc(100vh - 50px);
   width: 100%;
-  //height:100%;
   position: relative;
   overflow: hidden;
-  //background:#e5e5e5;
+  background:#edf1f2;
 }
 .page-loading{
   position: absolute;

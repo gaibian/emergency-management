@@ -92,7 +92,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .pagination-container {
   background: #fff;
   padding: 12px;

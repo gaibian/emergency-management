@@ -42,6 +42,7 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
+
 Vue.config.productionTip = false
 
 new Vue({

@@ -1,0 +1,43 @@
+// 数据表格的样式
+.filter-container {
+    padding-bottom: 10px;
+    .filter-item {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 6px;
+        margin-bottom: 10px;
+    }
+}
+.el-table__body-wrapper{
+    td{
+        border-bottom:none;
+    }
+}
+.el-table{
+    th, td{
+        border-bottom:none !important;
+    }
+}
+.el-table__header-wrapper{
+    background:#eff4f7 !important;
+}
+.el-table__fixed-right-patch{
+    height:45px !important;
+    border-bottom:none !important;
+    background:rgba(0,0,0,0) !important;
+}
+.table-header-box{
+    background:rgba(0,0,0,0) !important;
+    th{
+        background:rgba(0,0,0,0) !important;
+    }
+}
+.el-table__body-wrapper::-webkit-scrollbar {
+    width: 6px;
+    margin:0 auto;
+}
+
+.el-table__body-wrapper::-webkit-scrollbar-thumb {
+    background-color: #a1a3a9;
+    border-radius: 10px;
+}

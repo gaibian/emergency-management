@@ -13,17 +13,6 @@
 .el-scrollbar__wrap {
     overflow-x: hidden;
 }
-
-.filter-container {
-    padding-bottom: 10px;
-    .filter-item {
-        display: inline-block;
-        vertical-align: middle;
-        margin-right: 6px;
-        margin-bottom: 10px;
-    }
-}
-
 .locus-box{
     position: relative;
     ul{
@@ -42,7 +31,6 @@
         }
     }
 }
-
 .amap-indoormap-floorbar-control{
     display:none;
 }

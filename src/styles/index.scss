@@ -1,3 +1,4 @@
+
 @import './global.scss';
 @import './variables.scss';
 @import './mixin.scss';
@@ -5,13 +6,14 @@
 @import './element-ui.scss';
 @import './sidebar.scss';
 @import './btn.scss';
+@import './table.scss';
 
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: '微软雅黑', Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
 label {

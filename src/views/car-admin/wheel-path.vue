@@ -139,6 +139,7 @@ export default {
             zoom:14,
             center: [116.397428, 39.90923],
             viewMode: '2D',  //设置地图模式
+            showIndoorMap:false,
             lang:'zh_cn',  //设置地图语言类型
         });
         this.map.on('complete', () => {
@@ -155,6 +156,7 @@ export default {
         this.polyline = null;
         this.passedPolyline = null;
         this.map.destroy();
+        this.map = null;
     },
     methods:{
         // 初始化
