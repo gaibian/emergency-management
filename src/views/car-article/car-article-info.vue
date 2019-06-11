@@ -7,11 +7,11 @@
                 </el-input>
             </div>
         </div>
-        <select-car :flag="flag" :radio="true" @change="handleChange"></select-car>
+        <select-car :flag="flag" @change="handleChange"></select-car>
         <el-table :data="tableData" border stripe :maxHeight="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-            <el-table-column label="急救中心" prop="jijiu"></el-table-column>
+            <el-table-column label="所属中心" prop="jijiu"></el-table-column>
             <el-table-column label="车牌号" prop="plate"></el-table-column>
-            <el-table-column label="车编号" prop="num"></el-table-column>
+            <el-table-column label="车编号" prop="carnum"></el-table-column>
             <el-table-column label="物品名称" prop="articleName"></el-table-column>
             <el-table-column label="状态" prop="state"></el-table-column>
         </el-table>
@@ -63,7 +63,7 @@ export default {
             this.tableData.push({
                 jijiu:'中医院急救点',
                 plate:'浙B542WX',
-                num:'0128',
+                carnum:'0128',
                 articleName:'软担架',
                 state:'在位'
             })

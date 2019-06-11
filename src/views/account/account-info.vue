@@ -35,9 +35,12 @@
         </div>
         <!-- 编辑 -->
     <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
-        <opate :edit="editFlag" :editId="editId" @dialogChange="handleOpate"></opate>
+        <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate>
     </el-dialog>
     </div>
+
+
+    
 </template>
 <script>
 import selectPresonnel from '@/components/selectPresonnel'
@@ -60,7 +63,7 @@ export default {
             fenbu:'',
             flag:false,
             plate:'',
-            editId:null,
+            editId:{},
             tableLoading:true,
             tableHeight:null,
             dialogFormVisible: false,
@@ -139,14 +142,10 @@ export default {
       handleEdit(index, row) {
         this.dialogFormVisible = true;
         this.editFlag = true;
-        this.editId =  Object.assign({}, row);
+        this.editId =  Object.assign(row);
       },
       // 更新一行数据
-      handleEditdata(data1) {
-        this.dialogFormVisible = false
-        console.log(data1)
-        this.$set(this.tableData,data1['index'],data1)
-      },
+
     },
     // handleEdit(formName) {
     //     this.$refs[formName].resetFields();

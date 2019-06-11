@@ -11,11 +11,13 @@
         <select-presonnel :flag="flag" @change="handleChange"></select-presonnel>
         <el-table :data="tableData" border stripe :max-height="tableHeight" :height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
             <el-table-column label="姓名" prop="name"></el-table-column>
-            <el-table-column label="员工编号" prop="num"></el-table-column>
+            <el-table-column label="员工工号" prop="ygnum"></el-table-column>
+            <el-table-column label="IC卡编号" prop="ICnum"></el-table-column>
             <el-table-column label="性别" prop="sex"></el-table-column>
+            <el-table-column label="手机号码" prop="tel"></el-table-column>
             <el-table-column label="急救中心" prop="jijiu"></el-table-column>
             <el-table-column label="职务" prop="job"></el-table-column>
-            <el-table-column label="卡号" prop="card"></el-table-column>
+            <el-table-column label="在职状态" prop="status"></el-table-column>
             <el-table-column label="操作" width="176">
                 <template slot-scope="scope">
                     <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -34,42 +36,6 @@
         <div ref="btmGroup" class="btm-group">
             <pagination :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
         </div>
-        <!-- 编辑 -->
-  <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
-    <el-form :model="form" label-width="100px">
-        <el-form-item label="姓名" :label-width="formLabelWidth">
-          <el-input v-model="form.name" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="员工编号" :label-width="formLabelWidth">
-          <el-input v-model="form.num" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="性别" :label-width="formLabelWidth">
-          <el-select v-model="form.sex" clearable placeholder="请选择">
-            <el-option v-for="item in optionSex" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="急救中心" :label-width="formLabelWidth">
-          <el-select v-model="form.jijiu" clearable placeholder="请选择">
-            <el-option v-for="item in optionJijiu" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="职务" :label-width="formLabelWidth">
-          <el-select v-model="form.job" clearable placeholder="请选择">
-            <el-option v-for="item in optionJob" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="卡号" :label-width="formLabelWidth">
-          <el-input v-model="form.card" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="对应行数" :label-width="formLabelWidth" style="display:none;">
-          <el-input v-model="form.index"></el-input>
-        </el-form-item>
-    </el-form>
-    <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="handleEditdata(form)">确 定</el-button>
-    </div>
-  </el-dialog>
     </div>
 </template>
 <script>
@@ -111,9 +77,9 @@ export default {
                 value:'驾驶员'
             }],
             form: {
-                jijiu: '',
                 name: '',
-                num: '',
+                ygnum: '',
+                ICnum: '',
                 sex: '',
                 job: '',
                 card: ''
