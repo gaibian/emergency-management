@@ -22,4 +22,9 @@ export const carAdmin = {
       name: 'wheelPath',
       component: () => import('@/views/car-admin/wheel-path.vue'),
       meta: { title: '行车轨迹', icon: 'car-locus'}
-    },] }
+    },{
+      path: 'carCollection',
+      name: 'carCollection',
+      component: () => import('@/views/car-admin/car-collection.vue'),
+      meta: { title: '车辆实时采集点信息', icon: 'car-locus'}
+    }] }
