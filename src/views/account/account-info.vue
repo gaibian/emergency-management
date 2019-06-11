@@ -145,7 +145,11 @@ export default {
         this.editId =  Object.assign(row);
       },
       // 更新一行数据
-
+    //   handleEditdata(data1) {
+    //     this.dialogFormVisible = false
+    //     console.log(data1)
+    //     this.$set(this.tableData,data1['index'],data1)
+    //   },
     },
     // handleEdit(formName) {
     //     this.$refs[formName].resetFields();

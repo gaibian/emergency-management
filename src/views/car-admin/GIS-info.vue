@@ -1,24 +1,40 @@
 <template>
     <div class="gis-info-container">
-        <div class="choice-btn" @click="handleClick">车辆信息</div>
+        <div class="choice-bar-container">
+            <div class="content-box">
+                <div class="filter-container" style="padding-bottom:0">
+                    <div style="width:300px;margin-right:32px;" class="filter-item">
+                        <el-input v-model="plate" placeholder="请选择车辆">
+                            <el-button slot="append" icon="el-icon-search" @click="handleClick">选择车辆</el-button>
+                        </el-input>
+                    </div>
+                    <div class="filter-item">
+                        <span class="status-title">状态:</span>
+                        <el-radio v-model="radio" label="1">任务中</el-radio>
+                        <el-radio v-model="radio" label="2">途中待命</el-radio>
+                        <el-radio v-model="radio" label="3">站点待命</el-radio>
+                        <el-radio v-model="radio" label="4">未上班\下班</el-radio>
+                    </div>
+                </div>
+            </div>
+        </div>
         <select-car :flag="flag" @change="handleChange"></select-car>
-        <car-collection></car-collection>
         <div id="container" ref="container"></div>
     </div>
 </template>
 <script>
 import selectCar from '@/components/selectCar'
-import carCollection from './car-collection'
 import { setTimeout } from 'timers';
 import Bus from '@/utils/bus'
 export default {
     name: 'gisInfo',
     components: {
         selectCar,
-        carCollection,
     },
     data() {
         return {
+            radio:'1',
+            plate:'',
             flag:false,
             map:null,
         }
@@ -26,24 +42,38 @@ export default {
     created() {
         this.$store.dispatch('setPageLoading',true)
     },
+    activated() {
+        // 别的页面进入缓存需要更新数据
+        console.log(this.$route)
+    },
     mounted() {
-        //await this.initScript()
-        if(!Bus.map) {
-            console.log('sss')
-            Bus.map = new AMap.Map('container',{
-                zoom:18,
-                showIndoorMap:false,
-                center:[121.56,29.88],
-                viewMode: '2D',  //设置地图模式
-                lang:'zh_cn',  //设置地图语言类型
-            });
-            console.log(Bus.map)
-            Bus.map.on('complete',this.complete);
-        }else{
-            //Bus.map.destroy();
-            console.log('已经存在了')
-            //this.complete()
-        }
+        console.log('缓存了')
+        this.map = new AMap.Map('container',{
+            zoom:18,
+            showIndoorMap:false,
+            center:[121.56,29.88],
+            viewMode: '2D',  //设置地图模式
+            lang:'zh_cn',  //设置地图语言类型
+        });
+        this.map.on('complete',this.complete);
+        // if(!Bus.map) {
+        //     console.log('sss')
+        //     Bus.map = new AMap.Map('container',{
+        //         zoom:18,
+        //         showIndoorMap:false,
+        //         center:[121.56,29.88],
+        //         viewMode: '2D',  //设置地图模式
+        //         lang:'zh_cn',  //设置地图语言类型
+        //     });
+        //     Bus.map.on('complete',this.complete);
+        // }else{
+        //     console.log(Bus.map.getZoom())
+        //     Bus.map.setLang('zh_cn')
+        //     Bus.map.on('complete',() => {
+        //         console.log('地图加载完成')
+        //     });
+        //     this.$store.dispatch('setPageLoading',false)
+        // }
         
     },
     destroyed() {
@@ -99,28 +129,9 @@ export default {
                 })
                 markerArr.push(marker)
             })
-            Bus.map.add(markerArr)
-            // 进行点的聚合
-            // var sts=[{
-            //     url:"imgs/1.png",
-            //     size:new AMap.Size(32,32),
-            //     offset:new AMap.Pixel(-16,-30)
-            // },
-            // {
-            //     url:"imgs/2.png",
-            //     size:new AMap.Size(32,32),
-            //     offset:new AMap.Pixel(-16,-30)
-            // },
-            // {
-            //     url:"imgs/3.png",
-            //     size:new AMap.Size(48,48),
-            //     offset:new AMap.Pixel(-24,-45), 
-            //     textColor:'#CC0066'
-            // }];
-            // this.map.plugin(["AMap.MarkerClusterer"],() => {
-            //     let cluster = new AMap.MarkerClusterer(this.map,markerArr);
-            // })
-            Bus.map.setFitView();
+            this.map.add(markerArr)
+            
+            this.map.setFitView();
         },
         handleClick() {
             this.flag = true;
@@ -135,6 +146,32 @@ export default {
 }
 </script>
 <style lang="scss">
+.gis-info-container{
+    width:100%;
+    position:relative;
+}
+.status-title{
+    font-size:16px;
+    color:#606266;
+    margin-right:12px;
+}
+.choice-bar-container{
+    width:100%;
+    position: absolute;
+    top:12px;
+    left:0;
+    padding:0 12px;
+    box-sizing:border-box;
+    z-index:99;
+    overflow:hidden;
+    .content-box{
+        width:100%;
+        padding:12px 12px 0 12px;
+        box-sizing:border-box;
+        background:#fff;
+        box-shadow:0px 0px 8px rgba(0,0,0,0.1);
+    }
+}
 .loader3 {
     position: relative;
    width:60px;
@@ -181,20 +218,6 @@ export default {
     width:100%;
     height:calc(100vh - 84px);
     color:#ccc;
-}
-.choice-btn{
-    position:fixed;
-    top:320px;
-    right:0;
-    z-index:99;
-    padding:0 12px;
-    height:44px;
-    line-height:44px;
-    background:rgb(24, 144, 255);
-    font-size:16px;
-    color:#fff;
-    border-radius:6px 0px 0px 6px;
-    cursor: pointer;
 }
 #container{
     width:100%;

@@ -29,8 +29,11 @@ const mutations = {
     }
   },
   DEL_CACHED_VIEW: (state, view) => {
+    console.log(state.cachedViews)
+    console.log(view)
+    console.log('_____')
     for (const i of state.cachedViews) {
-      if (i === view.name) {
+      if (i === view.name && view.name != 'gisInfo') {
         const index = state.cachedViews.indexOf(i)
         state.cachedViews.splice(index, 1)
         break
