@@ -1,5 +1,5 @@
 <template>
-    <div class="car-admin-container main-page" ref="mainContainer">
+    <div class="car-collection-box" ref="mainContainer">
         <div class="top-info-box filter-container" ref="topAdd">
             <div class="filter-item" style="width:300px;">
                 <el-input v-model="plate" placeholder="车牌号">
