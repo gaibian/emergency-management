@@ -81,15 +81,15 @@ export default {
             }]
         }
     },
-    filters:{
-        statusFilters(val) {
-            switch(val) {
-                case '1':
-                return '待命中'
-                break;
-            }
-        }
-    },
+    // filters:{
+    //     statusFilters(val) {
+    //         switch(val) {
+    //             case '1':
+    //             return '待命中'
+    //             break;
+    //         }
+    //     }
+    // },
     created() {
         // 进行第一次的表格数据加载
         this.handlePag();
@@ -99,7 +99,7 @@ export default {
                 jijiu:'中医院急救点',
                 plate:'浙B542WX',
                 carnum:'0128',
-                status:'1',
+                status:'待命中',
             })
         }
     },

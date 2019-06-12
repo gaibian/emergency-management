@@ -1,9 +1,6 @@
 <template>
-    <div class="gis-info-container">
-        <!-- <div class="choice-btn" @click="handleClick">车辆信息</div> -->
-        <!-- <select-car :flag="flag" @change="handleChange"></select-car>
-        <car-collection></car-collection> -->
-        <el-table :data="tableData" border style="width: 30%; position: absolute; z-index: 1; right:15px; box-shadow: 0px 0px 15px #f7caca; top:15px;">
+<div class="car-admin-container main-page" ref="mainContainer">
+        <el-table :data="tableData">
             <el-table-column type="expand">
                 <template slot-scope="props">
                     <el-form label-position="left" inline class="demo-table-expand">
