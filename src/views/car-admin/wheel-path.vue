@@ -132,6 +132,7 @@ export default {
         }
     },
     created() {
+        console.log('重新加载了')
         this.$store.dispatch('setPageLoading',true)
     },
     mounted() {

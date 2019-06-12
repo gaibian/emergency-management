@@ -251,12 +251,12 @@ $cursor: #fff;
       top:0;
       width:4000px;
       height:170px;
-      opacity: 0;
+      opacity: 1;
       background:url('../../assets/login-png.png');
       transition:opacity 1s;
-      &.active{
-        opacity: 1
-      }
+      // &.active{
+      //   opacity: 1
+      // }
       &.png1{
         left:0;
         animation: walk 30s infinite;

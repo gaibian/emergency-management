@@ -40,6 +40,7 @@ export default {
         }
     },
     created() {
+        console.log('重新加载了')
         this.$store.dispatch('setPageLoading',true)
     },
     activated() {
@@ -47,7 +48,6 @@ export default {
         console.log(this.$route)
     },
     mounted() {
-        console.log('缓存了')
         this.map = new AMap.Map('container',{
             zoom:18,
             showIndoorMap:false,

@@ -29,14 +29,14 @@ const mutations = {
     }
   },
   DEL_CACHED_VIEW: (state, view) => {
-    console.log(state.cachedViews)
-    console.log(view)
-    console.log('_____')
     for (const i of state.cachedViews) {
+      // 为了不让地图重新加载 有关于地图的都缓存住
       if (i === view.name && view.name != 'gisInfo') {
-        const index = state.cachedViews.indexOf(i)
-        state.cachedViews.splice(index, 1)
-        break
+          if(view.name != 'wheelPath') {
+            const index = state.cachedViews.indexOf(i)
+            state.cachedViews.splice(index, 1)
+            break
+          }
       }
     }
   },
