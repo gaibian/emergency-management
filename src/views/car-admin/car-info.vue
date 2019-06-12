@@ -3,50 +3,54 @@
         <select-car :flag="flag" @change="handleChange"></select-car>
         <div class="table-box">
             <div class="top-info-box filter-container" ref="topAdd">
-                <el-button class="filter-item" type="primary">添加车辆</el-button>
+                <el-button class="filter-item" type="primary" @click="handleAdd">添加车辆</el-button>
                 <div class="filter-item" style="width:300px;">
                     <el-input v-model="plate" placeholder="车牌号">
                         <el-button slot="append" icon="el-icon-search" @click="handleClick">选择车辆查询</el-button>
                     </el-input>
                 </div>
             </div>
+        
+
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-                <el-table-column label="急救中心" prop="jijiu"></el-table-column>
+                <el-table-column label="所属中心" prop="jijiu"></el-table-column>
+
                 <el-table-column label="车牌号" prop="plate"></el-table-column>
-                <el-table-column label="车编号" prop="num"></el-table-column>
-                <el-table-column label="分类" prop="label"></el-table-column>
-                <el-table-column label="使用日期" prop="time"></el-table-column>
-                <el-table-column label="资产类别" prop="zichan"></el-table-column>
-                <el-table-column label="使用人" prop="person"></el-table-column>
-                <el-table-column label="出车状态">
+                <el-table-column label="车编号" prop="carnum"></el-table-column>
+                <el-table-column label="车辆状态">
                     <template slot-scope="scope">
                         <span>{{scope.row.status | statusFilters}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
-                        <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF">编辑</svg-icon>
-                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C">删除</svg-icon>
+                        <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.$index, scope.row)">编辑</svg-icon>
+                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click="handleDelete(scope)">删除</svg-icon>
                     </template>
                 </el-table-column>
             </el-table>
             <div ref="btmGroup" class="btm-group">
                 <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
+            <!-- 编辑 -->
+            <el-dialog title="车辆信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
+                <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate>
+            </el-dialog>
         </div>
-        
     </div>
 </template>
 <script>
 import selectCar from '@/components/selectCar'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
+import opate from './component/car-opate'
 
 export default {
     name:'carAdmin',
     components:{
         selectCar,
         Pagination,
+        opate
     },
     mixins:[pageMixins],
     data() {
@@ -57,6 +61,8 @@ export default {
             total:30,
             tableLoading:true,
             tableHeight:null,
+            dialogFormVisible: false,
+            editFlag:false,
             tableData:[],
             listQuery: {
                 page: 1,
@@ -75,32 +81,55 @@ export default {
             }]
         }
     },
-    filters:{
-        statusFilters(val) {
-            switch(val) {
-                case '1':
-                return '待命中'
-                break;
-            }
-        }
-    },
+    // filters:{
+    //     statusFilters(val) {
+    //         switch(val) {
+    //             case '1':
+    //             return '待命中'
+    //             break;
+    //         }
+    //     }
+    // },
     created() {
         // 进行第一次的表格数据加载
         this.handlePag();
         for(let i=0;i<20;i++){
             this.tableData.push({
+                id:'1',
                 jijiu:'中医院急救点',
                 plate:'浙B542WX',
-                num:'0128',
-                label:'A型普通',
-                time:'2019-09-23',
-                zichan:'私有',
-                person:'张三',
-                status:'1',
+                carnum:'0128',
+                status:'待命中',
             })
         }
     },
     methods:{
+        handleOpate(boo){
+            console.log(boo)
+            this.tableLoading = true;
+            setTimeout(() => {
+                this.tableLoading = false;
+            },200)
+            this.dialogFormVisible = false;
+        }, 
+        handleAdd() {
+            this.dialogFormVisible = true;
+            this.editFlag = false;
+        },
+        handleDelete(scope) {
+            this.$confirm('确定删除该人员?','提示',{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }).then(()=>{
+                // agencyDelete(scope.row.id).then(res => {
+                //     if(res !== 'error'){
+                //         _g.toastMsg('success','删除成功')
+                //         this.update = !this.update;
+                //     }
+                // })
+            })
+        },
         handlePag() {
             this.tableLoading = true;
             setTimeout(() => {
@@ -117,12 +146,12 @@ export default {
             }
             this.flag = data.flag;
         },
-        handleEdit() {
-            console.log('编辑了')
-        },
-        handleDelete() {
-            console.log('删除了')
-        }
+        // 编辑
+        handleEdit(index, row) {
+        this.dialogFormVisible = true;
+        this.editFlag = true;
+        this.editId =  Object.assign(row);
+      },
     }
 }
 </script>

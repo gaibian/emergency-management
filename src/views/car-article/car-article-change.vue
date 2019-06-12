@@ -16,11 +16,11 @@
                     </el-date-picker>
                 </div>
         </div>
-        <select-car :flag="flag" :radio="true" @change="handleChange"></select-car>
+        <select-car :flag="flag" @change="handleChange"></select-car>
         <el-table :data="tableData" border stripe :maxHeight="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-            <el-table-column label="急救中心" prop="jijiu"></el-table-column>
+            <el-table-column label="所属中心" prop="jijiu"></el-table-column>
             <el-table-column label="车牌号" prop="plate"></el-table-column>
-            <el-table-column label="车编号" prop="num"></el-table-column>
+            <el-table-column label="车编号" prop="carnum"></el-table-column>
             <el-table-column label="物品名称" prop="articleName"></el-table-column>
             <el-table-column label="状态" prop="state"></el-table-column>
             <el-table-column label="时间" prop="time"></el-table-column>
@@ -59,44 +59,36 @@ export default {
             }]
         }
     },
-    filters:{
-        statusFilters(val) {
-            switch(val) {
-                case '1':
-                return '待命中'
-                break;
-            }
-        }
-    },
+
     created() {
         this.tableLoading = false;
             this.tableData.push({
                 jijiu:'中医院急救点',
                 plate:'浙B542WX',
-                num:'0128',
+                carnum:'0128',
                 articleName:'软担架',
-                state:'上车',
+                state:'设备上车',
                 time:'2019-5-30 11:51:01'
             },{
                 jijiu:'中医院急救点',
                 plate:'浙B542WX',
-                num:'0128',
+                carnum:'0128',
                 articleName:'软担架',
-                state:'取下',
+                state:'设备取下',
                 time:'2019-5-30 11:58:01'
             },{
                 jijiu:'中医院急救点',
                 plate:'浙B542WX',
-                num:'0128',
+                carnum:'0128',
                 articleName:'负压式骨折固定垫',
-                state:'取下',
+                state:'设备取下',
                 time:'2019-5-30 11:55:01'
             },{
                 jijiu:'中医院急救点',
                 plate:'浙B542WX',
-                num:'0128',
+                carnum:'0128',
                 articleName:'铲式担架',
-                state:'上车',
+                state:'设备上车',
                 time:'2019-5-30 11:58:01'
             })
         
