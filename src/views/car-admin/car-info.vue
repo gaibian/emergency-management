@@ -10,8 +10,6 @@
                     </el-input>
                 </div>
             </div>
-        
-
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                 <el-table-column label="所属中心" prop="jijiu"></el-table-column>
 
@@ -81,15 +79,15 @@ export default {
             }]
         }
     },
-    // filters:{
-    //     statusFilters(val) {
-    //         switch(val) {
-    //             case '1':
-    //             return '待命中'
-    //             break;
-    //         }
-    //     }
-    // },
+    filters:{
+        statusFilters(val) {
+            switch(val) {
+                case '1':
+                return '待命中'
+                break;
+            }
+        }
+    },
     created() {
         // 进行第一次的表格数据加载
         this.handlePag();

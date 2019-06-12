@@ -1,28 +1,47 @@
 <template>
-<div class="car-collection-box" ref="mainContainer">
-        <el-table :data="tableData">
-            <el-table-column  label="车辆编号"  prop="plate"></el-table-column>
+<div class="car-collection-box main-page" ref="mainContainer">
+    <div class="table-box">
+        <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
+        <el-table-column  label="车辆编号"  prop="plate"></el-table-column>
             <el-table-column  label="车牌号"  prop="carnum"></el-table-column>
             <el-table-column  label="告警描述"  prop="gjinfo"></el-table-column>
-            <el-table-column  label="设备名称"  prop="spname">
-                <el-button plain></el-button>
+            <el-table-column  label="设备名称">
+                <template slot-scope="scope">
+                    <el-tag :key="tag" v-for="tag in spname" closable :disable-transitions="false" @close="handleClose(tag)"> {{tag}}</el-tag>
+                </template>
             </el-table-column>
             <el-table-column  label="状态"  prop="status"></el-table-column>
-
-            
         </el-table>
-        <div id="container"></div>
+        <div ref="btmGroup" class="btm-group">
+            <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+        </div>
+    </div>
     </div>
 </template>
 <script>
 // import selectCar from '@/components/selectCar'
 import { setTimeout } from 'timers';
+import Pagination from '@/components/Pagination'
 export default {
     name: 'carArticleWarninfo',
+    components:{
+        Pagination
+    },
     data() {
         return {
             flag:false,
+             total:30,
             tableData:[],
+            tableHeight:null,
+            listQuery: {
+                page: 1,
+                limit: 20,
+                importance: undefined,
+                title: undefined,
+                type: undefined,
+                sort: '+id',
+                spname: ''
+            },
         }
     },
     created() {
@@ -35,12 +54,21 @@ export default {
                 plate: '030',
                 carnum: '浙B01110',
                 gjinfo: '告警信息告警信息告警信息',
-                spname:"软担架,氧气瓶,铲式担架",
+                spname:['软担架', '氧气瓶', '铲式担架'],
                 status: '未处理'
             })
         }
     },
     methods:{
+        handleClose(tag) {
+        this.spname.splice(this.spname.indexOf(tag), 1);
+      },
+        handlePag(data) {
+            setTimeout(() => {
+                this.tableLoading = false;
+            }, 2000);
+            console.log(data)
+        },
         handleClick() {
             this.flag = true;
         },
@@ -54,38 +82,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.gis-info-container{
-    position:relative;
-    width:100%;
-    height:calc(100vh - 84px);
-    color:#ccc;
+.table-box{
+    padding:12px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:6px;
+    overflow:hidden;
 }
-.choice-btn{
-    position:fixed;
-    top:320px;
-    right:0;
-    z-index:99;
-    padding:0 12px;
-    height:44px;
-    line-height:44px;
-    background:rgb(24, 144, 255);
-    font-size:16px;
-    color:#fff;
-    border-radius:6px 0px 0px 6px;
-    cursor: pointer;
-}
-#container{
-    width:100%;
-    height:100%;
-}
-.demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-    color: #F56C6C
-  }
- 
 </style>

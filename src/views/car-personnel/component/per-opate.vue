@@ -2,21 +2,36 @@
     <div>
         <el-form :model="form" ref="form" label-width="100px">
             <el-form-item label="所属中心" :label-width="formLabelWidth">
-            <el-input v-model="form.jijiu" clearable></el-input>
+            <el-select v-model="form.jijiu" clearable placeholder="请选择">
+                <el-option v-for="item in optionJijiu" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
             </el-form-item>
-            <el-form-item label="车牌号" :label-width="formLabelWidth">
-            <el-input v-model="form.plate" clearable></el-input>
+            <el-form-item label="姓名" :label-width="formLabelWidth">
+            <el-input v-model="form.name" clearable></el-input>
             </el-form-item>
-            <el-form-item label="车编号" :label-width="formLabelWidth">
-            <el-input v-model="form.carnum" clearable></el-input>
+            <el-form-item label="员工工号" :label-width="formLabelWidth">
+            <el-input v-model="form.ygnum" clearable></el-input>
             </el-form-item>
-            <el-form-item label="车辆状态" :label-width="formLabelWidth">
-            <el-select v-model="form.status" clearable placeholder="请选择">
+            <el-form-item label="IC卡编号" :label-width="formLabelWidth">
+            <el-input v-model="form.ICnum" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="性别" :label-width="formLabelWidth">
+            <el-select v-model="form.sex" clearable placeholder="请选择">
+                <el-option v-for="item in optionSex" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+            </el-form-item>
+            <el-form-item label="手机号码" :label-width="formLabelWidth">
+            <el-input v-model="form.tel" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="职务" :label-width="formLabelWidth">
+            <el-select v-model="form.job" clearable placeholder="请选择">
                 <el-option v-for="item in optionJob" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
             </el-form-item>
-            <el-form-item label="对应行数" :label-width="formLabelWidth" style="display:none;">
-            <el-input v-model="form.index"></el-input>
+            <el-form-item label="在职状态" :label-width="formLabelWidth">
+            <el-select v-model="form.status" clearable placeholder="请选择">
+                <el-option v-for="item in optionStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -33,21 +48,36 @@ export default {
     data() {
         return {
             form: {
+                jijiu:'',
                 name: '',
-                user: '',
-                password: '',
-                role: '',
-                state: '',
+                ygnum: '',
+                ICnum: '',
+                sex: '',
+                tel:'',
+                job: '',
+                status: ''
             },
-            optionrole:[{
-                value:'管理员'
+             optionSex:[{
+                value:'男'
             },{
-                value:'操作员'
+                value:'女'
             }],
-            optionJob:[{
-                value:'可用'
+            optionJijiu:[{
+                value:'本部分中心'
             },{
-                value:'不可用'
+                value:'江北分中心'
+            }],
+             optionJob:[{
+                value:'急救医生'
+            },{
+                value:'担架员'
+            },{
+                value:'驾驶员'
+            }],
+            optionStatus:[{
+                value:'在职'
+            },{
+                value:'离职'
             }],
             formLabelWidth: '100px',
         }
