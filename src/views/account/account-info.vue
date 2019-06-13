@@ -61,7 +61,7 @@ export default {
             tableHeight:null,
             dialogFormVisible: false,
             value6:'',
-            total:30,
+            total:10,
             value1: '',
             value2: '',
             tableData:[],
@@ -86,7 +86,7 @@ export default {
     },
     created() {
         this.tableLoading = false;
-        for(let i=0;i<2;i++){
+        for(let i=0;i<10;i++){
             this.tableData.push({
                 name:'张三',
                 user:'admin',

@@ -1,6 +1,5 @@
 <template>
     <div class="car-collection-box main-page" ref="mainContainer">
-        <select-car :flag="flag" @change="handleChange"></select-car>
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary">所有车辆GIS定位</el-button>
@@ -40,14 +39,12 @@
     </div>
 </template>
 <script>
-import selectCar from '@/components/selectCar' 
 import Pagination from '@/components/Pagination'
 import emopate from './component/em-opate'
 import pageMixins from '@/mixins'
 export default {
     name:'emergencyManagementintime',
     components:{
-        selectCar,
         Pagination,
         emopate
     },
@@ -120,13 +117,6 @@ export default {
         },
         handlerwjd() {
             this.dialogFormVisible = true;
-        },
-        handleChange(data) {
-            if(data.keys) {
-                this.plate = data.carPlate;
-                console.log(data.keys)
-            }
-            this.flag = data.flag;
         },
         
     }
