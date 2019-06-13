@@ -8,12 +8,12 @@
                 <el-input v-model="plate" placeholder="请输入姓名或工号"></el-input>
                 </div>
                 <div class="filter-item">
-                <el-select v-model="value" placeholder="请选择所属中心">
+                <el-select v-model="value1" placeholder="请选择所属中心">
                     <el-option v-for="item in jijiuoptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
                 </div>
                 <div class="filter-item">
-                <el-select v-model="value" placeholder="请选择在职状态">
+                <el-select v-model="value2" placeholder="请选择在职状态">
                     <el-option v-for="item in zzztoptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
                 </div>
@@ -77,6 +77,8 @@ export default {
             dialogFormVisible: false,
             value6:'',
             total:30,
+            value1: '',
+            value2: '',
             tableData:[],
             listQuery: {
                 page: 1,
