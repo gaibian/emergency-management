@@ -40,12 +40,13 @@ export default {
         }
     },
     created() {
-        console.log('重新加载了')
         this.$store.dispatch('setPageLoading',true)
     },
     activated() {
         // 别的页面进入缓存需要更新数据
-        console.log(this.$route)
+        console.log('进入页面缓存了')
+        // 需要判断是否有query的参数
+        console.log(this.$route.query)
     },
     mounted() {
         this.map = new AMap.Map('container',{

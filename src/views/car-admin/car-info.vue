@@ -100,7 +100,7 @@ export default {
                 status:'1',
             })
         }
-        
+        // 合并对象
         const cites = [{
             name:'xiaojun',
             value:'no'
@@ -108,6 +108,14 @@ export default {
             name:'zhouquan',
             value:'yes'
         }]
+        let o = {
+            name:'112'
+        }
+        let j = {
+            age:'21'
+        }
+        let s = { ...o, ...j }
+        console.log(s)
         const result = cites.reduce((accumnlator,item) => {
             return {
                 ...accumnlator,

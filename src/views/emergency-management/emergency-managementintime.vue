@@ -23,7 +23,7 @@
                 <el-table-column label="操作" fixed="right" width="100px">
                     <template slot-scope="scope">
                         <svg-icon :icon-class="'rwjd'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handlerwjd(scope.$index, scope.row)">任务节点</svg-icon>
-                        <svg-icon :icon-class="'guiji'" style="font-size:18px;cursor:pointer;color:#F56C6C">轨迹</svg-icon>
+                        <svg-icon :icon-class="'guiji'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click.native="handleGj(scope)">轨迹</svg-icon>
                     </template>
                 </el-table-column>
             </el-table>
@@ -93,6 +93,14 @@ export default {
         }
     },
     methods:{
+        handleGj(scope) {
+            this.$router.push({
+                name:'gisInfo',
+                query:{
+                    id:1
+                }
+            })
+        },
         handleOpate(boo) {
             console.log(boo)
             this.tableLoading = true;
