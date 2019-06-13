@@ -34,7 +34,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="50%" center>
+            <el-dialog title="任务节点" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="50%" center>
                 <div style="height:500px;">
                     <emopate v-if="dialogFormVisible" @dialogChange="handleOpate"></emopate>
                 </div>
