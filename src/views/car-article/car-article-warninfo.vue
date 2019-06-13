@@ -1,23 +1,24 @@
 <template>
 <div class="car-admin-container main-page" ref="mainContainer">
-        <el-table :data="tableData">
-            <el-table-column type="expand">
-                <template slot-scope="props">
-                    <el-form label-position="left" inline class="demo-table-expand">
-                    <el-form-item label="设备名称：">
-                        <span>{{ props.row.spname }}</span>
-                    </el-form-item>
-                    <el-form-item label="状态:">
-                        <div>{{ props.row.status }}</div>
-                    </el-form-item>
-                    </el-form>
-                </template>
-            </el-table-column>
-            <el-table-column  label="车辆编号"  prop="plate" width="100px"></el-table-column>
-            <el-table-column  label="车牌号"  prop="carnum"></el-table-column>
-            <el-table-column  label="告警描述"  prop="gjinfo"></el-table-column>
-        </el-table>
-        <div id="container"></div>
+        <div class="table-box">
+            <el-table :data="tableData">
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                        <el-form-item label="设备名称：">
+                            <span>{{ props.row.spname }}</span>
+                        </el-form-item>
+                        <el-form-item label="状态:">
+                            <div>{{ props.row.status }}</div>
+                        </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
+                <el-table-column  label="车辆编号"  prop="plate" width="100px"></el-table-column>
+                <el-table-column  label="车牌号"  prop="carnum"></el-table-column>
+                <el-table-column  label="告警描述"  prop="gjinfo"></el-table-column>
+            </el-table>
+        </div>
     </div>
 </template>
 <script>
@@ -79,10 +80,6 @@ export default {
     color:#fff;
     border-radius:6px 0px 0px 6px;
     cursor: pointer;
-}
-#container{
-    width:100%;
-    height:100%;
 }
 .demo-table-expand {
     font-size: 0;
