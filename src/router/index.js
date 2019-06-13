@@ -11,6 +11,7 @@ import { carArticle } from './module/carArticle'
 import { carPersonnel } from './module/carPersonnel'
 import { Account } from './module/Account'
 import { emergencyManagement } from './module/emergencyManagement'
+import { centralInfo } from './module/centralInfo'
 
 /* Router Modules */
 // import componentsRouter from './modules/components'
@@ -95,6 +96,7 @@ export const constantRoutes = [
   carPersonnel,
   Account,
   emergencyManagement,
+  centralInfo,
   {
     path: '/icon',
     component: Layout,
