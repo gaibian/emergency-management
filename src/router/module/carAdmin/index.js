@@ -9,7 +9,7 @@ export const carAdmin = {
       path: 'carAdmin',
       name: 'carAdmin',
       component: () => import('@/views/car-admin/car-info.vue'),
-      meta: { title: '车辆信息', icon: 'car-info'},
+      meta: { title: '车辆信息', icon: 'car-info'}
     },
     {
       path: 'gisInfo',

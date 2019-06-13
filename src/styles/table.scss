@@ -22,6 +22,9 @@
     .el-table__header-wrapper{
         background:#eff4f7 !important;
     }
+    .el-table__fixed-right{
+        right:6px !important;
+    }
     .el-table__fixed-right-patch{
         height:45px !important;
         border-bottom:none !important;
@@ -31,10 +34,14 @@
         background:rgba(0,0,0,0) !important;
         th{
             background:rgba(0,0,0,0) !important;
+            &:last-child{
+                background:#eff4f7 !important;
+            }
         }
     }
     .el-table__body-wrapper::-webkit-scrollbar {
         width: 6px;
+        height:6px;
         margin:0 auto;
     }
     

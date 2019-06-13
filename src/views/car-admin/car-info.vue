@@ -1,6 +1,6 @@
 <template>
-    <div class="car-admin-container main-page" ref="mainContainer">
-        <select-car :flag="flag" @change="handleChange"></select-car>
+    <div class="car-collection-box main-page" ref="mainContainer">
+        <select-car :flag="flag" :radio="true" @change="handleChange"></select-car>
         <div class="table-box">
             <div class="top-info-box filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加车辆</el-button>

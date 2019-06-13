@@ -3,7 +3,6 @@
         <select-car :flag="flag" @change="handleChange"></select-car>
         <div class="table-box">
             <div class="top-info-box filter-container" ref="topAdd">
-                <el-button class="filter-item" type="primary">添加车辆</el-button>
                 <div class="filter-item" style="width:300px;">
                     <el-input v-model="plate" placeholder="车牌号">
                         <el-button slot="append" icon="el-icon-search" @click="handleClick">选择车辆查询</el-button>

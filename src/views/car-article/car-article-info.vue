@@ -1,22 +1,24 @@
 <template>
-    <div class="car-admin-container main-page" ref="mainContainer">
-        <div class="top-info-box filter-container" ref="topAdd">
-            <div class="filter-item" style="width:300px;">
-                <el-input v-model="plate" placeholder="车牌号">
-                    <el-button slot="append" icon="el-icon-search" @click="handleClick">选择车辆查询</el-button>
-                </el-input>
-            </div>
-        </div>
+    <div class="car-collection-box main-page" ref="mainContainer">
         <select-car :flag="flag" @change="handleChange"></select-car>
-        <el-table :data="tableData" border stripe :maxHeight="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
+        <div class="table-box">
+            <div class="filter-container" ref="topAdd">
+                <div class="filter-item" style="width:300px;">
+                    <el-input v-model="plate" placeholder="车牌号">
+                        <el-button slot="append" icon="el-icon-search" @click="handleClick">选择车辆查询</el-button>
+                    </el-input>
+                </div>
+            </div>
+            <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
             <el-table-column label="所属中心" prop="jijiu"></el-table-column>
             <el-table-column label="车牌号" prop="plate"></el-table-column>
             <el-table-column label="车编号" prop="carnum"></el-table-column>
             <el-table-column label="物品名称" prop="articleName"></el-table-column>
             <el-table-column label="状态" prop="state"></el-table-column>
-        </el-table>
-        <div ref="btmGroup" class="btm-group">
-            <pagination :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+            </el-table>
+            <div ref="btmGroup" class="btm-group">
+                <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+            </div>
         </div>
     </div>
 </template>
@@ -38,7 +40,16 @@ export default {
             plate:'',
             tableLoading:true,
             tableHeight:null,
+            total:30,
             tableData:[],
+            listQuery: {
+                page: 1,
+                limit: 20,
+                importance: undefined,
+                title: undefined,
+                type: undefined,
+                sort: '+id'
+            },
             options:[{
                 label:'本部分中心',
                 value:'1'
@@ -96,17 +107,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.car-admin-container{
-    width:100%;
-    height:100%;
-    font-size:16px;
-    color:#333;
-}
-.btm-group{
-    padding-top:12px;
-    box-sizing: border-box;
-}
-.top-info-box{
-    width:100%;
+.table-box{
+    padding:12px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:6px;
+    overflow:hidden;
 }
 </style>

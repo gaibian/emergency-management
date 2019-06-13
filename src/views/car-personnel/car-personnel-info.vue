@@ -1,52 +1,54 @@
 <template>
-    <div class="car-admin-container main-page" ref="mainContainer">
-        <div class="top-info-box filter-container" ref="topAdd">
-            <el-button class="filter-item" type="primary">添加人员</el-button>
-            <div class="filter-item" style="width:300px;">
-                <el-input v-model="plate" placeholder="人员">
-                    <el-button slot="append" icon="el-icon-search" @click="handleClick">选择人员查询</el-button>
-                </el-input>
-            </div>
-        </div>
+    <div class="car-collection-box main-page" ref="mainContainer">
         <select-presonnel :flag="flag" @change="handleChange"></select-presonnel>
-        <el-table :data="tableData" border stripe :max-height="tableHeight" :height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-            <el-table-column label="姓名" prop="name"></el-table-column>
-            <el-table-column label="员工工号" prop="ygnum"></el-table-column>
-            <el-table-column label="IC卡编号" prop="ICnum"></el-table-column>
-            <el-table-column label="性别" prop="sex"></el-table-column>
-            <el-table-column label="手机号码" prop="tel"></el-table-column>
-            <el-table-column label="急救中心" prop="jijiu"></el-table-column>
-            <el-table-column label="职务" prop="job"></el-table-column>
-            <el-table-column label="在职状态" prop="status"></el-table-column>
-            <el-table-column label="操作" width="176">
-                <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-popover placement="top" width="160" v-model="scope.row.visible2">
-                        <p>确定删除吗？</p>
-                        <div style="text-align: right; margin: 0">
-                            <el-button size="mini" type="text" @click="scope.row.visible2 = false">取消</el-button>
-                            <el-button type="primary" size="mini" @click.native.prevent="deleteRow(scope.$index, tableData)">确定</el-button>
-                        </div>
-                        <el-button type="text" size="small" slot="reference">删除</el-button>
-                    </el-popover>   
-                    <!-- <el-button @click="handleDelete" type="danger">删除</el-button> -->
-                </template>
-            </el-table-column>
-        </el-table>
-        <div ref="btmGroup" class="btm-group">
-            <pagination :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+        <div class="table-box">
+            <div class="filter-container" ref="topAdd">
+                <el-button class="filter-item" type="primary" @click="handleAdd">添加人员</el-button>
+                <div class="filter-item" style="width:300px;">
+                    <el-input v-model="plate" placeholder="人员">
+                        <el-button slot="append" icon="el-icon-search" @click="handleClick">选择人员查询</el-button>
+                    </el-input>
+                </div>
+                <div class="filter-item">
+                    <el-date-picker v-model="value6" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"> </el-date-picker>
+                </div>
+            </div>
+            <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
+                <el-table-column label="急救中心" prop="jijiu"></el-table-column>
+                <el-table-column label="姓名" prop="name"></el-table-column>
+                <el-table-column label="员工工号" prop="ygnum"></el-table-column>
+                <el-table-column label="IC卡编号" prop="ICnum"></el-table-column>
+                <el-table-column label="性别" prop="sex"></el-table-column>
+                <el-table-column label="手机号码" prop="tel"></el-table-column>
+                <el-table-column label="职务" prop="job"></el-table-column>
+                <el-table-column label="在职状态" prop="status"></el-table-column>
+                <el-table-column label="操作" fixed="right">
+                    <template slot-scope="scope">
+                        <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.$index, scope.row)">编辑</svg-icon>
+                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click="handleDelete(scope)">删除</svg-icon>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
+                <peropate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></peropate>
+            </el-dialog>
+            <div ref="btmGroup" class="btm-group">
+                <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+            </div>
         </div>
     </div>
 </template>
 <script>
 import selectPresonnel from '@/components/selectPresonnel'
 import Pagination from '@/components/Pagination'
+import peropate from './component/per-opate'
 import pageMixins from '@/mixins'
 export default {
     name:'carPersonnelInfo',
     components:{
         selectPresonnel,
-        Pagination
+        Pagination,
+        peropate
     },
     mixins:[pageMixins],
     data() {
@@ -58,31 +60,26 @@ export default {
             tableHeight:null,
             formLabelWidth: '100px',
             dialogFormVisible: false,
+            value6:'',
+            total:30,
             tableData:[],
-            optionSex:[{
-                value:'男'
-            },{
-                value:'女'
-            }],
-            optionJijiu:[{
-                value:'本部分中心'
-            },{
-                value:'江北分中心'
-            }],
-             optionJob:[{
-                value:'急救医生'
-            },{
-                value:'担架员'
-            },{
-                value:'驾驶员'
-            }],
+            listQuery: {
+                page: 1,
+                limit: 20,
+                importance: undefined,
+                title: undefined,
+                type: undefined,
+                sort: '+id'
+            },
             form: {
+                jijiu:'',
                 name: '',
                 ygnum: '',
                 ICnum: '',
                 sex: '',
+                tel:'',
                 job: '',
-                card: ''
+                status: ''
             },
         }
     },
@@ -100,15 +97,43 @@ export default {
         for(let i=0;i<20;i++){
             this.tableData.push({
                 jijiu:'中医院急救点',
-                name:'张三三',
-                num:'0128',
-                sex:'女',
-                job:'急救医生',
-                card:'621422210001352'
+                name: '张三三',
+                ygnum: '0128',
+                ICnum: '01',
+                sex: '女',
+                tel:'13333333333',
+                job: '急救医生',
+                status: '在职'
             })
         }
     },
     methods:{
+        handleOpate(boo){
+            console.log(boo)
+            this.tableLoading = true;
+            setTimeout(() => {
+                this.tableLoading = false;
+            },200)
+            this.dialogFormVisible = false;
+        }, 
+        handleAdd() {
+            this.dialogFormVisible = true;
+            this.editFlag = false;
+        },
+        handleDelete(scope) {
+            this.$confirm('确定删除该人员?','提示',{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }).then(()=>{
+                // agencyDelete(scope.row.id).then(res => {
+                //     if(res !== 'error'){
+                //         _g.toastMsg('success','删除成功')
+                //         this.update = !this.update;
+                //     }
+                // })
+            })
+        },
         handlePag(data) {
             setTimeout(() => {
                 this.tableLoading = false;
@@ -138,8 +163,8 @@ export default {
       // 编辑
       handleEdit: function (index, row) {
 		this.dialogFormVisible = true;
-        row["index"]=index;
-		this.form = Object.assign({}, row);
+        this.editFlag = true;
+        this.editId =  Object.assign(row);
       },
       // 更新一行数据
       handleEditdata: function (data1) {
@@ -152,23 +177,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.car-admin-container{
-    width:100%;
-    height:100%;
-    font-size:16px;
-    color:#333;
-}
-.btm-group{
-    padding-top:12px;
-    box-sizing: border-box;
-}
-.top-info-box{
-    width:100%;
-}
-.el-dialog__body{
-    padding: 0 !important;
-}
-.el-select{
-    width: 100%;
+.table-box{
+    padding:12px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:6px;
+    overflow:hidden;
 }
 </style>
