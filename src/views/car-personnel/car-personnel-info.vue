@@ -5,13 +5,28 @@
             <div class="filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加人员</el-button>
                 <div class="filter-item" style="width:300px;">
+                <el-input v-model="plate" placeholder="请输入姓名或工号"></el-input>
+                </div>
+                <div class="filter-item">
+                <el-select v-model="value" placeholder="请选择所属中心">
+                    <el-option v-for="item in jijiuoptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+                </div>
+                <div class="filter-item">
+                <el-select v-model="value" placeholder="请选择在职状态">
+                    <el-option v-for="item in zzztoptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+                </div>
+                <el-button class="filter-item" type="primary">查询</el-button>
+<!-- 
+                <div class="filter-item" style="width:300px;">
                     <el-input v-model="plate" placeholder="人员">
                         <el-button slot="append" icon="el-icon-search" @click="handleClick">选择人员查询</el-button>
                     </el-input>
-                </div>
-                <div class="filter-item">
+                </div> -->
+                <!-- <div class="filter-item">
                     <el-date-picker v-model="value6" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"> </el-date-picker>
-                </div>
+                </div> -->
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                 <el-table-column label="急救中心" prop="jijiu"></el-table-column>
@@ -81,6 +96,16 @@ export default {
                 job: '',
                 status: ''
             },
+            jijiuoptions:[{
+                value:'中医院'
+            },{
+                value:'李惠利东部医院'
+            }],
+            zzztoptions:[{
+                value:'在职'
+            },{
+                value:'离职'
+            }],
         }
     },
     filters:{
