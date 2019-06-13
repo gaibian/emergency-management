@@ -34,8 +34,11 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
-                <emopate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></emopate>
+            <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="50%" center>
+                <div style="height:500px;">
+                    <emopate v-if="dialogFormVisible" @dialogChange="handleOpate"></emopate>
+                </div>
+                
             </el-dialog>
             <div ref="btmGroup" class="btm-group">
                 <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
@@ -95,7 +98,6 @@ export default {
                 GPSmileage:'320公里'
             })
         }
-        this.handlePag()
     },
     methods:{
         handleOpate(boo) {
