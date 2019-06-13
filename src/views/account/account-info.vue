@@ -1,42 +1,37 @@
 <template>
-    <div class="car-admin-container main-page" ref="mainContainer">
-        <div class="top-info-box filter-container" ref="topAdd">
-            <el-button class="filter-item" type="primary" @click="handleAdd">添加人员</el-button>
-            <div class="filter-item" style="width:300px;">
-                <el-input v-model="plate" placeholder="请输入人员编号或姓名">
-                    <el-button slot="append" icon="el-icon-search">查询</el-button>
-                </el-input>
+    <div class="car-collection-box main-page" ref="mainContainer">
+        <select-presonnel :flag="flag" @change="handleChange"></select-presonnel>
+        <div class="table-box">
+            <div class="filter-container" ref="topAdd">
+                <div class="filter-item" style="width:300px;">
+                <el-input v-model="plate" placeholder="请输入姓名或工号"></el-input>
+                </div>
+                <div class="filter-item">
+                </div>
+                <div class="filter-item">
+                </div>
+                <el-button class="filter-item" type="primary">查询</el-button>
+            </div>
+            <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
+               <el-table-column label="姓名" prop="name"></el-table-column>
+                <el-table-column label="账号" prop="user"></el-table-column>
+                <el-table-column label="密码" prop="password"></el-table-column>
+                <el-table-column label="角色" prop="role"></el-table-column>
+                <el-table-column label="状态" prop="state"></el-table-column>
+                <el-table-column label="操作" fixed="right">
+                    <template slot-scope="scope">
+                        <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.$index, scope.row)">编辑</svg-icon>
+                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click="handleDelete(scope)">删除</svg-icon>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
+                <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate>
+            </el-dialog>
+            <div ref="btmGroup" class="btm-group">
+                <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
         </div>
-        <select-presonnel :flag="flag" @change="handleChange"></select-presonnel>
-        <el-table :data="tableData" border stripe :max-height="tableHeight" :height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-            <el-table-column label="姓名" prop="name"></el-table-column>
-            <el-table-column label="账号" prop="user"></el-table-column>
-            <el-table-column label="密码" prop="password"></el-table-column>
-            <el-table-column label="角色" prop="role"></el-table-column>
-            <el-table-column label="状态" prop="state"></el-table-column>
-            <el-table-column label="操作" width="176">
-                <template slot-scope="scope">
-                    <el-button type="text" size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button @click="handleDelete(scope)">删除</el-button>
-                    <!-- <el-popover placement="top" width="160" v-model="scope.row.visible2">
-                        <p>确定删除吗？</p>
-                        <div style="text-align: right; margin: 0">
-                            <el-button size="mini" type="text" @click="scope.row.visible2 = false">取消</el-button>
-                            <el-button type="primary" size="mini" @click.native.prevent="deleteRow(scope.$index, tableData)">确定</el-button>
-                        </div>
-                        <el-button type="text" size="small" slot="reference">删除</el-button>
-                    </el-popover>-->
-                </template>
-            </el-table-column>
-        </el-table>
-        <div ref="btmGroup" class="btm-group">
-            <pagination :total="30" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
-        </div>
-        <!-- 编辑 -->
-    <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width=30%>
-        <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate>
-    </el-dialog>
     </div>
 
 
@@ -47,8 +42,6 @@ import selectPresonnel from '@/components/selectPresonnel'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import opate from './component/opate'
-import { setTimeout } from 'timers';
-import { debuglog } from 'util';
 export default {
     name:'accountInfo',
     components:{
@@ -67,7 +60,19 @@ export default {
             tableLoading:true,
             tableHeight:null,
             dialogFormVisible: false,
+            value6:'',
+            total:30,
+            value1: '',
+            value2: '',
             tableData:[],
+            listQuery: {
+                page: 1,
+                limit: 20,
+                importance: undefined,
+                title: undefined,
+                type: undefined,
+                sort: '+id'
+            },
         }
     },
     filters:{
@@ -158,23 +163,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.car-admin-container{
-    width:100%;
-    height:100%;
-    font-size:16px;
-    color:#333;
-}
-.btm-group{
-    padding-top:12px;
-    box-sizing: border-box;
-}
-.top-info-box{
-    width:100%;
-}
-.el-dialog__body{
-    padding: 0 !important;
-}
-.el-select{
-    width: 100%;
+.table-box{
+    padding:12px;
+    box-sizing:border-box;
+    background:#fff;
+    border-radius:6px;
+    overflow:hidden;
 }
 </style>
