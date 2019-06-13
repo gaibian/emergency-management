@@ -7,7 +7,7 @@
             <el-table-column  label="告警描述"  prop="gjinfo"></el-table-column>
             <el-table-column  label="设备名称">
                 <template slot-scope="scope">
-                    <el-tag :key="tag" v-for="tag in spname" closable :disable-transitions="true" @close="handleClose(tag)"> 软担架</el-tag>
+                    <el-tag :key="tag" v-for="tag in scope.row.spname" closable :disable-transitions="true" @close="handleClose(tag)"> 软担架</el-tag>
                 </template>
             </el-table-column>
             <el-table-column  label="状态"  prop="status"></el-table-column>

@@ -94,42 +94,39 @@ export default {
                 hjreason:'有人路边晕倒',
                 GPSmileage:'320公里'
             })
-    }
+        }
+        this.handlePag()
+    },
     methods:{
-        handleOpate(boo)
-        {
+        handleOpate(boo) {
             console.log(boo)
             this.tableLoading = true;
             setTimeout(() => {
                 this.tableLoading = false;
             },200)
             this.dialogFormVisible = false;
-        }
-        handlePag(data)
-        {
+        },
+        handlePag(data) {
             setTimeout(() => {
                 this.tableLoading = false;
             }, 2000);
             console.log(data)
-        }
-        handleClick() 
-        {
+        },
+        handleClick() {
             this.flag = true;
-        }
-        handlerwjd() 
-        {
+        },
+        handlerwjd() {
             this.dialogFormVisible = true;
-        }
-        handleChange(data) 
-        {
+        },
+        handleChange(data) {
             if(data.keys) {
                 this.plate = data.carPlate;
                 console.log(data.keys)
             }
             this.flag = data.flag;
-        }
-        }
-        }
+        },
+        
+    }
 }
 </script>
 <style lang="scss" scoped>
