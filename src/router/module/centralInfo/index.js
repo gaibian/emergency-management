@@ -8,5 +8,5 @@ export const centralInfo = {
     path: 'centralinfo',
     name: 'centralinfo',
     component: () => import('@/views/central-info/central-info.vue'),
-    meta: { title: '人员信息', icon: 'excel' }
+    meta: { title: '中心信息', icon: 'excel' }
   }] }
