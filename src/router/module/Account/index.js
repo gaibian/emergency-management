@@ -9,5 +9,5 @@ export const Account = {
       path: 'accountInfo',
       name: 'accountInfo',
       component: () => import('@/views/account/account-info.vue'),
-      meta: { title: '账号信息', icon: 'car-info' }
+      meta: { title: '账号信息', icon: 'accountNumber' }
     }] }

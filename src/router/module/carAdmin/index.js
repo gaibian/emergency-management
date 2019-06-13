@@ -26,5 +26,5 @@ export const carAdmin = {
       path: 'carCollection',
       name: 'carCollection',
       component: () => import('@/views/car-admin/car-collection.vue'),
-      meta: { title: '车辆实时采集点信息', icon: 'car-locus'}
+      meta: { title: '车辆实时采集点信息', icon: 'pointInfo'}
     }] }

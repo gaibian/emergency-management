@@ -14,7 +14,7 @@
                 <el-button class="filter-item" type="primary">导出数据</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-                <el-table-column label="任务编号" prop="rwnum" width="100px"></el-table-column>
+                <el-table-column label="任务编号" prop="rwnum" min-width="400px"></el-table-column>
                 <el-table-column label="任务时间" prop="rwtime" width="200px"></el-table-column>
                 <el-table-column label="接车地址" prop="jcaddress" width="350px"></el-table-column>
                 <el-table-column label="主叫号码" prop="maintel" width="150px"></el-table-column>
