@@ -11,6 +11,7 @@
                 <div class="filter-item">
                     <el-date-picker v-model="value6" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"> </el-date-picker>
                 </div>
+                <el-button class="filter-item" type="primary">导出数据</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                 <el-table-column label="任务编号" prop="rwnum" width="100px"></el-table-column>
