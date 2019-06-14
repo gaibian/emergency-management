@@ -18,7 +18,7 @@
                         </el-date-picker>
                     </div>
                     <div class="filter-item">
-                        <el-button type="primary" icon="el-icon-search">查询</el-button>
+                        <el-button type="primary" icon="el-icon-search" @click="handleQuery">查询</el-button>
                     </div>
                     <div class="status-check-box" style="padding-bottom:0">
                         <div class="filter-item title">复选条件:</div>
@@ -36,7 +36,7 @@
         <select-car :flag="flag" :radio="true" @change="handleChange"></select-car>
         <div class="popup-status-btn" :style="{top:`${popupBottom}px`}" @click="handleSpeendBox">{{btmVal}}</div>
         <!--状态显示-->
-        <div class="status-popup" :style="{left:left,top:top}">
+        <!-- <div class="status-popup" :style="{left:left,top:top}">
             <ul>
                 <li><i></i>GPS定位:{{gps}}</li>
                 <li><i></i>工作状态:待命中</li>
@@ -44,7 +44,7 @@
                 <li><i></i>熄火状态状态:待命中</li>
                 <li><i></i>在线状态:待命中</li>
             </ul>
-        </div>
+        </div> -->
         <!--速度选择-->
         <transition name="fade" mode="out-in" appear>
             <div class="speed-box" v-show="popupFlag">
@@ -78,20 +78,26 @@
                 </div>
             </div>
         </transition>
+        <el-dialog title="轨迹选择" close-on-click-modal v-model="dialogFormVisible" width="800px" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+            <wheel-choice v-if="dialogFormVisible"></wheel-choice>
+        </el-dialog>
         <div id="wheelPath"></div>
     </div>
 </template>
 <script>
 const cityOptions = ['停车', '熄火', '后门开启', '中门开启','担架下车','显示车速','病人上下车'];
 import selectCar from '@/components/selectCar'
+import wheelChoice from './component/wheel-choice'
 export default {
     name:'wheelPath',
     components: {
-        selectCar
+        selectCar,
+        wheelChoice
     },
     data() {
         return {
             flag:false,
+            dialogFormVisible:false,
             plate:'',
             value6:'',
             speed:0,
@@ -119,6 +125,7 @@ export default {
             map:null,
             polyline:null,
             passedPolyline:null,
+            moveTime:null,
         }
     },
     watch:{
@@ -150,8 +157,8 @@ export default {
             this.speedHeight = this.$refs.speedBox.offsetHeight + 20
             this.popupBottom = this.speedHeight
             this.init();
+            // this.map.panTo([116.478935,39.997761])
         });
-        
     },
     destroyed() {
         this.polyline = null;
@@ -191,11 +198,20 @@ export default {
             this.map.setFitView();
             this.marker.on('moveend',() => {
                 this.progress += 1;
-                this.progressFlag = false;
+                if(this.progress === this.lineArr.length){
+                    this.startFlag = false;
+                    this.progressFlag = false;
+                    // 运动结束之后需要清除掉防抖的延时
+                    console.log('运动结束')
+                    clearTimeout(this.moveTime)
+                }
             })
             
             // 拖动地图
             this.map.on('dragging', this.showInfoDragging);
+        },
+        handleQuery() {
+            this.dialogFormVisible = true;
         },
         handleSpeendBox() {
             this.popupFlag = !this.popupFlag;
@@ -221,6 +237,7 @@ export default {
             // 播放重置
             this.startFlag = true;
             this.btnFlag = false;
+            this.map.setCenter(this.newLineArr[0])
             if(this.moveEnd){
                 this.progress = 0;
             }
@@ -238,6 +255,12 @@ export default {
                 let lat = e.passedPath[last].getLat();
                 this.setLngLat(lon,lat)
                 this.gps = `${lon},${lat}`
+                // 车永远是在中心位置 => gps变化太快了 => 需要进行防抖吗
+                //this.map.setCenter([lon,lat])
+                console.log(this.gps)
+                this.moveTime = setTimeout(() => {
+                    this.map.setCenter([lon,lat])
+                },100)
             });
             this.marker.moveAlong(this.newLineArr, this.speedVal);
         },

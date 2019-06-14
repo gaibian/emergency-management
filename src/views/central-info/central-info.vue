@@ -1,12 +1,17 @@
 <template>
     <div class="car-collection-box main-page" ref="mainContainer">
         <div class="table-box">
-            <el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" row-key="id" default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :header-row-class-name="'table-header-box'" stripe element-loading-text="数据加载中...">
-                <el-table-column prop="zxname" label="中心名称" sortable></el-table-column>
-                <el-table-column prop="status" label="状态" sortable></el-table-column>
+            <el-table :data="tableData" default-expand-all style="width: 100%;margin-bottom: 20px;" row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :header-row-class-name="'table-header-box'" stripe element-loading-text="数据加载中..." >
+                <el-table-column label="中心名称" min-width="100px">
+                    <template slot-scope="scope">
+                    <svg-icon :icon-class="scope.row.children ? 'fenbu' : 'yiyuan'" style="color:rgb(64, 158, 255)"></svg-icon>
+                    <span style="margin-left: 10px">{{ scope.row.zxname }}</span>
+                </template>
+                </el-table-column>
+                <el-table-column prop="status" label="状态"></el-table-column>
                 <el-table-column prop="accuracy" label="经度"></el-table-column>
-                <el-table-column prop="latitude" label="纬度" sortable></el-table-column>
-                <el-table-column prop="address" label="地址" sortable></el-table-column>
+                <el-table-column prop="latitude" label="纬度"></el-table-column>
+                <el-table-column prop="address" label="地址"></el-table-column>
                 <el-table-column prop="note" label="备注"></el-table-column>
             </el-table>
         </div>
@@ -21,16 +26,16 @@ export default {
     mixins:[pageMixins],
     data() {
         return {
-        // tableData:[],
         tableData: [{
           id: 1,
-          zxname: '中心',
+          zxname: '急救中心',
           status: '状态状态',
           accuracy: '120°55',
           latitude: '28°51',
-          address: '浙江省宁波市鄞州区福明路178号',
-          note: '这是一段备注'
-          }, {
+          address: '--',
+          note: '这是一段备注',
+          children: [
+              {
           id: 2,
           zxname: '第一分中心',
           status: '状态状态',
@@ -122,6 +127,8 @@ export default {
               note: '这是一段备注',
           }]
           }
+]
+          }, 
         ]}
     },
     methods:{  
