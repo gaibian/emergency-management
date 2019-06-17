@@ -2,7 +2,11 @@
 <div>
     <el-table :data="gridData" style="margin-top:30px;">
         <el-table-column property="ssrw" label="所属任务"></el-table-column>
-        <el-table-column property="jdtype" label="节点类型"></el-table-column>
+        <el-table-column property="" label="节点类型">
+          <template slot-scope="scope">
+              <el-tag  @close="handleClose(tag)">{{ scope.row.jdtype }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column property="jdtime" label="节点时间" width="200px"></el-table-column>
         <el-table-column property="accuracy" label="经度"></el-table-column>
         <el-table-column property="latitude" label="纬度"></el-table-column>
@@ -46,6 +50,11 @@
         }],
         dialogTableVisible: false,
       };
+    },
+    methods:{
+        handleClose(tag) {
+        this.jdtype.splice(this.jdtype.indexOf(tag), 1);
+      },
     }
   };
 </script>
