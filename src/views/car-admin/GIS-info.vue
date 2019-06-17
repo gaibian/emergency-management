@@ -2,24 +2,25 @@
     <div class="gis-info-container">
         <div class="choice-bar-container">
             <div class="content-box">
-                <div class="filter-container" style="padding-bottom:0">
-                    <div style="width:300px;margin-right:32px;" class="filter-item">
+                <el-row type="flex" align="middle">
+                    <el-col style="width:300px;margin-right:32px;">
                         <el-input v-model="plate" placeholder="请选择车辆">
                             <el-button slot="append" icon="el-icon-search" @click="handleClick">选择车辆</el-button>
                         </el-input>
-                    </div>
-                    <div class="filter-item">
+                    </el-col>
+                    <el-col style="width:500px;">
                         <span class="status-title">状态:</span>
                         <el-radio v-model="radio" label="1">任务中</el-radio>
                         <el-radio v-model="radio" label="2">途中待命</el-radio>
                         <el-radio v-model="radio" label="3">站点待命</el-radio>
                         <el-radio v-model="radio" label="4">未上班\下班</el-radio>
-                    </div>
-                </div>
+                    </el-col>
+                </el-row>
             </div>
         </div>
         <select-car :flag="flag" @change="handleChange"></select-car>
         <div id="container" ref="container"></div>
+        
     </div>
 </template>
 <script>
@@ -146,7 +147,7 @@ export default {
     }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .gis-info-container{
     width:100%;
     position:relative;
@@ -157,20 +158,24 @@ export default {
     margin-right:12px;
 }
 .choice-bar-container{
-    width:100%;
+    //width:100%;
+    display:inline-block;
     position: absolute;
     top:12px;
-    left:0;
-    padding:0 12px;
+    left:50%;
+    transform:translate(-50%,0);
+    //padding:0 12px;
     box-sizing:border-box;
     z-index:99;
-    overflow:hidden;
+    
+    //overflow:hidden;
     .content-box{
         width:100%;
-        padding:12px 12px 0 12px;
+        padding:12px;
         box-sizing:border-box;
+        border-radius:3px;
         background:#fff;
-        box-shadow:0px 0px 8px rgba(0,0,0,0.1);
+        box-shadow:0px 0px 4px rgba(0,0,0,0.2);
     }
 }
 .loader3 {

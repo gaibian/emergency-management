@@ -10,11 +10,11 @@
                 </div>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-            <el-table-column label="所属中心" prop="jijiu"></el-table-column>
-            <el-table-column label="车牌号" prop="plate"></el-table-column>
-            <el-table-column label="车编号" prop="carnum"></el-table-column>
-            <el-table-column label="物品名称" prop="articleName"></el-table-column>
-            <el-table-column label="状态" prop="state"></el-table-column>
+                <el-table-column label="所属中心" prop="jijiu"></el-table-column>
+                <el-table-column label="车牌号" prop="plate"></el-table-column>
+                <el-table-column label="车编号" prop="carnum"></el-table-column>
+                <el-table-column label="物品名称" prop="articleName"></el-table-column>
+                <el-table-column label="状态" prop="state"></el-table-column>
             </el-table>
             <div ref="btmGroup" class="btm-group">
                 <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
