@@ -80,6 +80,41 @@ export default {
         }
     },
     created() {
+
+
+        // js 数据类型
+
+        // 1.number 2.string 3.boolean 4.object 5.array 6.symbol 7.null 8.undefind
+        var web = { // object类型  => key => 键值对 value index
+                "百度":"https://www.baidu.com",  //0
+                "搜狐":"https://www.sohu.com",  //1
+                "新浪":"https://www.sina.com",  //2
+                "淘宝":"https://www.taobao.com"  //3
+            }
+
+        var arr = ['s','b','c','d']; // 数组类型  value index
+
+        var str = 'xiaojun';
+
+        // for(let i=0;i<web.length;i++){
+        //     console.log(i)
+        //     console.log(arr[i])
+        // }
+
+        
+
+        
+
+        
+
+
+
+
+
+
+
+            
+
         this.tableLoading = false;
         for(let i=0;i<30;i++){
             this.tableData.push({
