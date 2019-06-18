@@ -174,20 +174,20 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loginFlag = true;
-          this.loading = true
+          this.loading = true;
           //this.$router.push('/')
           //  vuex 存储用户名
           setTimeout(() => {
-            this.$store.dispatch('user/login',this.loginForm).then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              this.loading = false;
-              this.loginFlag = false;
-            }).catch(() => {
-              this.loading = false;
-              this.loginFlag = false;
-            })
+            
+              this.$store.dispatch('user/login',this.loginForm).then(() => {
+                this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+                this.loading = false;
+                this.loginFlag = false;
+              }).catch(() => {
+                this.loading = false;
+                this.loginFlag = false;
+              })
           },2000)
-          
         } else {
           return false
         }

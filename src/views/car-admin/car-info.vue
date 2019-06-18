@@ -27,7 +27,7 @@
                 </el-table-column>
             </el-table>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
             <!-- 编辑 -->
             <el-dialog title="车辆信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width='30%'>
@@ -62,14 +62,23 @@ export default {
             dialogFormVisible: false,
             editFlag:false,
             tableData:[],
-            listQuery: {
-                page: 1,
-                limit: 20,
-                importance: undefined,
-                title: undefined,
-                type: undefined,
-                sort: '+id'
+            queryForm:{
+                // 'sort.orderBy':'',
+                // 'sort.direction':'',
+                centerInfoId:'',
+                carNumber:'',
+                carNo:'',
+                pageIndex:1,
+                pageSize:10,
             },
+            // listQuery: {
+            //     page: 1,
+            //     limit: 20,
+            //     importance: undefined,
+            //     title: undefined,
+            //     type: undefined,
+            //     sort: '+id'
+            // },
             options:[{
                 label:'本部分中心',
                 value:'1'
@@ -89,47 +98,7 @@ export default {
         }
     },
     created() {
-        
-        // 进行第一次的表格数据加载
-        // carAdmin.carList(1).then(data => {})
-        // carAdmin.carAdd(form).then(data => {
-        //     this.$message({
-        //         message:data.message
-        //     })
-        // })
         this.handlePag();
-        for(let i=0;i<20;i++){
-            this.tableData.push({
-                id:'1',
-                jijiu:'中医院急救点',
-                plate:'浙B542WX',
-                carnum:'0128',
-                status:'1',
-            })
-        }
-        // 合并对象
-        const cites = [{
-            name:'xiaojun',
-            value:'no'
-        },{
-            name:'zhouquan',
-            value:'yes'
-        }]
-        let o = {
-            name:'112'
-        }
-        let j = {
-            age:'21'
-        }
-        let s = { ...o, ...j }
-        console.log(s)
-        const result = cites.reduce((accumnlator,item) => {
-            return {
-                ...accumnlator,
-                [item.name]: item.value
-            }
-        },{})
-        console.log(result)
     },
     methods:{
  
@@ -161,9 +130,11 @@ export default {
         },
         handlePag() {
             this.tableLoading = true;
-            setTimeout(() => {
+            carAdmin.carList(this.queryForm).then(res => {
+                 console.log(res)
+                // this.tableData = res.data.data
                 this.tableLoading = false;
-            }, 2000);
+            })
         },
         handleClick() {
             this.flag = true;

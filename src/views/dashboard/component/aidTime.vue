@@ -170,6 +170,13 @@ export default {
       time() {
         this.handleUpdate()
       }
+    },
+    beforeDestroy() {
+        if (!this.myChart) {
+        return
+        }
+        this.myChart.destroy()
+        this.myChart = null
     },   
     computed: {
       time() {

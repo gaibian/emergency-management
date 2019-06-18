@@ -6,8 +6,7 @@ import login from './module/login'
 import aidIndex from './module/aidIndex'
 // 车辆信息模块
 import carAdmin from './module/carAdmin'
-
-export default {
+export {
   login,
   aidIndex,
   carAdmin

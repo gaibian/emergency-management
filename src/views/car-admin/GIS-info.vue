@@ -147,36 +147,11 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
-.gis-info-container{
-    width:100%;
-    position:relative;
-}
+<style lang="scss">
 .status-title{
     font-size:16px;
     color:#606266;
     margin-right:12px;
-}
-.choice-bar-container{
-    //width:100%;
-    display:inline-block;
-    position: absolute;
-    top:12px;
-    left:50%;
-    transform:translate(-50%,0);
-    //padding:0 12px;
-    box-sizing:border-box;
-    z-index:99;
-    
-    //overflow:hidden;
-    .content-box{
-        width:100%;
-        padding:12px;
-        box-sizing:border-box;
-        border-radius:3px;
-        background:#fff;
-        box-shadow:0px 0px 4px rgba(0,0,0,0.2);
-    }
 }
 .loader3 {
     position: relative;
@@ -219,6 +194,27 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
+.choice-bar-container{
+    //width:100%;
+    display:inline-block;
+    position: absolute;
+    top:12px;
+    left:50%;
+    transform:translate(-50%,0);
+    //padding:0 12px;
+    box-sizing:border-box;
+    z-index:99;
+    
+    //overflow:hidden;
+    .content-box{
+        width:100%;
+        padding:12px;
+        box-sizing:border-box;
+        border-radius:3px;
+        background:#fff;
+        box-shadow:0px 0px 4px rgba(0,0,0,0.2);
+    }
+}
 .gis-info-container{
     position:relative;
     width:100%;

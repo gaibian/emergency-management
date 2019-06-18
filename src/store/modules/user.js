@@ -1,6 +1,7 @@
 // import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+import { login } from '@/api'
 
 const state = {
   token: getToken(),
@@ -33,9 +34,15 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      commit('SET_TOKEN', 'xiaojun')
-      setToken('xiaojun')
-      resolve()
+      login.login({
+        username:username,
+        password:password
+      }).then(res => {
+        console.log(res)
+        commit('SET_TOKEN',res.user.username)
+        setToken(res.token)
+        resolve()
+      })
     })
   },
 
@@ -73,9 +80,12 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       // 退出登录
-      commit('SET_TOKEN', '')
-      removeToken()
-      resolve()
+      console.log(login)
+      login.logout().then(res => {
+        commit('SET_TOKEN', '')
+        removeToken()
+        resolve(res)
+      })
       // logout(state.token).then(() => {
       //   commit('SET_TOKEN', '')
       //   commit('SET_ROLES', [])

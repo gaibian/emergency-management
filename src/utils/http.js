@@ -6,11 +6,12 @@ const CancelToken = axios.CancelToken;
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api 的 base_url
+  //baseURL: process.env.BASE_API, // api 的 base_url
+  baseURL:'http://192.168.3.201:8000',
   timeout: 5000 // 请求超时时间
 })
 // 异常状态码判断
-const errorHanle = (state,other) => {
+const errorHandle = (state,other) => {
   switch(status) {
     case 401:
       // token
@@ -26,21 +27,31 @@ const errorHanle = (state,other) => {
 service.interceptors.request.use(
   // 需要设置头部信息
   config => {
-    // if (store.getters.token) {
-    //   config.headers['X-Token'] = getToken()
-    // }
+    console.log(store.getters.token)
+    if (store.getters.token) {
+      config.headers['authorization'] = getToken()
+    }
     return config
   },
   error => Promise.reject(error)
 )
-
 // response 拦截器
 service.interceptors.response.use(
-
-  res => res.status === 200 ? Promise.resolve(res) : Promise.reject(res),
+  res => res.status === 200 ? Promise.resolve(res.data) : Promise.reject(res),
+  // res => {
+  //   if(res.status === 200) { // 数据返回正常
+  //     // let data = res.data;
+  //     console.log(res.data)
+  //     Promise.resolve(res)
+  //   }else{
+  //     Promise.reject(res)
+  //   }
+  // },
   // 请求失败
   error => {
+    // console.log('进去了吗')
     const { response } = error;
+    console.log(response)
     if(response) {
       errorHandle(response.status,response.data.message)
       return Promise.reject(response);
@@ -50,7 +61,6 @@ service.interceptors.response.use(
     }
   }
 )
-
 export default service
 
 

@@ -83,7 +83,14 @@ export default {
             data: [107, 31, 635, 203, 2]
         }]
     });
-    }
+    },
+    beforeDestroy() {
+        if (!this.chart) {
+        return
+        }
+        this.chart.destroy()
+        this.chart = null
+    },  
 }
 </script>
 <style lang="scss" scoped>
