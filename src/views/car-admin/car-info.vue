@@ -11,18 +11,18 @@
                 </div>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-                <el-table-column label="所属中心" prop="jijiu"></el-table-column>
-                <el-table-column label="车牌号" prop="plate"></el-table-column>
-                <el-table-column label="车编号" prop="carnum"></el-table-column>
-                <el-table-column label="车辆状态">
+                <!-- <el-table-column label="所属中心" prop="jijiu"></el-table-column> -->
+                <el-table-column label="车牌号" prop="carNo"></el-table-column>
+                <el-table-column label="车编号" prop="carNumber"></el-table-column>
+                <!-- <el-table-column label="车辆状态">
                     <template slot-scope="scope">
                         <span>{{scope.row.status | statusFilters}}</span>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
-                        <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.$index, scope.row)">编辑</svg-icon>
-                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click="handleDelete(scope)">删除</svg-icon>
+                        <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
+                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click="handleDelete(scope.row.id)">删除</svg-icon>
                     </template>
                 </el-table-column>
             </el-table>
@@ -61,6 +61,7 @@ export default {
             tableHeight:null,
             dialogFormVisible: false,
             editFlag:false,
+            editId:'',
             tableData:[],
             queryForm:{
                 // 'sort.orderBy':'',
@@ -101,37 +102,37 @@ export default {
         this.handlePag();
     },
     methods:{
- 
         handleOpate(boo){
-            console.log(boo)
-            this.tableLoading = true;
-            setTimeout(() => {
-                this.tableLoading = false;
-            },200)
+            if(boo) {
+                this.handlePag();
+            }
             this.dialogFormVisible = false;
         }, 
         handleAdd() {
             this.dialogFormVisible = true;
             this.editFlag = false;
         },
-        handleDelete(scope) {
+        handleDelete(id) {
             this.$confirm('确定删除该人员?','提示',{
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(()=>{
-                // agencyDelete(scope.row.id).then(res => {
-                //     if(res !== 'error'){
-                //         _g.toastMsg('success','删除成功')
-                //         this.update = !this.update;
-                //     }
-                // })
+                carAdmin.carDeletes(id).then(res => {
+                    this.$message({
+                        message:'删除成功',
+                        type:'success'
+                    })
+                    this.handlePag();
+
+                })
             })
         },
         handlePag() {
             this.tableLoading = true;
             carAdmin.carList(this.queryForm).then(res => {
                  console.log(res)
+                 this.tableData = res.data.list;
                 // this.tableData = res.data.data
                 this.tableLoading = false;
             })
@@ -150,7 +151,7 @@ export default {
         handleEdit(index, row) {
         this.dialogFormVisible = true;
         this.editFlag = true;
-        this.editId =  Object.assign(row);
+        // this.editId =  Object.assign(row);
       },
     }
 }
