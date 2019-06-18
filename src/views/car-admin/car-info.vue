@@ -41,6 +41,7 @@ import selectCar from '@/components/selectCar'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import opate from './component/car-opate'
+import { carAdmin } from '@/api'
 
 export default {
     name:'carAdmin',
@@ -88,7 +89,14 @@ export default {
         }
     },
     created() {
+        
         // 进行第一次的表格数据加载
+        // carAdmin.carList(1).then(data => {})
+        // carAdmin.carAdd(form).then(data => {
+        //     this.$message({
+        //         message:data.message
+        //     })
+        // })
         this.handlePag();
         for(let i=0;i<20;i++){
             this.tableData.push({
