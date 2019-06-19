@@ -16,12 +16,12 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label='员工工号'>
-                        <el-input v-model="form.post" clearable></el-input>
+                        <el-input v-model="form.jobNo" clearable></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label='IC卡编号'>
-                        <el-input v-model="form.jobNo" clearable></el-input>
+                        <el-input v-model="form.idcard" clearable></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -39,15 +39,13 @@
                 <el-col :span="6">
                     <el-form-item label="职务">
                         <el-select v-model="form.post" placeholder="请选择状态">
-                            <el-option v-for="(item,index) in optionJob" :key="index" :label="item.name" :value="item.id"></el-option>
+                            <el-option v-for="(item,index) in optionPost" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="在职状态">
-                        <el-select v-model="form.status" placeholder="请选择状态">
-                            <el-option v-for="(item,index) in optionStatus" :key="index" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
+                        <el-input v-model="form.telphone" :disabled="true" placeholder="在职"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -69,7 +67,7 @@ export default {
             form: {
                 centerInfoId:'',
                 name: '',
-                postLike:'',
+                post:'',
                 jobNo: '',
                 status: '',
             },
@@ -81,7 +79,7 @@ export default {
                 name:'男',
                 id:1
             }],
-             optionJob:[{
+             optionPost:[{
                 name:'急救医生',
                 id:0
             },{
@@ -90,14 +88,7 @@ export default {
             },{
                 name:'驾驶员',
                 id:2
-            }],
-            optionStatus:[{
-                name:'在职',
-                id:0
-            },{
-                name:'离职',
-                id:1
-            }],
+            }]
         }
     },
     props:{

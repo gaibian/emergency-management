@@ -29,8 +29,12 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="手机号码" prop="telphone"></el-table-column>
-                <!-- <el-table-column label="职务" prop="post">{{ tableData.jobNo | capitalize }}</el-table-column> -->
-                <!-- <el-table-column label="在职状态" prop="status">{{ tableData.status | status }}</el-table-column> -->
+                <el-table-column label="职务">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.post | capitalize01}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="在职状态" prop="status"></el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
                         <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
@@ -68,6 +72,18 @@ export default {
 				return '男'
 			}
         },
+        capitalize01 (post) {
+			if (post == 0) {
+				return '急救医生'
+				}
+			else if(post == 1){
+				return '担架员'
+            }
+            else{
+                return '驾驶员'
+            }
+        },
+        
     },
  
     data() {
