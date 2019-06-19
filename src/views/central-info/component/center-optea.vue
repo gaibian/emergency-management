@@ -115,7 +115,10 @@ export default {
         },
         addSubmit() {
             centerAdmin.centerAdd(this.form).then(res => {
-                console.log(res)
+                this.$message({
+                    message:'添加成功',
+                    type:'success'
+                })
                 this.$emit('dialogChange',true)
             })
         },

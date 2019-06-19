@@ -8,9 +8,9 @@
             <el-table :data="tableData" default-expand-all style="width: 100%;margin-bottom: 20px;" row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :header-row-class-name="'table-header-box'" v-loading="loading" stripe element-loading-text="数据加载中..." >
                 <el-table-column label="中心名称" min-width="100px">
                     <template slot-scope="scope">
-                    <svg-icon :icon-class="scope.row.children ? 'fenbu' : 'yiyuan'" style="color:rgb(64, 158, 255)"></svg-icon>
-                    <span style="margin-left: 10px">{{ scope.row.name }}</span>
-                </template>
+                        <svg-icon :icon-class="scope.row.children ? 'fenbu' : 'yiyuan'" style="color:rgb(64, 158, 255)"></svg-icon>
+                        <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column prop="longitude" label="经度"></el-table-column>
                 <el-table-column prop="latitude" label="纬度"></el-table-column>
@@ -64,10 +64,10 @@ export default {
         }
     },
     created() {
-        this.initList()
+        this.handlePag()
     },
     methods:{
-        initList() {
+        handlePag() {
             this.loading = true;
             centerAdmin.centerList().then(res => {
                 console.log(res)
@@ -89,20 +89,18 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(()=>{
-                this.loading = true;
                 centerAdmin.centerDeletes(id).then(res => {
-                    console.log(res)
                     this.$message({
                         message:'删除成功',
                         type:'success'
                     })
-                    this.loading = false;
+                    this.handlePag();
                 })
             })
         },
         handleOpate(flag) {
             if(flag) {
-                this.initList()
+                this.handlePag()
             }
             this.dialogFormVisible = false;
         },
