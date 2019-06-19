@@ -50,7 +50,7 @@
           </el-form>
           <el-row type="flex" class="operate-box">
             <el-col>
-              <span class="forget-password">记住账号</span>
+              <span class="forget-password" @click="handleRegister">注册</span>
             </el-col>
             <el-col style="text-align:right">
               <span class="forget-password">忘记密码?</span>
@@ -75,6 +75,9 @@
         </div>
       </el-col>
     </el-row>
+    <el-dialog title="注册" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="300px">
+        <regsiter v-if="dialogFormVisible" @regsiter="regsiter"></regsiter>
+    </el-dialog>
   </div>
 </template>
 
@@ -82,9 +85,13 @@
 import { validUsername } from '@/utils/validate'
 import { getToken, setToken } from '@/utils/auth' // get token from cookie
 import { setTimeout } from 'timers';
+import regsiter from './regsiter'
 
 export default {
   name: 'Login',
+  components:{
+    regsiter
+  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
@@ -101,10 +108,12 @@ export default {
       }
     }
     return {
+      
       loginForm: {
         username: '',
         password: ''
       },
+      dialogFormVisible:false,
       loginFlag:false,
       loginRules: {
         username: [{ required: true, trigger: 'blur',message:'请输入用户名' }],
@@ -148,6 +157,12 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
+    regsiter(boo) {
+      this.dialogFormVisible = false;
+    },
+    handleRegister() { // 注册账号
+      this.dialogFormVisible = true;
+    },
     checkCapslock({ shiftKey, key } = {}) {
       if (key && key.length === 1) {
         if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {
@@ -178,7 +193,6 @@ export default {
           //this.$router.push('/')
           //  vuex 存储用户名
           setTimeout(() => {
-            
               this.$store.dispatch('user/login',this.loginForm).then(() => {
                 this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
                 this.loading = false;

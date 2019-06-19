@@ -5,7 +5,7 @@
             <div class="filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加中心</el-button>
             </div>
-            <el-table :data="tableData" default-expand-all style="width: 100%;margin-bottom: 20px;" row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :header-row-class-name="'table-header-box'" v-loading="loading" stripe element-loading-text="数据加载中..." >
+            <el-table :data="tableData" default-expand-all :max-height="tableHeight" style="width: 100%;margin-bottom: 20px;" row-key="id" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" :header-row-class-name="'table-header-box'" v-loading="loading" stripe element-loading-text="数据加载中..." >
                 <el-table-column label="中心名称" min-width="100px">
                     <template slot-scope="scope">
                         <svg-icon :icon-class="scope.row.children ? 'fenbu' : 'yiyuan'" style="color:rgb(64, 158, 255)"></svg-icon>
@@ -57,6 +57,7 @@ export default {
     data() {
         return {
             tableData:[],
+            tableHeight:null,
             dialogFormVisible:false,
             editId:'',
             editFlag:false,

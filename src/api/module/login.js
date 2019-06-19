@@ -7,6 +7,9 @@ const login = {
   },
   logout() {
     return http.post('/auth/logout')
+  },
+  regsiter(data) {
+    return http.post('/auth/regsiter',data)
   }
 }
 export default login

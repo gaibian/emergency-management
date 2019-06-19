@@ -2,26 +2,15 @@
     <div class="car-collection-box main-page" ref="mainContainer">
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
-                <el-button class="filter-item" type="primary" @click="handleAdd">添加用户</el-button>
-                <el-select class="filter-item" v-model="queryForm.centerInfoId" placeholder="请选择所属中心">
-                    <el-option v-for="(item,index) in parentOptions" :key="index" :label="item.name" :value="item.id"></el-option>
-                </el-select>
-                <div class="filter-item" style="width:200px;">
-                    <el-input v-model="queryForm.usernameLike" placeholder="请输入用户名"></el-input>
-                </div>
-                <div class="filter-item" style="width:200px;">
-                    <el-input v-model="queryForm.realNameLike" placeholder="请输入真实姓名"></el-input>
-                </div>
+                <el-button class="filter-item" type="primary" @click="handleAdd">添加权限</el-button>
                 <el-button class="filter-item" type="primary">查询</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-               <el-table-column label="用户名" prop="username"></el-table-column>
-                <el-table-column label="真实姓名" prop="realName"></el-table-column>
-                <el-table-column label="性别" prop="gender"></el-table-column>
-                <el-table-column label="身份证" prop="idCardNumber"></el-table-column>
-                <el-table-column label="手机号" prop="phone"></el-table-column>
-                <!-- <el-table-column label="角色" prop="role"></el-table-column> -->
-                <el-table-column label="状态" prop="state"></el-table-column>
+               <el-table-column label="code" prop="code"></el-table-column>
+                <el-table-column label="标题" prop="title"></el-table-column>
+                <el-table-column label="section" prop="section"></el-table-column>
+                <el-table-column label="类型" prop="type"></el-table-column>
+                <el-table-column label="描述" prop="description"></el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
                         <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
@@ -30,7 +19,7 @@
                 </el-table-column>
             </el-table>
             <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="dialogClose">
-                <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate>
+                <power-opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></power-opate>
             </el-dialog>
             <div ref="btmGroup" class="btm-group">
                 <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
@@ -39,17 +28,15 @@
     </div>
 </template>
 <script>
-import selectPresonnel from '@/components/selectPresonnel'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
-import opate from './component/user-opate'
-import { userAdmin,centerAdmin } from '@/api'
+import powerOpate from './component/power-opate'
+import { powerAdmin } from '@/api'
 export default {
-    name:'accountInfo',
+    name:'power',
     components:{
-        selectPresonnel,
         Pagination,
-        opate
+        powerOpate
     },
     mixins:[pageMixins],
     data() {
@@ -63,22 +50,13 @@ export default {
             tableData:[],
             parentOptions:[],
             queryForm: {
-                centerInfoId:'',
-                usernameLike:'',
-                realNameLike:'',
+                type:'',
                 pageIndex: 1,
                 pageSize: 20,
             },
         }
     },
     created() {
-        centerAdmin.centerList().then(res => {
-            this.parentOptions = res.data
-            this.parentOptions.push({
-                name:'无',
-                id:null
-            })
-        })
         this.handlePag();
     },
     methods:{
@@ -97,7 +75,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(()=>{
-                userAdmin.userDeletes(id).then(res => {
+                powerAdmin.powerDeletes(id).then(res => {
                     this.$message({
                         message:'删除成功',
                         type:'success'
@@ -108,8 +86,10 @@ export default {
         },
         handlePag(data) {
             this.tableLoading = true;
-            userAdmin.userList(this.queryForm).then(res => {
-                this.tableData = res.data;
+            powerAdmin.powerList(this.queryForm).then(res => {
+                console.log(res)
+                this.tableData = res;
+                this.total = res.length
                 this.tableLoading = false;
             })
         },
