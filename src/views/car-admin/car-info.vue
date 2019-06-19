@@ -11,7 +11,7 @@
                 </div>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-                <!-- <el-table-column label="所属中心" prop="jijiu"></el-table-column> -->
+                <el-table-column label="所属中心" prop="centerInfoId"></el-table-column>
                 <el-table-column label="车牌号" prop="carNo"></el-table-column>
                 <el-table-column label="车编号" prop="carNumber"></el-table-column>
                 <el-table-column label="操作" fixed="right">
