@@ -2,17 +2,17 @@
     <div>
         <el-form :model="form" ref="form" label-width="100px">
             <el-form-item label="所属中心" :label-width="formLabelWidth">
-            <el-select v-model="form.jijiu" clearable placeholder="请选择">
-                <el-option v-for="item in optionJijiu" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            <el-select v-model="form.centerInfoId" clearable placeholder="请选择">
+                <el-option v-for="(item,index) in centerOptions" :key="index" :value="item.id" :label="item.name"></el-option>
             </el-select>
             </el-form-item>
             <el-form-item label="姓名" :label-width="formLabelWidth">
-            <el-input v-model="form.name" clearable></el-input>
+            <el-input v-model="form.nameLike" clearable></el-input>
             </el-form-item>
             <el-form-item label="员工工号" :label-width="formLabelWidth">
-            <el-input v-model="form.ygnum" clearable></el-input>
+            <el-input v-model="form.jobNoLike" clearable></el-input>
             </el-form-item>
-            <el-form-item label="IC卡编号" :label-width="formLabelWidth">
+            <!-- <el-form-item label="IC卡编号" :label-width="formLabelWidth">
             <el-input v-model="form.ICnum" clearable></el-input>
             </el-form-item>
             <el-form-item label="性别" :label-width="formLabelWidth">
@@ -22,9 +22,9 @@
             </el-form-item>
             <el-form-item label="手机号码" :label-width="formLabelWidth">
             <el-input v-model="form.tel" clearable></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="职务" :label-width="formLabelWidth">
-            <el-select v-model="form.job" clearable placeholder="请选择">
+            <el-select v-model="form.postLike" clearable placeholder="请选择">
                 <el-option v-for="item in optionJob" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
             </el-form-item>
@@ -43,26 +43,24 @@
 
 
 <script>
+import { personInfo } from '@/api'
 export default {
     name:'opate',
     data() {
         return {
             form: {
-                jijiu:'',
-                name: '',
-                ygnum: '',
-                ICnum: '',
-                sex: '',
-                tel:'',
-                job: '',
-                status: ''
+                centerInfoId:'',
+                nameLike: '',
+                postLike:'',
+                jobNoLike: '',
+                status: '',
             },
-             optionSex:[{
-                value:'男'
-            },{
-                value:'女'
-            }],
-            optionJijiu:[{
+            //  optionSex:[{
+            //     value:'男'
+            // },{
+            //     value:'女'
+            // }],
+            centerOptions:[{
                 value:'本部分中心'
             },{
                 value:'江北分中心'
@@ -95,8 +93,11 @@ export default {
     created() {
         console.log(this.$refs.form)
         if(this.edit) {
-            this.form = Object.assign(this.editId);
-            console.log(this.editId)
+            personInfo.personFindId(this.editId).then(res => {
+                this.form = res.data;
+            })
+            // this.form = Object.assign(this.editId);
+            // console.log(this.editId)
         }
     },
     mounted() {
@@ -107,24 +108,31 @@ export default {
         //this.form = Object.assign(this.editId);
     },
     destroyed() {
-        // 写js 内存泄漏
         
     },
     methods:{
         handleCancel() {
             this.$emit('dialogChange',false)
-            this.form={};
+            // this.form={};
         },
         addSubmit() {
-            this.$emit('dialogChange',false)
-            this.form={};
+            personInfo.personAdd(this.form).then(res => {
+                console.log(res)
+                this.$message({
+                    message:'人员添加成功',
+                    type:'success'
+                })
+                this.$emit('dialogChange',true)
+            }) 
         },
         editSubmit() {
-             this.$emit('dialogChange',false)
-            // editSave(this.editId,this.form).then(res => {
-            //     this.$emit('dialogChange',false)
-            // })
-            this.form={};
+             personInfo.personUpdate(this.editId,this.form).then(res => {
+                this.$message({
+                    message:'人员更新成功',
+                    type:'success'
+                })
+                this.$emit('dialogChange',true)
+            })
         },
         handleEditdata(data1) {
             this.dialogFormVisible = false

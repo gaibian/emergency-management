@@ -6,9 +6,12 @@ import login from './module/login'
 import aidIndex from './module/aidIndex'
 // 车辆信息模块
 import carAdmin from './module/carAdmin'
+// 人员信息模块
+import personInfo from './module/personInfo'
 export {
   login,
   aidIndex,
-  carAdmin
+  carAdmin,
+  personInfo
 }
 
