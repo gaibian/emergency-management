@@ -27,7 +27,6 @@ const errorHandle = (state,other) => {
 service.interceptors.request.use(
   // 需要设置头部信息
   config => {
-    console.log(store.getters.token)
     if (store.getters.token) {
       config.headers['authorization'] = getToken()
     }

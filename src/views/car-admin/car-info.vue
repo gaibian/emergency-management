@@ -14,11 +14,6 @@
                 <!-- <el-table-column label="所属中心" prop="jijiu"></el-table-column> -->
                 <el-table-column label="车牌号" prop="carNo"></el-table-column>
                 <el-table-column label="车编号" prop="carNumber"></el-table-column>
-                <!-- <el-table-column label="车辆状态">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.status | statusFilters}}</span>
-                    </template>
-                </el-table-column> -->
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
                         <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
@@ -30,7 +25,7 @@
                 <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
             <!-- 编辑 -->
-            <el-dialog title="车辆信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width='30%'>
+            <el-dialog title="车辆信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
                 <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate>
             </el-dialog>
         </div>
@@ -41,7 +36,9 @@ import selectCar from '@/components/selectCar'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import opate from './component/car-opate'
+// 导入车辆管理的api模块
 import { carAdmin } from '@/api'
+
 
 export default {
     name:'carAdmin',
@@ -64,22 +61,16 @@ export default {
             editId:'',
             tableData:[],
             queryForm:{
-                // 'sort.orderBy':'',
-                // 'sort.direction':'',
+                // sort:{
+                //     orderBy:'',
+                //     direction:'',
+                // },
                 centerInfoId:'',
                 carNumber:'',
                 carNo:'',
-                pageIndex:1,
-                pageSize:10,
+                pageIndex:1,  // 第几个
+                pageSize:10,  // 一页多少数据
             },
-            // listQuery: {
-            //     page: 1,
-            //     limit: 20,
-            //     importance: undefined,
-            //     title: undefined,
-            //     type: undefined,
-            //     sort: '+id'
-            // },
             options:[{
                 label:'本部分中心',
                 value:'1'
@@ -99,6 +90,7 @@ export default {
         }
     },
     created() {
+        // 默认加载列表
         this.handlePag();
     },
     methods:{
@@ -110,7 +102,6 @@ export default {
         }, 
         handleAdd() {
             this.dialogFormVisible = true;
-            this.editFlag = false;
         },
         handleDelete(id) {
             this.$confirm('确定删除该人员?','提示',{
@@ -128,12 +119,12 @@ export default {
                 })
             })
         },
-        handlePag() {
+        handlePag() {  //初始化加载列表 或者是更新列表
             this.tableLoading = true;
             carAdmin.carList(this.queryForm).then(res => {
-                 console.log(res)
-                 this.tableData = res.data.list;
-                // this.tableData = res.data.data
+                console.log(res)
+                this.tableData = res.data.list
+                this.total = res.data.total;
                 this.tableLoading = false;
             })
         },
@@ -148,9 +139,10 @@ export default {
             this.flag = data.flag;
         },
         // 编辑
-        handleEdit(index, row) {
+        handleEdit(id) {
         this.dialogFormVisible = true;
         this.editFlag = true;
+        this.editId = id
         // this.editId =  Object.assign(row);
       },
     }

@@ -1,21 +1,36 @@
 <template>
     <div>
-        <el-form :model="form" ref="form" label-width="100px">
-            <el-form-item label="所属中心" :label-width="formLabelWidth">
-                <!-- <el-input v-model="form.jijiu" clearable></el-input> -->
-                <el-select v-model="form.centerInfoId" placeholder="请选择中心信息">
-                    <el-option v-for="(item,index) in centerOptions" :key="index" :value="item.id" :label="item.name"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="车牌号" :label-width="formLabelWidth">
-            <el-input v-model="form.carNo" clearable></el-input>
-            </el-form-item>
-            <el-form-item label="车编号" :label-width="formLabelWidth">
-            <el-input v-model="form.carNumber" clearable></el-input>
-            </el-form-item>
-            <!-- <el-form-item label="车辆状态" :label-width="formLabelWidth">
-            <el-input v-model="form.status" clearable :disabled="true"></el-input>
-            </el-form-item> -->
+        <el-form :model="form" ref="form">
+            <el-row :gutter="20">
+                <el-col :span="6">
+                    <el-form-item label="所属中心">
+                        <el-select v-model="form.centerInfoId" placeholder="请选择中心信息">
+                            <el-option v-for="(item,index) in centerOptions" :key="index" :value="item.id" :label="item.name"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="车牌号">
+                        <el-input v-model="form.carNo" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label='车编号'>
+                        <el-input v-model="form.carNumber" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="状态">
+                        <el-select v-model="form.status" placeholder="请选择状态">
+                            <el-option v-for="(item,index) in statusOptions" :key="index" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            
+            
+            
+
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="handleCancel">取 消</el-button>
@@ -26,7 +41,7 @@
 
 
 <script>
-import { carAdmin } from '@/api'
+import { carAdmin,centerAdmin } from '@/api'
 export default {
     name:'opate',
     data() {
@@ -35,7 +50,15 @@ export default {
                 centerInfoId: '',
                 carNumber: '',
                 carNo: '',
+                status:'',
             },
+            statusOptions:[{
+                name:'启用',
+                id:1
+            },{
+                name:'禁用',
+                id:0
+            }],
             centerOptions:[],
             optionrole:[{
                 value:'管理员'
@@ -55,20 +78,15 @@ export default {
             default:''
         }
     },
-    created() {
-        console.log(this.$refs.form)
-
-        this.centerOptions = [{
-            name:'第一分中心',
-            id:1
-        }]
-
+    async created() {
+        await centerAdmin.centerList().then(res => {
+            this.centerOptions = res.data
+        })
         if(this.edit) {
             carAdmin.carFindId(this.editId).then(res => {
+                console.log(res)
                 this.form = res.data;
             })
-            // this.form = Object.assign(this.editId);
-            // console.log(this.editId)
         }
     },
     mounted() {
