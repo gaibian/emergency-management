@@ -3,9 +3,6 @@
 // 登录模块接口
 import login from './module/login'
 
-// 急救首页模块
-import aidIndex from './module/aidIndex'
-
 // 车辆信息模块
 import carAdmin from './module/carAdmin'
 
@@ -31,9 +28,12 @@ import roleAdmin from './module/roleAdmin'
 import powerAdmin from './module/powerAdmin'
 // 数据主机模块
 import hostAdmin from './module/hostAdmin'
-export {
+// 中心任务记录
+import taskRecord from './module/taskRecord'
+// 车辆物品模块
+import articleAdmin from './module/articleAdmin'
+export default {
   login,
-  aidIndex,
   carAdmin,
   userAdmin,
   roleAdmin,
@@ -43,6 +43,8 @@ export {
   punchInRecord,
   carWare,
   deviceType,
-  hostAdmin
+  hostAdmin,
+  taskRecord,
+  articleAdmin
 }
 

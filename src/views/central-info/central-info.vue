@@ -37,7 +37,7 @@
 </template>
 <script>
 import pageMixins from '@/mixins'
-import { centerAdmin } from '@/api'
+// import { centerAdmin } from '@/api'
 import centerOptea from './component/center-optea'
 export default {
     name:'centralinfo',
@@ -70,7 +70,7 @@ export default {
     methods:{
         handlePag() {
             this.loading = true;
-            centerAdmin.centerList().then(res => {
+            this.$api.centerAdmin.centerList().then(res => {
                 console.log(res)
                 this.tableData = res.data;
                 this.loading = false;
@@ -90,7 +90,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(()=>{
-                centerAdmin.centerDeletes(id).then(res => {
+                this.$api.centerAdmin.centerDeletes(id).then(res => {
                     this.$message({
                         message:'删除成功',
                         type:'success'

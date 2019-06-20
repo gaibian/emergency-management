@@ -29,7 +29,7 @@
                 <el-col :span="6">
                     <el-form-item label="状态">
                         <el-select v-model="form.status" placeholder="请选择状态">
-                            <el-option v-for="(item,index) in statusOptions" :label="item.name" :value="item.id" :key="index"></el-option>
+                            <el-option v-for="(item,index) in $dic.statusOptions" :label="item.name" :value="item.id" :key="index"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -53,10 +53,7 @@
         </div>
     </div>
 </template>
-
-
 <script>
-import { centerAdmin } from '@/api'
 export default {
     name:'centerOpate',
     data() {
@@ -72,13 +69,13 @@ export default {
             },
             loading:false,
             parentOptions:[],
-            statusOptions:[{
-                name:'启用',
-                id:1
-            },{
-                name:'禁用',
-                id:0
-            }],
+            // statusOptions:[{
+            //     name:'启用',
+            //     id:1
+            // },{
+            //     name:'禁用',
+            //     id:0
+            // }],
         }
     },
     props:{
@@ -92,7 +89,7 @@ export default {
         }
     },
     async created() {
-        await centerAdmin.centerList().then(res => {
+        await this.$api.centerAdmin.centerList().then(res => {
             this.parentOptions = res.data
             this.parentOptions.push({
                 name:'无',
@@ -101,7 +98,7 @@ export default {
         })
         if(this.edit) {
             this.loading = true;
-            await centerAdmin.centerFindId(this.editId).then(res => {
+            await this.$api.centerAdmin.centerFindId(this.editId).then(res => {
                 for(let i in this.form){
                     this.form[i] = res.data[i]
                 }
@@ -114,7 +111,7 @@ export default {
             this.$emit('dialogChange',false)
         },
         addSubmit() {
-            centerAdmin.centerAdd(this.form).then(res => {
+            this.$api.centerAdmin.centerAdd(this.form).then(res => {
                 this.$message({
                     message:'添加成功',
                     type:'success'
@@ -123,7 +120,7 @@ export default {
             })
         },
         editSubmit() {
-            centerAdmin.centerUpdate(this.editId,this.form).then(res => {
+            this.$api.centerAdmin.centerUpdate(this.editId,this.form).then(res => {
                 console.log(res)
                 this.$message({
                     message:'更新成功',

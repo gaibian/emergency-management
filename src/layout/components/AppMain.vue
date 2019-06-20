@@ -1,7 +1,7 @@
 <template>
   <section class="app-main" ref="appMain" :style="{height:autoMainHeight,margin:0}">
     <el-row class="page-loading" v-loading="pageLoading" v-show="pageLoading" element-loading-text="数据正在加载中..."></el-row>
-    <el-scrollbar style="height:100%;overflow-x:hidden">
+    <el-scrollbar class="main-scoollbar" style="height:100%;">
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="cachedViews">
           <router-view :key="key" />
@@ -64,6 +64,11 @@ export default {
 }
 </script>
 <style lang="scss">
+.main-scoollbar{
+  .el-scrollbar__wrap{
+    overflow-x: hidden !important;
+  }
+}
 .global-abnormal{
   cursor: pointer;
   &:hover{
@@ -73,8 +78,6 @@ export default {
 </style>
 <style lang="scss" scoped>
 .app-main {
-  /* 50= navbar  50  */
-  // min-height: calc(100vh - 50px);
   width: 100%;
   position: relative;
   overflow: hidden;

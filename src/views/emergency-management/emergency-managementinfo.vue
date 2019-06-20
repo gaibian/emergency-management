@@ -35,14 +35,11 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-dialog title="任务节点" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" width="50%" center>
-                <div style="height:500px;">
-                    <emopate v-if="dialogFormVisible" @dialogChange="handleOpate"></emopate>
-                </div>
-                
+            <el-dialog title="任务节点" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" center @close="handleClose">
+                <emopate v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></emopate>
             </el-dialog>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
         </div>
     </div>
@@ -52,6 +49,7 @@ import selectCar from '@/components/selectCar'
 import Pagination from '@/components/Pagination'
 import emopate from './component/em-opate'
 import pageMixins from '@/mixins'
+import { taskRecord } from '@/api'
 export default {
     name:'emergencyManagementinfo',
     components:{
@@ -69,86 +67,39 @@ export default {
             dialogFormVisible: false,
             value6:'',
             total:30,
+            editFlag:false,
+            editId:'',
             tableData:[],
-            listQuery: {
-                page: 1,
-                limit: 20,
-                importance: undefined,
-                title: undefined,
-                type: undefined,
+            queryForm: {
+                taskNoLike:'',
+                instructStatus:'',
+                minAge:'',
+                maxAge:'',
+                carNumberLike:'',
+                addressLike:'',
+                startTime:'',
+                endTime:'',
+                pageIndex: 1,
+                pageSize: 20,
             },
         }
     },
     created() {
-
-
-        // js 数据类型
-
-        // 1.number 2.string 3.boolean 4.object 5.array 6.symbol 7.null 8.undefind
-        var web = { // object类型  => key => 键值对 value index
-                "百度":"https://www.baidu.com",  //0
-                "搜狐":"https://www.sohu.com",  //1
-                "新浪":"https://www.sina.com",  //2
-                "淘宝":"https://www.taobao.com"  //3
-            }
-
-        var arr = ['s','b','c','d']; // 数组类型  value index
-
-        var str = 'xiaojun';
-
-        // for(let i=0;i<web.length;i++){
-        //     console.log(i)
-        //     console.log(arr[i])
-        // }
-
-        
-
-        
-
-        
-
-
-
-
-
-
-
-            
-
-        this.tableLoading = false;
-        for(let i=0;i<30;i++){
-            this.tableData.push({
-                rwnum:'125403',
-                rwtime:'2019-05-15 10:15:01',
-                jcaddress:'浙江省宁波市鄞州区钟公庙街道宁南北路365',
-                maintel:'13333333333',
-                jijiu:'中医院急救点',
-                carnum:'030',
-                plate:'浙B542WX',
-                pctime:'2019-5-15 10:16:20',
-                doctor:'张三三',
-                driver:'李四四',
-                stretcher:'刘星星',
-                carstatus:'途中待命',
-                hjreason:'有人路边晕倒',
-                GPSmileage:'320公里'
-            })
-        }
+        this.handlePag()
     },
     methods:{
         handleOpate(boo) {
-            console.log(boo)
-            this.tableLoading = true;
-            setTimeout(() => {
-                this.tableLoading = false;
-            },200)
+            if(boo) {
+                this.handlePag()
+            }
             this.dialogFormVisible = false;
         },
         handlePag(data) {
-            setTimeout(() => {
+            this.tableLoading = true;
+            taskRecord.zteTaskList(this.queryForm).then(res => {
+                this.tableData = res.data;
                 this.tableLoading = false;
-            }, 2000);
-            console.log(data)
+            })
         },
         handleClick() {
             this.flag = true;
@@ -156,10 +107,14 @@ export default {
         handlerwjd() {
             this.dialogFormVisible = true;
         },
+        handleClose() {
+            this.editFlag = false;
+            this.editId = '';
+            this.dialogFormVisible = false;
+        },
         handleChange(data) {
             if(data.keys) {
                 this.plate = data.carPlate;
-                console.log(data.keys)
             }
             this.flag = data.flag;
         },

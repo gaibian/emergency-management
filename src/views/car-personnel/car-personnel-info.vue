@@ -49,7 +49,7 @@
                 <peropate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></peropate>
             </el-dialog>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
         </div>
     </div>
@@ -78,7 +78,7 @@ export default {
         capitalize01 (post) {
 			if (post == 0) {
 				return '急救医生'
-				}
+			}
 			else if(post == 1){
 				return '担架员'
             }
@@ -88,7 +88,6 @@ export default {
         },
         
     },
- 
     data() {
         return {
             flag:false,
@@ -103,10 +102,6 @@ export default {
             value2: '',
             tableData:[],
             queryForm: {
-                // sort:{
-                //     orderBy:'',
-                //     direction:''
-                // },
                 centerInfoId:'',
                 name:'',
                 jobNo:'',
@@ -115,8 +110,8 @@ export default {
                 sex:'',
                 telphone:'',
                 status:'',
-                pageIndex:1,
-                pageSize:10,
+                page:1,
+                size:10,
             },
             centerOptions:[],
             zzztoptions:[{
