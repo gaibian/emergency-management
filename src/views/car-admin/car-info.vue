@@ -86,7 +86,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(()=>{
-                carAdmin.carDeletes(id).then(res => {
+                this.$api.carAdmin.carDeletes(id).then(res => {
                     this.$message({
                         message:'删除成功',
                         type:'success'
@@ -98,7 +98,7 @@ export default {
         },
         handlePag() {  //初始化加载列表 或者是更新列表
             this.tableLoading = true;
-            carAdmin.carList(this.queryForm).then(res => {
+            this.$api.carAdmin.carList(this.queryForm).then(res => {
                 console.log(res)
                 this.tableData = res.data.list
                 this.total = res.data.total;

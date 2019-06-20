@@ -49,7 +49,6 @@ import selectCar from '@/components/selectCar'
 import Pagination from '@/components/Pagination'
 import emopate from './component/em-opate'
 import pageMixins from '@/mixins'
-import { taskRecord } from '@/api'
 export default {
     name:'emergencyManagementinfo',
     components:{
@@ -96,7 +95,7 @@ export default {
         },
         handlePag(data) {
             this.tableLoading = true;
-            taskRecord.zteTaskList(this.queryForm).then(res => {
+            this.$api.taskRecord.zteTaskList(this.queryForm).then(res => {
                 this.tableData = res.data;
                 this.tableLoading = false;
             })

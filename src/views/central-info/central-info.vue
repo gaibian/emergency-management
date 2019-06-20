@@ -70,7 +70,7 @@ export default {
     methods:{
         handlePag() {
             this.loading = true;
-            this.$api.centerAdmin.centerList().then(res => {
+            this.$api.centerAdmin.centerTreeList().then(res => {
                 console.log(res)
                 this.tableData = res.data;
                 this.loading = false;

@@ -37,7 +37,6 @@ import pageMixins from '@/mixins'
 import Pagination from '@/components/Pagination'
 import card from './component/card'
 import hostOpate from './component/host-opate'
-import { hostAdmin } from '@/api'
 export default {
     name:'hostList',
     components:{
@@ -82,7 +81,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(()=>{
-                hostAdmin.hostDeletes(id).then(res => {
+                this.$api.hostAdmin.hostDeletes(id).then(res => {
                     this.$message({
                         message:'删除成功',
                         type:'success'
@@ -108,7 +107,7 @@ export default {
         },
         handlePag() {
             this.tableLoading = true;
-            hostAdmin.hostList(this.queryForm).then(res => {
+            this.$api.hostAdmin.hostList(this.queryForm).then(res => {
                 this.tableData = res.data;
                 //this.total = res.total
                 this.tableLoading = false;

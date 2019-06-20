@@ -6,8 +6,13 @@ import qs from 'qs'
 
 const centerAdmin = {
   // 左侧栏目
-  centerList(form) {
+  centerTreeList(form) {
     return http.get('/centerInfo/tree', {
+      params: form
+    })
+  },
+  centerList(form) {
+    return http.get('/centerInfo/list', {
       params: form
     })
   },

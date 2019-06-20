@@ -69,13 +69,6 @@ export default {
             },
             loading:false,
             parentOptions:[],
-            // statusOptions:[{
-            //     name:'启用',
-            //     id:1
-            // },{
-            //     name:'禁用',
-            //     id:0
-            // }],
         }
     },
     props:{

@@ -32,7 +32,6 @@
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import articleOpate from './component/article-opate'
-import { articleAdmin } from '@/api'
 export default {
     name:'carArticleInfo',
     components:{
@@ -65,7 +64,7 @@ export default {
     methods:{
         handlePag(data) {
             this.tableLoading = true;
-            articleAdmin.articleList(this.queryForm).then(res => {
+            this.$api.articleAdmin.articleList(this.queryForm).then(res => {
                 this.tableData = res.data;
                 //this.total = res.tot
                 this.tableLoading = false;
@@ -100,8 +99,20 @@ export default {
             this.editFlag = false;
             this.editId = ''
         },
-        handleDelete() {
-            
+        handleDelete(id) {
+            this.$confirm('确定删除该物品?','提示',{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }).then(()=>{
+                this.$api.articleAdmin.articleDeletes(id).then(res => {
+                    this.$message({
+                        message:'删除成功',
+                        type:'success'
+                    })
+                    this.handlePag();
+                })
+            })
         }
     }
 }

@@ -13,34 +13,38 @@
                     <!-- centerInfoId是接口接收字段，queryForm下面 -->
                 <el-select v-model="queryForm.centerInfoId" placeholder="请选择所属中心">
                     <!-- centerOptions是下拉数组 -->
-                    <el-option v-for="item in centerOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="item in centerOptions" :key="item.value" :label="item.name" :value="item.id"></el-option>
                 </el-select>
                 </div>
                 <div class="filter-item">
                 <el-select v-model="queryForm.status" placeholder="请选择在职状态">
-                    <el-option v-for="item in $dic.workStatusOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="item in $dic.workStatusOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
                 </div>
                 <el-button class="filter-item" type="primary">查询</el-button>
             </div>
-            <el-table :data="tableData" :header-row-class-name="'table-header-box'" :height="tableHeight" :max-height="tableHeight" stripe v-loading="tableLoading" element-loading-text="数据加载中...">
+            <el-table :data="tableData" :header-row-class-name="'table-header-box'" :max-height="tableHeight" stripe v-loading="tableLoading" element-loading-text="数据加载中...">
                 <!-- 异步请求，根据接口返回的字段是centerInfo，下面的name -->
-                <el-table-column label="急救中心" prop="centerInfo.name"></el-table-column>
+                <el-table-column label="急救中心" prop="centerInfoName"></el-table-column>
                 <el-table-column label="姓名" prop="name"></el-table-column>
                 <el-table-column label="员工工号" prop="jobNo"></el-table-column>
                 <el-table-column label="IC卡编号" prop="idcard"></el-table-column>
                 <el-table-column label="性别">
                     <template slot-scope="scope">
-                        <span>{{scope.row.sex | capitalize}}</span>
+                        <span>{{scope.row.sex | sexCapitalize}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="手机号码" prop="telphone"></el-table-column>
                 <el-table-column label="职务">
                     <template slot-scope="scope">
-                        <span>{{scope.row.post | capitalize01}}</span>
+                        <span>{{scope.row.post | postCapitalize}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="在职状态" prop="status"></el-table-column>
+                <el-table-column label="在职状态">
+                    <template slot-scope="scope">
+                        <el-tag :type="scope.row.status == 1 ? '' : 'danger'">{{scope.row.status | postStatus}}</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
                         <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
@@ -70,39 +74,37 @@ export default {
     },
     mixins:[pageMixins],
     filters: {
-		capitalize (sex) {
-			if (sex == 0) {
+		sexCapitalize (value) {
+			if (value == 0) {
 				return '女'
 				}
 			else {
 				return '男'
 			}
         },
-        capitalize01 (post) {
-			if (post == 'DOCTOR') {
-				return '急救医生'
-				}
-			else if(post == 'STRETCHER'){
-                return '担架员'
-			}
-
-            else if(post == 'DRIVER'){
-                return '驾驶员'
+        postStatus(value) {
+            if(value == 1){
+                return '在职'
+            }else{
+                return '离职'
             }
         },
-        capitalize02 (status) {
-			if (status == 0) {
-				return '离职'
-				}
-            else{
-                return '在职'
+        postCapitalize (value) {
+            switch(value) {
+                case 'DOCTOR':
+                    return '急救医生';
+                    break;
+                case 'STRETCHER':
+                    return '担架员'
+                    break;
+                case 'DRIVER':
+                    return '驾驶员';
+                    break;
             }
         },
     },
     data() {
         return {
-            flag:false,
-            plate:'',
             tableLoading:true,
             tableHeight:null,
             dialogFormVisible: false,
@@ -120,17 +122,12 @@ export default {
                 size:10,
             },
             centerOptions:[],
-            // optionStatus:[{
-            //     label:'在职',
-            //     value:1
-            // },{
-            //     label:'离职',
-            //     value:0
-            // }],
         }
     },
-
     created() {
+        this.$api.centerAdmin.centerList().then(res => {
+            this.centerOptions = res.data;
+        })
         // 默认加载列表
         this.handlePag();
     },
@@ -163,10 +160,8 @@ export default {
         handlePag() {
             this.tableLoading = true;
             this.$api.personInfo.personList(this.queryForm).then(res => {
-                 console.log(res)
                  this.tableData = res.data.records;
                  this.total = res.data.total
-                // this.tableData = res.data.data
                 this.tableLoading = false;
             })
         },

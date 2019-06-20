@@ -28,13 +28,12 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="handleCancel">取 消</el-button>
-            <el-button type="primary" @click="handleEditdata(form)">确 定</el-button>
+            <el-button type="primary" @click="handleEditdata">确 定</el-button>
         </div>
     </div>
 </template>
 
 <script>
-import { carAdmin,hostAdmin } from '@/api'
 export default {
     name:'hostOpate',
     data() {
@@ -47,13 +46,7 @@ export default {
             },
             loading:false,
             carOptions:[],
-            statusOptions:[{
-                name:'启用',
-                id:1
-            },{
-                name:'禁用',
-                id:0
-            }],
+          
         }
     },
     props:{
@@ -62,17 +55,17 @@ export default {
             default:false
         },
         editId:{
-            type:[Number,Object,String],
+            type:[Number,String],
             default:''
         }
     },
     async created() {
-        await carAdmin.carList().then(res => {
+        await this.$api.carAdmin.carList().then(res => {
             this.carOptions = res.data
         })
         if(this.edit) {
             this.loading = true;
-            await hostAdmin.hostFindId(this.editId).then(res => {
+            await this.$api.hostAdmin.hostFindId(this.editId).then(res => {
                 for(let i in this.form){
                     this.form[i] = res.data[i]
                 }
@@ -85,7 +78,7 @@ export default {
             this.$emit('dialogChange',false)
         },
         addSubmit() {
-            hostAdmin.hostAdd(this.form).then(res => {
+            this.$api.hostAdmin.hostAdd(this.form).then(res => {
                 this.$message({
                     message:'添加成功',
                     type:'success'
@@ -94,7 +87,7 @@ export default {
             })
         },
         editSubmit() {
-            hostAdmin.hostUpdate(this.editId,this.form).then(res => {
+            this.$api.hostAdmin.hostUpdate(this.editId,this.form).then(res => {
                 console.log(res)
                 this.$message({
                     message:'更新成功',

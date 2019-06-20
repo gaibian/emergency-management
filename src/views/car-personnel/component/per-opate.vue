@@ -11,34 +11,34 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="姓名">
-                        <el-input v-model="form.name" clearable></el-input>
+                        <el-input v-model="form.name" clearable placeholder="请填写姓名"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label='员工工号'>
-                        <el-input v-model="form.jobNo" clearable></el-input>
+                        <el-input v-model="form.jobNo" clearable placeholder="请填写员工工号"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label='IC卡编号'>
-                        <el-input v-model="form.idcard" clearable></el-input>
+                        <el-input v-model="form.idcard" clearable placeholder="请填写IC卡编号"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label='性别'>
-                        <el-select v-model="form.sex" placeholder="请选择状态">
+                        <el-select v-model="form.sex" placeholder="请选择性别">
                             <el-option v-for="(item,index) in $dic.sexOptions" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label='手机号码'>
-                        <el-input v-model="form.telphone" clearable></el-input>
+                        <el-input v-model="form.telphone" clearable placeholder="请填写手机号码"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="职务">
-                        <el-select v-model="form.post" placeholder="请选择状态">
+                        <el-select v-model="form.post" placeholder="请选择职务">
                             <el-option v-for="(item,index) in $dic.postOptions" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
@@ -46,7 +46,7 @@
                 <el-col :span="6">
                     <el-form-item label='状态'>
                         <el-select v-model="form.status" placeholder="请选择状态">
-                            <el-option v-for="(item,index) in $dic.workStatusOptions" :key="index" :label="item.name" :value="item.value"></el-option>
+                            <el-option v-for="(item,index) in $dic.workStatusOptions" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -58,12 +58,9 @@
         </div>
     </div>
 </template>
-
-
 <script>
-import { personInfo,centerAdmin } from '@/api'
 export default {
-    name:'opate',
+    name:'perOpate',
     data() {
         return {
             form: {
@@ -88,12 +85,12 @@ export default {
         }
     },
     async created() {
-        await centerAdmin.centerList().then(res => {
+        await this.$api.centerAdmin.centerList().then(res => {
             this.centerOptions = res.data
         })
         if(this.edit) {
             this.loading = true;
-            personInfo.personFindId(this.editId).then(res => {
+            this.$api.personInfo.personFindId(this.editId).then(res => {
                 this.form = res.data;
                 this.loading = false;
             })
@@ -104,7 +101,7 @@ export default {
             this.$emit('dialogChange',false)
         },
         addSubmit() {
-            personInfo.personAdd(this.form).then(res => {
+            this.$api.personInfo.personAdd(this.form).then(res => {
                 console.log(res)
                 this.$message({
                     message:'人员添加成功',
@@ -114,7 +111,7 @@ export default {
             }) 
         },
         editSubmit() {
-             personInfo.personUpdate(this.editId,this.form).then(res => {
+             this.$api.personInfo.personUpdate(this.editId,this.form).then(res => {
                 this.$message({
                     message:'人员更新成功',
                     type:'success'

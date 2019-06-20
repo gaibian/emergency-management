@@ -107,7 +107,6 @@
 </template>
 <script>
 import pagination from '@/components/Pagination'
-import { hostAdmin } from '@/api'
 export default {
     name:'cardInfo',
     props:{
@@ -153,12 +152,12 @@ export default {
     },
     methods:{
         handleRecord() {  // 查看主机卡片的绑定记录
-            hostAdmin.hostBindRecordFindId(this.hostId).then(res => {
+            this.$api.hostAdmin.hostBindRecordFindId(this.hostId).then(res => {
                 console.log(res)
             })
         },
         handleClick(id) {  // 解绑
-            hostAdmin.hostUnBind(id).then(res => {
+            this.$api.hostAdmin.hostUnBind(id).then(res => {
                 this.$message({
                     message:'解绑成功',
                     type:'success'
@@ -176,7 +175,7 @@ export default {
                 scope.row.modifyFlag = false;
             }else{
                 // 进行api提交
-                hostAdmin.hostBindUpdate().then(res => {
+                this.$api.hostAdmin.hostBindUpdate().then(res => {
                     this.$message({
                         message:'保存成功',
                         type:'success'
@@ -188,7 +187,7 @@ export default {
             
         },
         handleSave() {
-            hostAdmin.hostbindAdd(this.form).then(res => {
+            this.$api.hostAdmin.hostbindAdd(this.form).then(res => {
                 this.$message({
                     message:'绑定卡片成功',
                     type:'success'
@@ -205,7 +204,7 @@ export default {
         },
         handlePag() {
             this.loading = true;
-            hostAdmin.hostbindList(this.listQuery).then(res => {
+            this.$api.hostAdmin.hostbindList(this.listQuery).then(res => {
                 console.log(res)
                 this.tableData = res.data.map((item) => {
                     item.modifyFlag = true;

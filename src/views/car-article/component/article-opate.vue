@@ -35,7 +35,6 @@
     </div>
 </template>
 <script>
-import { articleAdmin,centerAdmin } from '@/api'
 export default {
     name:'articleOpate',
     data() {
@@ -69,12 +68,12 @@ export default {
         }
     },
     async created() {
-        await centerAdmin.centerList().then(res => {
+        await this.$api.centerAdmin.centerList().then(res => {
             this.centerOptions = res.data
         })
         if(this.edit) {
             this.loading = true;
-            articleAdmin.articleFindId(this.editId).then(res => {
+            this.$api.articleAdmin.articleFindId(this.editId).then(res => {
                 console.log(res)
                 this.form = res.data;
                 this.loading = false;
@@ -86,7 +85,7 @@ export default {
             this.$emit('dialogChange',false)
         },
         addSubmit() {
-            articleAdmin.articleAdd(this.form).then(res => {
+            this.$api.articleAdmin.articleAdd(this.form).then(res => {
                 console.log(res)
                 this.$message({
                     message:'物品添加成功',
@@ -96,7 +95,7 @@ export default {
             }) 
         },
         editSubmit() {
-            articleAdmin.articleUpdate(this.editId,this.form).then(res => {
+            this.$api.articleAdmin.articleUpdate(this.editId,this.form).then(res => {
                 this.$message({
                     message:'物品更新成功',
                     type:'success'

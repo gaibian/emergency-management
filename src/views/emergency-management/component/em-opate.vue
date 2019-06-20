@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { taskRecord } from '@/api'
   export default {
     name:"emOpate",
     props:{
@@ -33,7 +32,7 @@ import { taskRecord } from '@/api'
     },
     created() {
       this.loading = true;
-      taskRecord.zteTaskFindId(this.editId).then(res => {
+      this.$api.taskRecord.zteTaskFindId(this.editId).then(res => {
         console.log(res);
         this.gridData = res.data;
         this.loading = false;

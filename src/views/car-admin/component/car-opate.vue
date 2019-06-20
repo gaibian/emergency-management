@@ -22,7 +22,7 @@
                 <el-col :span="6">
                     <el-form-item label="状态">
                         <el-select v-model="form.status" placeholder="请选择状态">
-                            <el-option v-for="(item,index) in statusOptions" :key="index" :label="item.name" :value="item.id"></el-option>
+                            <el-option v-for="(item,index) in $dic.statusOptions" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -35,7 +35,6 @@
     </div>
 </template>
 <script>
-import { carAdmin,centerAdmin } from '@/api'
 export default {
     name:'opate',
     data() {
@@ -46,13 +45,6 @@ export default {
                 carNo: '',
                 status:'',
             },
-            statusOptions:[{
-                name:'启用',
-                id:1
-            },{
-                name:'禁用',
-                id:0
-            }],
             loading:false,
             centerOptions:[],
         }
@@ -68,12 +60,12 @@ export default {
         }
     },
     async created() {
-        await centerAdmin.centerList().then(res => {
+        await this.$api.centerAdmin.centerList().then(res => {
             this.centerOptions = res.data
         })
         if(this.edit) {
             this.loading = true;
-            carAdmin.carFindId(this.editId).then(res => {
+            this.$api.carAdmin.carFindId(this.editId).then(res => {
                 console.log(res)
                 this.form = res.data;
                 this.loading = false;
@@ -85,7 +77,7 @@ export default {
             this.$emit('dialogChange',false)
         },
         addSubmit() {
-            carAdmin.carAdd(this.form).then(res => {
+            this.$api.carAdmin.carAdd(this.form).then(res => {
                 console.log(res)
                 this.$message({
                     message:'车辆添加成功',
@@ -95,7 +87,7 @@ export default {
             }) 
         },
         editSubmit() {
-            carAdmin.carUpdate(this.editId,this.form).then(res => {
+            this.$api.carAdmin.carUpdate(this.editId,this.form).then(res => {
                 this.$message({
                     message:'车辆更新成功',
                     type:'success'
