@@ -8,7 +8,7 @@ export const carArticle = {
     path: 'carArticleInfo',
     name: 'carArticleInfo',
     component: () => import('@/views/car-article/car-article-info.vue'),
-    meta: { title: '物品实时信息', icon: 'goods' }
+    meta: { title: '物品信息', icon: 'goods' }
   },
   {
     path: 'carArticleChange',

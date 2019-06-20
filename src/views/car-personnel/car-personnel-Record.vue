@@ -1,6 +1,6 @@
 <template>
     <div class="car-collection-box main-page" ref="mainContainer">
-        <select-presonnel :flag="flag" @change="handleChange"></select-presonnel>
+        <!-- <select-presonnel :flag="flag" @change="handleChange"></select-presonnel> -->
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
                 <div class="filter-item" style="width:300px;">
@@ -44,7 +44,6 @@ export default {
     mixins:[pageMixins],
     data() {
         return {
-            fenbu:'',
             flag:false,
             plate:'',
             tableLoading:true,
@@ -52,40 +51,23 @@ export default {
             value6:'',
             total:30,
             tableData:[],
-            listQuery: {
-                page: 1,
-                limit: 20,
-                importance: undefined,
-                title: undefined,
-                type: undefined,
-                sort: '+id'
+            queryForm: {
+                
             },
         }
     },
     created() {
-        this.tableLoading = false;
-        for(let i=0;i<30;i++){
-            this.tableData.push({
-                jijiu:'中医院急救点',
-                plate:'浙B542WX',
-                num:'0128',
-                name:'张三',
-                peoplenum:'0211',
-                job:'急救医生',
-                state:'上班',
-                time:'2019-5-30 08:51:01'
-            })
-        } 
+        this.handlePag();
     },
     methods:{
         handlePag(data) {
-            setTimeout(() => {
+            this.tableLoading = true;
+            punchInRecord.punchInRecordList(this.queryForm).then(res => {
+                console.log(res)
+                this.tableData = res.data.list
+                this.total = res.data.total;
                 this.tableLoading = false;
-            }, 2000);
-            console.log(data)
-        },
-        handleClick() {
-            this.flag = true;
+            })
         },
         handleChange(data) {
             if(data.keys) {
@@ -93,12 +75,6 @@ export default {
                 console.log(data.keys)
             }
             this.flag = data.flag;
-        },
-        handleEdit() {
-            console.log('编辑了')
-        },
-        handleDelete() {
-            console.log('删除了')
         }
     }
 }

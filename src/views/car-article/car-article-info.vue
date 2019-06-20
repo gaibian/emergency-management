@@ -1,13 +1,14 @@
 <template>
     <div class="car-collection-box main-page" ref="mainContainer">
-        <select-car :flag="flag" @change="handleChange"></select-car>
+        <!-- <select-car :flag="flag" @change="handleChange"></select-car> -->
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
-                <div class="filter-item" style="width:300px;">
+                <!-- <div class="filter-item" style="width:300px;">
                     <el-input v-model="plate" placeholder="车牌号">
                         <el-button slot="append" icon="el-icon-search" @click="handleClick">选择车辆查询</el-button>
                     </el-input>
-                </div>
+                </div> -->
+                <el-button class="filter-item" type="primary" @click="handleAdd">添加物品</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                 <el-table-column label="所属中心" prop="jijiu"></el-table-column>
@@ -17,20 +18,27 @@
                 <el-table-column label="状态" prop="state"></el-table-column>
             </el-table>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
+
         </div>
+        <el-dialog title="物品信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="handleClose">
+            <article-opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></article-opate>
+        </el-dialog>
     </div>
 </template>
 <script>
-import selectCar from '@/components/selectCar'
+// import selectCar from '@/components/selectCar'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
+import articleOpate from './component/article-opate'
+import { articleAdmin } from '@/api'
 export default {
     name:'carArticleInfo',
     components:{
-        selectCar,
-        Pagination
+        // selectCar,
+        Pagination,
+        articleOpate
     },
     mixins:[pageMixins],
     data() {
@@ -38,70 +46,62 @@ export default {
             fenbu:'',
             flag:false,
             plate:'',
-            tableLoading:true,
+            tableLoading:false,
             tableHeight:null,
+            editId:'',
+            editFlag:false,
+            dialogFormVisible:false,
             total:30,
             tableData:[],
-            listQuery: {
+            queryForm: {
                 page: 1,
-                limit: 20,
-                importance: undefined,
-                title: undefined,
-                type: undefined,
-                sort: '+id'
+                size: 20,
             },
-            options:[{
-                label:'本部分中心',
-                value:'1'
-            },{
-                label:'江北分中心',
-                value:'2'
-            }]
-        }
-    },
-    filters:{
-        statusFilters(val) {
-            switch(val) {
-                case '1':
-                return '待命中'
-                break;
-            }
         }
     },
     created() {
-        this.tableLoading = false;
-        for(let i=0;i<20;i++){
-            this.tableData.push({
-                jijiu:'中医院急救点',
-                plate:'浙B542WX',
-                carnum:'0128',
-                articleName:'软担架',
-                state:'在位'
-            })
-        }
+        this.handlePag();
     },
     methods:{
         handlePag(data) {
-            setTimeout(() => {
+            this.tableLoading = true;
+            articleAdmin.articleList(this.queryForm).then(res => {
+                this.tableData = res.data;
+                //this.total = res.tot
                 this.tableLoading = false;
-            }, 2000);
-            console.log(data)
+            })
         },
-        handleClick() {
-            this.flag = true;
-        },
-        handleChange(data) {
-            if(data.keys) {
-                this.plate = data.carPlate;
-                console.log(data.keys)
+        handleOpate(oob) {
+            if(oob) {
+                this.handlePag();
             }
-            this.flag = data.flag;
+            this.dialogFormVisible = false;
+        },
+        // handleClick() {
+        //     this.flag = true;
+        // },
+        // handleChange(data) {
+        //     if(data.keys) {
+        //         this.plate = data.carPlate;
+        //         console.log(data.keys)
+        //     }
+        //     this.flag = data.flag;
+        // },
+        handleAdd() {
+            this.dialogFormVisible = true;
         },
         handleEdit() {
-            console.log('编辑了')
+            this.dialogFormVisible = true;
+            this.editFlag = true;
+            this.editId = id
+        },
+        handleClose() {
+            this.dialogFormVisible = false;
+            this.editFlag = false;
+            this.editId = ''
         },
         handleDelete() {
-            console.log('删除了')
+            
         }
     }
 }

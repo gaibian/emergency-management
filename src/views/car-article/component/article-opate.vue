@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-form :model="form" ref="form" v-loading="loading">
+        <el-form :model="form" ref="form" v-loading="loading" element-loading-text="数据加载中...">
             <el-row :gutter="20">
                 <el-col :span="6">
                     <el-form-item label="所属中心">
@@ -10,46 +10,22 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="姓名">
+                    <el-form-item label="物品编号">
+                        <el-input v-model="form.cardNo" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label='物品名称'>
                         <el-input v-model="form.name" clearable></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="6">
-                    <el-form-item label='员工工号'>
-                        <el-input v-model="form.jobNo" clearable></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label='IC卡编号'>
-                        <el-input v-model="form.idcard" clearable></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label='性别'>
-                        <el-select v-model="form.sex" placeholder="请选择状态">
-                            <el-option v-for="(item,index) in $dic.sexOptions" :key="index" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label='手机号码'>
-                        <el-input v-model="form.telphone" clearable></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="职务">
-                        <el-select v-model="form.post" placeholder="请选择状态">
-                            <el-option v-for="(item,index) in $dic.postOptions" :key="index" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label='状态'>
+                <!-- <el-col :span="6">
+                    <el-form-item label="状态">
                         <el-select v-model="form.status" placeholder="请选择状态">
-                            <el-option v-for="(item,index) in $dic.workStatusOptions" :key="index" :label="item.name" :value="item.value"></el-option>
+                            <el-option v-for="(item,index) in statusOptions" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
-                </el-col>
+                </el-col> -->
             </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -58,21 +34,26 @@
         </div>
     </div>
 </template>
-
-
 <script>
-import { personInfo,centerAdmin } from '@/api'
+import { articleAdmin,centerAdmin } from '@/api'
 export default {
-    name:'opate',
+    name:'articleOpate',
     data() {
         return {
             form: {
-                centerInfoId:'',
+                centerInfoId: '',
+                cardNo: '',
                 name: '',
-                post:'',
-                jobNo: '',
-                status: '',
+                no:'',
+                spec:'',
             },
+            // statusOptions:[{
+            //     name:'启用',
+            //     id:1
+            // },{
+            //     name:'禁用',
+            //     id:0
+            // }],
             loading:false,
             centerOptions:[],
         }
@@ -93,7 +74,8 @@ export default {
         })
         if(this.edit) {
             this.loading = true;
-            personInfo.personFindId(this.editId).then(res => {
+            articleAdmin.articleFindId(this.editId).then(res => {
+                console.log(res)
                 this.form = res.data;
                 this.loading = false;
             })
@@ -104,32 +86,31 @@ export default {
             this.$emit('dialogChange',false)
         },
         addSubmit() {
-            personInfo.personAdd(this.form).then(res => {
+            articleAdmin.articleAdd(this.form).then(res => {
                 console.log(res)
                 this.$message({
-                    message:'人员添加成功',
+                    message:'物品添加成功',
                     type:'success'
                 })
                 this.$emit('dialogChange',true)
             }) 
         },
         editSubmit() {
-             personInfo.personUpdate(this.editId,this.form).then(res => {
+            articleAdmin.articleUpdate(this.editId,this.form).then(res => {
                 this.$message({
-                    message:'人员更新成功',
+                    message:'物品更新成功',
                     type:'success'
                 })
                 this.$emit('dialogChange',true)
             })
         },
         handleEditdata() {
-            // 添加提交
             if(!this.edit) {
                 this.addSubmit();
             }else{
                 this.editSubmit()
             }
-        },
+        }
     }
 }
 </script>

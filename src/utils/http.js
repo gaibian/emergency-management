@@ -48,9 +48,7 @@ service.interceptors.response.use(
   //res => res.status === 200 ? Promise.resolve(res.data) : Promise.reject(res),
   res => {
     if(res.status === 200) {
-      console.log(res.data.code)
       if(res.data.code === -1) {
-        console.log('jinlail')
         Message({
           message:res.data.message,
           type:'error'

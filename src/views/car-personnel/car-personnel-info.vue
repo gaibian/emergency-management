@@ -18,7 +18,7 @@
                 </div>
                 <div class="filter-item">
                 <el-select v-model="queryForm.status" placeholder="请选择在职状态">
-                    <el-option v-for="item in optionStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="item in $dic.workStatusOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
                 </div>
                 <el-button class="filter-item" type="primary">查询</el-button>
@@ -52,7 +52,7 @@
                 <peropate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></peropate>
             </el-dialog>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
         </div>
     </div>
@@ -83,8 +83,9 @@ export default {
 				return '急救医生'
 				}
 			else if(post == 'STRETCHER'){
-				return '担架员'
-            }
+                return '担架员'
+			}
+
             else if(post == 'DRIVER'){
                 return '驾驶员'
             }
@@ -98,7 +99,6 @@ export default {
             }
         },
     },
- 
     data() {
         return {
             flag:false,
@@ -111,17 +111,13 @@ export default {
             total:30,
             tableData:[],
             queryForm: {
-                // sort:{
-                //     orderBy:'',
-                //     direction:''
-                // },
                 centerInfoId:'',
                 nameLike:'',
                 jobNoLike:'',
                 post:'',
                 status:'',
-                pageIndex:1,
-                pageSize:10,
+                page:1,
+                size:10,
             },
             centerOptions:[],
             // optionStatus:[{

@@ -54,14 +54,7 @@ export default {
                 title: undefined,
                 type: undefined,
                 sort: '+id'
-            },
-            options:[{
-                label:'本部分中心',
-                value:'1'
-            },{
-                label:'江北分中心',
-                value:'2'
-            }]
+            }
         }
     },
 

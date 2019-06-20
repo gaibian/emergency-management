@@ -22,7 +22,7 @@
                 </el-table-column>
             </el-table>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
             <!-- 编辑 -->
             <el-dialog title="车辆信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
@@ -61,8 +61,8 @@ export default {
                 centerInfoId:'',
                 carNumber:'',
                 carNo:'',
-                pageIndex:1,  // 第几个
-                pageSize:10,  // 一页多少数据
+                page:1,  // 第几个
+                size:10,  // 一页多少数据
             },
         }
     },
