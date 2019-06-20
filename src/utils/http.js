@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+import router from '../router';
 const CancelToken = axios.CancelToken;
 
 // 创建axios实例
@@ -36,16 +37,25 @@ service.interceptors.request.use(
 )
 // response 拦截器
 service.interceptors.response.use(
-  res => res.status === 200 ? Promise.resolve(res.data) : Promise.reject(res),
-  // res => {
-  //   if(res.status === 200) { // 数据返回正常
-  //     // let data = res.data;
-  //     console.log(res.data)
-  //     Promise.resolve(res)
-  //   }else{
-  //     Promise.reject(res)
-  //   }
-  // },
+  //res => res.status === 200 ? Promise.resolve(res.data) : Promise.reject(res),
+  res => {
+    if(res.status === 200) {
+      if(res.data.code === -1) {
+        this.$message({
+          message:res.message,
+          type:'error'
+        })
+      }else{
+        return Promise.resolve(res.data)
+      }
+    }else if(res.status === 401){
+        // 跳转到登录页
+        router.push({path:'/login'})
+        // 需要清除一些登录信息 并刷新页面
+    }else{
+      return Promise.reject(res)
+    }
+  },
   // 请求失败
   error => {
     // console.log('进去了吗')

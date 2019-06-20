@@ -34,15 +34,18 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login.login({
-        username:username,
-        password:password
-      }).then(res => {
-        console.log(res)
-        commit('SET_TOKEN',res.user.username)
-        setToken(res.token)
-        resolve()
-      })
+      // login.login({
+      //   username:username,
+      //   password:password
+      // }).then(res => {
+      //   console.log(res)
+      //   commit('SET_TOKEN',res.user.username)
+      //   setToken(res.token)
+      //   resolve()
+      // })
+      commit('SET_TOKEN','system')
+      setToken('xiaojun')
+      resolve()
     })
   },
 

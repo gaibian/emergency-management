@@ -1,38 +1,56 @@
 <template>
     <div>
-        <el-form :model="form" ref="form" label-width="100px">
-            <el-form-item label="所属中心" :label-width="formLabelWidth">
-            <el-select v-model="form.jijiu" clearable placeholder="请选择">
-                <el-option v-for="item in optionJijiu" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-            </el-form-item>
-            <el-form-item label="姓名" :label-width="formLabelWidth">
-            <el-input v-model="form.name" clearable></el-input>
-            </el-form-item>
-            <el-form-item label="员工工号" :label-width="formLabelWidth">
-            <el-input v-model="form.ygnum" clearable></el-input>
-            </el-form-item>
-            <el-form-item label="IC卡编号" :label-width="formLabelWidth">
-            <el-input v-model="form.ICnum" clearable></el-input>
-            </el-form-item>
-            <el-form-item label="性别" :label-width="formLabelWidth">
-            <el-select v-model="form.sex" clearable placeholder="请选择">
-                <el-option v-for="item in optionSex" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-            </el-form-item>
-            <el-form-item label="手机号码" :label-width="formLabelWidth">
-            <el-input v-model="form.tel" clearable></el-input>
-            </el-form-item>
-            <el-form-item label="职务" :label-width="formLabelWidth">
-            <el-select v-model="form.job" clearable placeholder="请选择">
-                <el-option v-for="item in optionJob" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-            </el-form-item>
-            <el-form-item label="在职状态" :label-width="formLabelWidth">
-            <el-select v-model="form.status" clearable placeholder="请选择">
-                <el-option v-for="item in optionStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
-            </el-select>
-            </el-form-item>
+        <el-form :model="form" ref="form">
+            <el-row :gutter="20">
+                <el-col :span="6">
+                    <el-form-item label="所属中心">
+                        <el-select v-model="form.centerInfoId" placeholder="请选择中心信息">
+                            <el-option v-for="(item,index) in centerOptions" :key="index" :value="item.id" :label="item.name"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="姓名">
+                        <el-input v-model="form.name" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label='员工工号'>
+                        <el-input v-model="form.post" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label='IC卡编号'>
+                        <el-input v-model="form.jobNo" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label='性别'>
+                        <el-select v-model="form.sex" placeholder="请选择状态">
+                            <el-option v-for="(item,index) in optionSex" :key="index" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label='手机号码'>
+                        <el-input v-model="form.telphone" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="职务">
+                        <el-select v-model="form.post" placeholder="请选择状态">
+                            <el-option v-for="(item,index) in optionJob" :key="index" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="在职状态">
+                        <el-select v-model="form.status" placeholder="请选择状态">
+                            <el-option v-for="(item,index) in optionStatus" :key="index" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="handleCancel">取 消</el-button>
@@ -43,43 +61,43 @@
 
 
 <script>
+import { personInfo,centerAdmin } from '@/api'
 export default {
     name:'opate',
     data() {
         return {
             form: {
-                jijiu:'',
+                centerInfoId:'',
                 name: '',
-                ygnum: '',
-                ICnum: '',
-                sex: '',
-                tel:'',
-                job: '',
-                status: ''
+                postLike:'',
+                jobNo: '',
+                status: '',
             },
+            centerOptions:[],
              optionSex:[{
-                value:'男'
+                name:'女',
+                id:0
             },{
-                value:'女'
-            }],
-            optionJijiu:[{
-                value:'本部分中心'
-            },{
-                value:'江北分中心'
+                name:'男',
+                id:1
             }],
              optionJob:[{
-                value:'急救医生'
+                name:'急救医生',
+                id:0
             },{
-                value:'担架员'
+                name:'担架员',
+                id:1
             },{
-                value:'驾驶员'
+                name:'驾驶员',
+                id:2
             }],
             optionStatus:[{
-                value:'在职'
+                name:'在职',
+                id:0
             },{
-                value:'离职'
+                name:'离职',
+                id:1
             }],
-            formLabelWidth: '100px',
         }
     },
     props:{
@@ -92,11 +110,17 @@ export default {
             default:''
         }
     },
-    created() {
-        console.log(this.$refs.form)
+
+    async created() {
+        await centerAdmin.centerList().then(res => {
+            this.centerOptions = res.data
+        })
         if(this.edit) {
-            this.form = Object.assign(this.editId);
-            console.log(this.editId)
+            personInfo.personFindId(this.editId).then(res => {
+                this.form = res.data;
+            })
+            // this.form = Object.assign(this.editId);
+            // console.log(this.editId)
         }
     },
     mounted() {
@@ -107,24 +131,31 @@ export default {
         //this.form = Object.assign(this.editId);
     },
     destroyed() {
-        // 写js 内存泄漏
         
     },
     methods:{
         handleCancel() {
             this.$emit('dialogChange',false)
-            this.form={};
+            // this.form={};
         },
         addSubmit() {
-            this.$emit('dialogChange',false)
-            this.form={};
+            personInfo.personAdd(this.form).then(res => {
+                console.log(res)
+                this.$message({
+                    message:'人员添加成功',
+                    type:'success'
+                })
+                this.$emit('dialogChange',true)
+            }) 
         },
         editSubmit() {
-             this.$emit('dialogChange',false)
-            // editSave(this.editId,this.form).then(res => {
-            //     this.$emit('dialogChange',false)
-            // })
-            this.form={};
+             personInfo.personUpdate(this.editId,this.form).then(res => {
+                this.$message({
+                    message:'人员更新成功',
+                    type:'success'
+                })
+                this.$emit('dialogChange',true)
+            })
         },
         handleEditdata(data1) {
             this.dialogFormVisible = false

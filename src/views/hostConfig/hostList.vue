@@ -14,17 +14,21 @@
                 <el-table-column label="软件版本号" prop="rVersionNum"></el-table-column>
                 <el-table-column label="操作" fixed="right" min-width="130">
                     <template slot-scope="scope">
-                        <el-button type="primary" size="mini">编辑</el-button>
-                        <el-button type="primary" size="mini" @click="handleSee(scope)">卡片信息</el-button>
+                        <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
+                        <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
+                        <el-button type="primary" size="mini" @click="handleSee(scope.row.id)">卡片信息</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
         </div>
-        <el-dialog title="卡片信息" close-on-click-modal v-model="dialogFormVisible" width="800px" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
-            <card v-if="dialogFormVisible"></card>
+        <el-dialog title="主机信息" close-on-click-modal v-model="dialogEditVisible" width="800px" :visible.sync="dialogEditVisible" @close="handleClose">
+            <host-opate :edit="editFlag" v-if="dialogEditVisible" :editId="editId" @dialogChange="handleOpate"></host-opate>
+        </el-dialog>
+        <el-dialog title="卡片信息" close-on-click-modal v-model="dialogFormVisible" width="800px" :visible.sync="dialogFormVisible">
+            <card :hostId="hostId" v-if="dialogFormVisible"></card>
         </el-dialog>
     </div>
 </template>
@@ -32,36 +36,32 @@
 import pageMixins from '@/mixins'
 import Pagination from '@/components/Pagination'
 import card from './component/card'
+import hostOpate from './component/host-opate'
+import { hostAdmin } from '@/api'
 export default {
     name:'hostList',
     components:{
         Pagination,
-        card
+        card,
+        hostOpate
     },
     mixins:[pageMixins],
     data() {
         return {
             total:29,
-            listQuery:{
-                page: 1,
-                limit: 20,
-                importance: undefined,
-                title: undefined,
-                type: undefined,
-                sort: '+id'
+            editFlag:false,
+            editId:'',
+            hostId:'',
+            queryForm:{
+                hostNumber:'',
+                pageIndex: 1,
+                pageSize: 20,
             },
+            dialogEditVisible:false,
             dialogFormVisible:false,
             tableLoading:true,
             tableHeight:null,
-            tableData:[{
-                configNum:'278986',
-                plateId:28,
-                currentStatus:'正常',
-                synStatus:'正常',
-                lastTime:'2019-09-26',
-                gVersionNum:'NJ98086',
-                rVersionNum:'NJ98267',
-            }]
+            tableData:[]
         }
     },
     created() {
@@ -69,16 +69,50 @@ export default {
     },
     methods:{
         handleAdd() {
-
+            this.dialogEditVisible = true;
         },
-        handleSee(scope) {
+        handleEdit(id) {
+            this.dialogEditVisible = true;
+            this.editFlag = true;
+            this.editId = id;
+        },
+        handleDelete(id) {
+            this.$confirm('确定删除该数据主机?','提示',{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+            }).then(()=>{
+                hostAdmin.hostDeletes(id).then(res => {
+                    this.$message({
+                        message:'删除成功',
+                        type:'success'
+                    })
+                    this.handlePag();
+                })
+            })
+        },
+        handleClose() {
+            this.editFlag = false;
+            this.editId = '';
+            this.dialogEditVisible = false;
+        },
+        handleOpate(boo) {
+            if(boo) {
+                this.handlePag();
+            }
+            this.dialogEditVisible = false;
+        },
+        handleSee(id) {
+            this.hostId = id;
             this.dialogFormVisible = true;
         },
         handlePag() {
             this.tableLoading = true;
-            setTimeout(() => {
+            hostAdmin.hostList(this.queryForm).then(res => {
+                this.tableData = res.data;
+                //this.total = res.total
                 this.tableLoading = false;
-            }, 2000);
+            })
         },
     }
 }

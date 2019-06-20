@@ -6,6 +6,10 @@ import login from './module/login'
 import aidIndex from './module/aidIndex'
 // 车辆信息模块
 import carAdmin from './module/carAdmin'
+
+// 人员信息模块
+import personInfo from './module/personInfo'
+
 // 中心信息模块
 import centerAdmin from './module/centerAdmin'
 // 用户信息模块
@@ -14,6 +18,8 @@ import userAdmin from './module/userAdmin'
 import roleAdmin from './module/roleAdmin'
 // 权限模块
 import powerAdmin from './module/powerAdmin'
+// 数据主机模块
+import hostAdmin from './module/hostAdmin'
 export {
   login,
   aidIndex,
@@ -21,6 +27,8 @@ export {
   centerAdmin,
   userAdmin,
   roleAdmin,
-  powerAdmin
+  powerAdmin,
+  personInfo,
+  hostAdmin
 }
 

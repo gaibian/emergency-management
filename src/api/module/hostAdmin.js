@@ -1,0 +1,44 @@
+import http from '@/utils/http'
+const hostAdmin = {
+  // 左侧栏目
+  hostList(form) {  // 获取列表
+    return http.get('/dataHost/list', {
+      params: form
+    })
+  },
+  hostAdd(params) {  // 添加列表数据
+    return http.post('/dataHost/create', params)
+  },
+  hostDeletes(ids) {  // 删除列表数据
+    return http.post(`/dataHost/deleteBatch/${ids}`)
+  },
+  hostFindId(id) {  // 查询列表数据
+    return http.get(`/dataHost/findById/${id}`)
+  },
+  hostUpdate(id, form) {  //更新列表数据
+    return http.post(`/dataHost/update/${id}`, form)
+  },
+  hostBindList(form) {  // 获取列表
+    return http.get('/hostbindCard/list', {
+      params: form
+    })
+  },
+  hostBindAdd(params) {  // 添加列表数据
+    return http.post('/hostbindCard/create', params)
+  },
+  hostBindDeletes(ids) {  // 删除列表数据
+    return http.post(`/hostbindCard/deleteBatch/${ids}`)
+  },
+  hostBindFindId(id) {  // 查询列表数据
+    return http.get(`/hostbindCard/findById/${id}`)
+  },
+  hostBindUpdate(id, form) {  //更新列表数据
+    return http.post(`/hostbindCard/update/${id}`, form)
+  },
+  hostUnBind(id) {
+    return http.get(`/hostbindCard/unbind/${id}`)
+  }
+
+}
+
+export default hostAdmin

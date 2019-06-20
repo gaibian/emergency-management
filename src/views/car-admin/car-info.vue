@@ -1,17 +1,17 @@
 <template>
     <div class="car-collection-box main-page" ref="mainContainer">
-        <select-car :flag="flag" :radio="true" @change="handleChange"></select-car>
+        <!-- <select-car :flag="flag" :radio="true" @change="handleChange"></select-car> -->
         <div class="table-box">
             <div class="top-info-box filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加车辆</el-button>
                 <div class="filter-item" style="width:300px;">
-                    <el-input v-model="plate" placeholder="车牌号">
-                        <el-button slot="append" icon="el-icon-search" @click="handleClick">选择车辆查询</el-button>
+                    <el-input v-model="queryForm.carNo" placeholder="车牌号">
+                        <el-button slot="append" icon="el-icon-search">选择车辆查询</el-button>
                     </el-input>
                 </div>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-                <!-- <el-table-column label="所属中心" prop="jijiu"></el-table-column> -->
+                <el-table-column label="所属中心" prop="centerInfoId"></el-table-column>
                 <el-table-column label="车牌号" prop="carNo"></el-table-column>
                 <el-table-column label="车编号" prop="carNumber"></el-table-column>
                 <el-table-column label="操作" fixed="right">
@@ -50,9 +50,6 @@ export default {
     mixins:[pageMixins],
     data() {
         return {
-            fenbu:'',
-            flag:false,
-            plate:'',
             total:30,
             tableLoading:true,
             tableHeight:null,
@@ -61,32 +58,12 @@ export default {
             editId:'',
             tableData:[],
             queryForm:{
-                // sort:{
-                //     orderBy:'',
-                //     direction:'',
-                // },
                 centerInfoId:'',
                 carNumber:'',
                 carNo:'',
                 pageIndex:1,  // 第几个
                 pageSize:10,  // 一页多少数据
             },
-            options:[{
-                label:'本部分中心',
-                value:'1'
-            },{
-                label:'江北分中心',
-                value:'2'
-            }]
-        }
-    },
-    filters:{
-        statusFilters(val) {
-            switch(val) {
-                case '1':
-                return '待命中'
-                break;
-            }
         }
     },
     created() {
@@ -104,7 +81,7 @@ export default {
             this.dialogFormVisible = true;
         },
         handleDelete(id) {
-            this.$confirm('确定删除该人员?','提示',{
+            this.$confirm('确定删除该车辆?','提示',{
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning',
@@ -128,22 +105,11 @@ export default {
                 this.tableLoading = false;
             })
         },
-        handleClick() {
-            this.flag = true;
-        },
-        handleChange(data) {
-            if(data.keys) {
-                this.plate = data.carPlate;
-                console.log(data.keys)
-            }
-            this.flag = data.flag;
-        },
         // 编辑
         handleEdit(id) {
         this.dialogFormVisible = true;
         this.editFlag = true;
         this.editId = id
-        // this.editId =  Object.assign(row);
       },
     }
 }
