@@ -44,8 +44,10 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="在职状态">
-                        <el-input v-model="form.telphone" :disabled="true" placeholder="在职"></el-input>
+                    <el-form-item label='状态'>
+                        <el-select v-model="form.status" placeholder="请选择状态">
+                            <el-option v-for="(item,index) in optionStatus" :key="index" :label="item.name" :value="item.value"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -89,6 +91,13 @@ export default {
             },{
                 name:'驾驶员',
                 id:'DRIVER'
+            }],
+            optionStatus:[{
+                name:'离职',
+                value:0
+            },{
+                name:'在职',
+                value:1
             }]
         }
     },

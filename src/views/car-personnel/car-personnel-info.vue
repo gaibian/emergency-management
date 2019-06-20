@@ -4,24 +4,27 @@
             <div class="filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加人员</el-button>
                 <div class="filter-item" style="width:200px;">
-                    <el-input v-model="plate" placeholder="请输入姓名"></el-input>
+                    <el-input  v-model="queryForm.name" placeholder="请输入姓名"></el-input>
                 </div>
                 <div class="filter-item" style="width:200px;">
-                    <el-input v-model="plate" placeholder="请输入工号"></el-input>
+                    <el-input v-model="queryForm.jobNo" placeholder="请输入工号"></el-input>
                 </div>
                 <div class="filter-item">
-                <el-select v-model="value1" placeholder="请选择所属中心">
+                    <!-- centerInfoId是接口接收字段，queryForm下面 -->
+                <el-select v-model="queryForm.centerInfoId" placeholder="请选择所属中心">
+                    <!-- centerOptions是下拉数组 -->
                     <el-option v-for="item in centerOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
                 </div>
                 <div class="filter-item">
-                <el-select v-model="value2" placeholder="请选择在职状态">
-                    <el-option v-for="item in zzztoptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                <el-select v-model="queryForm.status" placeholder="请选择在职状态">
+                    <el-option v-for="item in optionStatus" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
                 </div>
                 <el-button class="filter-item" type="primary">查询</el-button>
             </div>
-            <el-table :data="tableData" :header-row-class-name="'table-header-box'" :max-height="tableHeight" stripe v-loading="tableLoading" element-loading-text="数据加载中...">
+            <el-table :data="tableData" :header-row-class-name="'table-header-box'" :height="tableHeight" :max-height="tableHeight" stripe v-loading="tableLoading" element-loading-text="数据加载中...">
+                <!-- 异步请求，根据接口返回的字段是centerInfo，下面的name -->
                 <el-table-column label="急救中心" prop="centerInfo.name"></el-table-column>
                 <el-table-column label="姓名" prop="name"></el-table-column>
                 <el-table-column label="员工工号" prop="jobNo"></el-table-column>
@@ -58,7 +61,7 @@
 import Pagination from '@/components/Pagination'
 import peropate from './component/per-opate'
 import pageMixins from '@/mixins'
-import { personInfo,centerAdmin } from '@/api'
+
 export default {
     name:'carPersonnelInfo',
     components:{
@@ -76,17 +79,24 @@ export default {
 			}
         },
         capitalize01 (post) {
-			if (post == 0) {
+			if (post == 'DOCTOR') {
 				return '急救医生'
 				}
-			else if(post == 1){
+			else if(post == 'STRETCHER'){
 				return '担架员'
             }
-            else{
+            else if(post == 'DRIVER'){
                 return '驾驶员'
             }
         },
-        
+        capitalize02 (status) {
+			if (status == 0) {
+				return '离职'
+				}
+            else{
+                return '在职'
+            }
+        },
     },
  
     data() {
@@ -99,8 +109,6 @@ export default {
             editFlag:false,
             editId:'',
             total:30,
-            value1: '',
-            value2: '',
             tableData:[],
             queryForm: {
                 // sort:{
@@ -108,24 +116,21 @@ export default {
                 //     direction:''
                 // },
                 centerInfoId:'',
-                name:'',
-                jobNo:'',
+                nameLike:'',
+                jobNoLike:'',
                 post:'',
-                idcard:'',
-                sex:'',
-                telphone:'',
                 status:'',
                 pageIndex:1,
                 pageSize:10,
             },
             centerOptions:[],
-            zzztoptions:[{
-                value:'在职',
-                id:1
-            },{
-                value:'离职',
-                id:0
-            }],
+            // optionStatus:[{
+            //     label:'在职',
+            //     value:1
+            // },{
+            //     label:'离职',
+            //     value:0
+            // }],
         }
     },
 
@@ -149,7 +154,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(()=>{
-                personInfo.personDeletes(id).then(res => {
+                this.$api.personInfo.personDeletes(id).then(res => {
                     this.$message({
                         message:'删除成功',
                         type:'success'
@@ -161,9 +166,9 @@ export default {
         },
         handlePag() {
             this.tableLoading = true;
-            personInfo.personList(this.queryForm).then(res => {
+            this.$api.personInfo.personList(this.queryForm).then(res => {
                  console.log(res)
-                 this.tableData = res.data.list;
+                 this.tableData = res.data.records;
                  this.total = res.data.total
                 // this.tableData = res.data.data
                 this.tableLoading = false;

@@ -11,19 +11,20 @@
                 <div class="filter-item">
                     <el-date-picker v-model="value6" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"> </el-date-picker>
                 </div>
+                <el-button class="filter-item" type="primary">查询</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-            <el-table-column label="急救中心" prop="jijiu"></el-table-column>
-            <el-table-column label="车牌号" prop="plate"></el-table-column>
-            <el-table-column label="车编号" prop="num"></el-table-column>
-            <el-table-column label="姓名" prop="name"></el-table-column>
-            <el-table-column label="员工编号" prop="peoplenum"></el-table-column>
-            <el-table-column label="职务" prop="job"></el-table-column>
-            <el-table-column label="状态" prop="state"></el-table-column>
-            <el-table-column label="打卡时间" prop="time"></el-table-column>
+            <el-table-column label="急救中心" prop=""></el-table-column>
+            <el-table-column label="车牌号" prop=""></el-table-column>
+            <el-table-column label="车编号" prop=""></el-table-column>
+            <el-table-column label="姓名" prop=""></el-table-column>
+            <el-table-column label="员工编号" prop=""></el-table-column>
+            <el-table-column label="职务" prop=""></el-table-column>
+            <el-table-column label="状态" prop=""></el-table-column>
+            <el-table-column label="打卡时间" prop=""></el-table-column>
             </el-table>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
         </div>
     </div>
@@ -32,6 +33,8 @@
 import selectPresonnel from '@/components/selectPresonnel'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
+import { punchInRecord } from '@/api'
+
 export default {
     name:'carPersonnelRecord',
     components:{

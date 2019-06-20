@@ -1,4 +1,4 @@
-// 人员信息的api
+// 设备类型的api
 
 import http from '@/utils/http'
 // import qs from 'qs'
