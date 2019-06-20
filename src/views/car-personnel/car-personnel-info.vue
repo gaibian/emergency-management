@@ -3,12 +3,15 @@
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加人员</el-button>
-                <div class="filter-item" style="width:300px;">
-                    <el-input v-model="plate" placeholder="请输入姓名或工号"></el-input>
+                <div class="filter-item" style="width:200px;">
+                    <el-input v-model="plate" placeholder="请输入姓名"></el-input>
+                </div>
+                <div class="filter-item" style="width:200px;">
+                    <el-input v-model="plate" placeholder="请输入工号"></el-input>
                 </div>
                 <div class="filter-item">
                 <el-select v-model="value1" placeholder="请选择所属中心">
-                    <el-option v-for="item in jijiuoptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="item in centerOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
                 </div>
                 <div class="filter-item">
@@ -115,7 +118,7 @@ export default {
                 pageIndex:1,
                 pageSize:10,
             },
-            jijiuoptions:[],
+            centerOptions:[],
             zzztoptions:[{
                 value:'在职',
                 id:1

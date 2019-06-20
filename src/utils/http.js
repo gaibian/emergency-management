@@ -12,16 +12,24 @@ const service = axios.create({
   timeout: 5000 // 请求超时时间
 })
 // 异常状态码判断
-const errorHandle = (state,other) => {
+const errorHandle = (status,message) => {
   switch(status) {
-    case 401:
-      // token
+    case 401:  // 登录失效
+      Message({
+        message:message,
+        type:'error',
+        duration:1500
+      })
+      setTimeout(() => {
+        router.push({path:'/login'})
+        // 需要删除一些登录的时候绑定的东西 并且刷新页面
+        location.reload()
+      },1000)
       break;
     case 1001:
       // 登录失效
       break;
     default:
-    console.log(other)   
   }
 }
 // request拦截器
@@ -40,27 +48,24 @@ service.interceptors.response.use(
   //res => res.status === 200 ? Promise.resolve(res.data) : Promise.reject(res),
   res => {
     if(res.status === 200) {
+      console.log(res.data.code)
       if(res.data.code === -1) {
-        this.$message({
-          message:res.message,
+        console.log('jinlail')
+        Message({
+          message:res.data.message,
           type:'error'
         })
+        return Promise.reject('error')
       }else{
         return Promise.resolve(res.data)
       }
-    }else if(res.status === 401){
-        // 跳转到登录页
-        router.push({path:'/login'})
-        // 需要清除一些登录信息 并刷新页面
     }else{
       return Promise.reject(res)
     }
   },
   // 请求失败
   error => {
-    // console.log('进去了吗')
     const { response } = error;
-    console.log(response)
     if(response) {
       errorHandle(response.status,response.data.message)
       return Promise.reject(response);

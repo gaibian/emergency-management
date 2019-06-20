@@ -18,26 +18,47 @@ const hostAdmin = {
   hostUpdate(id, form) {  //更新列表数据
     return http.post(`/dataHost/update/${id}`, form)
   },
-  hostBindList(form) {  // 获取列表
+
+  // => 主机绑定卡片
+  hostBindList(form) { 
     return http.get('/hostbindCard/list', {
       params: form
     })
   },
-  hostBindAdd(params) {  // 添加列表数据
+  hostBindAdd(params) {  
     return http.post('/hostbindCard/create', params)
   },
-  hostBindDeletes(ids) {  // 删除列表数据
+  hostBindDeletes(ids) { 
     return http.post(`/hostbindCard/deleteBatch/${ids}`)
   },
-  hostBindFindId(id) {  // 查询列表数据
+  hostBindFindId(id) {  
     return http.get(`/hostbindCard/findById/${id}`)
   },
-  hostBindUpdate(id, form) {  //更新列表数据
+  hostBindUpdate(id, form) { 
     return http.post(`/hostbindCard/update/${id}`, form)
   },
   hostUnBind(id) {
     return http.get(`/hostbindCard/unbind/${id}`)
-  }
+  },
+
+  //=> 绑定卡片记录
+  hostBindRecordList(form) { 
+    return http.get('/bindCardRecord/list', {
+      params: form
+    })
+  },
+  hostBindRecordAdd(params) {  
+    return http.post('/bindCardRecord/create', params)
+  },
+  hostBindRecordDeletes(ids) { 
+    return http.post(`/bindCardRecord/deleteBatch/${ids}`)
+  },
+  hostBindRecordFindId(id) {  
+    return http.get(`/bindCardRecord/findById/${id}`)
+  },
+  hostBindRecordUpdate(id, form) { 
+    return http.post(`/bindCardRecord/update/${id}`, form)
+  },
 
 }
 

@@ -60,6 +60,7 @@
                 <template slot-scope="scope">
                     <span>
                         <el-button type="primary" size="mini" @click="handleModify(scope)">{{scope.row.btnText}}</el-button>
+                        <el-button size="mini" v-show="!scope.row.modifyFlag" @click="handleTableCancel(scope)">取消</el-button>
                         <el-button type="primary" size="mini" @click="handleClick(scope.row.id)">解绑</el-button>
                     </span>
                 </template>
@@ -151,8 +152,10 @@ export default {
         this.handlePag()
     },
     methods:{
-        handleRecord() {
-
+        handleRecord() {  // 查看主机卡片的绑定记录
+            hostAdmin.hostBindRecordFindId(this.hostId).then(res => {
+                console.log(res)
+            })
         },
         handleClick(id) {  // 解绑
             hostAdmin.hostUnBind(id).then(res => {
@@ -162,6 +165,10 @@ export default {
                 })
                 this.handlePag();
             })
+        },
+        handleTableCancel(scope) {
+            scope.row.modifyFlag = true;
+            scope.row.btnText = '修改';
         },
         handleModify(scope) {  //修改
             if(scope.row.modifyFlag) {

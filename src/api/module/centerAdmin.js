@@ -7,7 +7,7 @@ import qs from 'qs'
 const centerAdmin = {
   // 左侧栏目
   centerList(form) {
-    return http.get('/centerInfo/list', {
+    return http.get('/centerInfo/tree', {
       params: form
     })
   },

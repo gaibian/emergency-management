@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-form :model="form" ref="form">
+        <el-form :model="form" ref="form" v-loading="loading">
             <el-row :gutter="20">
                 <el-col :span="6">
                     <el-form-item label="所属中心">
@@ -52,7 +52,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="handleCancel">取 消</el-button>
-            <el-button type="primary" @click="handleEditdata(form)">确 定</el-button>
+            <el-button type="primary" @click="handleEditdata">确 定</el-button>
         </div>
     </div>
 </template>
@@ -71,6 +71,7 @@ export default {
                 jobNo: '',
                 status: '',
             },
+            loading:false,
             centerOptions:[],
              optionSex:[{
                 name:'女',
@@ -81,13 +82,13 @@ export default {
             }],
              optionPost:[{
                 name:'急救医生',
-                id:0
+                id:'DOCTOR'
             },{
                 name:'担架员',
-                id:1
+                id:'STRETCHER'
             },{
                 name:'驾驶员',
-                id:2
+                id:'DRIVER'
             }]
         }
     },
@@ -97,37 +98,25 @@ export default {
             default:false
         },
         editId:{
-            type:[Number,Object,String],
+            type:[Number,String],
             default:''
         }
     },
-
     async created() {
         await centerAdmin.centerList().then(res => {
             this.centerOptions = res.data
         })
         if(this.edit) {
+            this.loading = true;
             personInfo.personFindId(this.editId).then(res => {
                 this.form = res.data;
+                this.loading = false;
             })
-            // this.form = Object.assign(this.editId);
-            // console.log(this.editId)
         }
-    },
-    mounted() {
-        console.log(this.$refs.form.$el)
-    },
-    updated() {
-        console.log('更新了')
-        //this.form = Object.assign(this.editId);
-    },
-    destroyed() {
-        
     },
     methods:{
         handleCancel() {
             this.$emit('dialogChange',false)
-            // this.form={};
         },
         addSubmit() {
             personInfo.personAdd(this.form).then(res => {
@@ -148,18 +137,13 @@ export default {
                 this.$emit('dialogChange',true)
             })
         },
-        handleEditdata(data1) {
-            this.dialogFormVisible = false
-            console.log(data1)
+        handleEditdata() {
             // 添加提交
             if(!this.edit) {
                 this.addSubmit();
-                // this.tableData.push(this.user)
             }else{
                 this.editSubmit()
             }
-            // js 数据格式   =》 1.按值引用string number  2.按地址引用的 【】 {}
-            //this.$set(this.tableData,data1['index'],data1)
         },
     }
 }
