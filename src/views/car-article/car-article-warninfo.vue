@@ -22,7 +22,6 @@
 // import selectCar from '@/components/selectCar'
 import { setTimeout } from 'timers';
 import Pagination from '@/components/Pagination'
-import { carWare } from '@/api'
 
 export default {
     name: 'carArticleWarninfo',
@@ -51,7 +50,7 @@ export default {
       },
         handlePag() { 
             this.tableLoading = true;
-            carWare.carWareList(this.queryForm).then(res => {
+            this.$api.carWare.carWareList(this.queryForm).then(res => {
                 console.log(res)
                 this.tableData = res.data.list
                 this.total = res.data.total;
