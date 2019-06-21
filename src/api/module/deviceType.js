@@ -5,8 +5,8 @@ import http from '@/utils/http'
 // import base from '../base'
 
 const deviceTypeInfo = {
-  deviceTypeList(form) {
-    return http.get('/deviceType/list', {
+  deviceTypePage(form) {
+    return http.get('/deviceType/page', {
       params: form
     })
   },

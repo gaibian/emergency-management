@@ -16,7 +16,7 @@
                 </el-table-column>
             </el-table>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
         </div>
         <el-dialog title="设备类型信息" close-on-click-modal v-model="dialogEditVisible" width="800px" :visible.sync="dialogEditVisible" @close="handleClose">
@@ -42,8 +42,10 @@ export default {
             editId:'',
             deviceId:'',
             queryForm:{
-                pageIndex: 1,
-                pageSize: 20,
+                page: 1,
+                size: 20,
+                no:'',
+                name:''
             },
             dialogEditVisible:false,
             dialogFormVisible:false,
@@ -92,8 +94,8 @@ export default {
         },
         handlePag() {
             this.tableLoading = true;
-            this.$api.deviceType.deviceTypeList(this.queryForm).then(res => {
-                this.tableData = res.data;
+            this.$api.deviceType.deviceTypePage(this.queryForm).then(res => {
+                this.tableData = res.data.records;
                 //this.total = res.total
                 this.tableLoading = false;
             })

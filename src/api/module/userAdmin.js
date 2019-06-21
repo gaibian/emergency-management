@@ -21,7 +21,7 @@ const userAdmin = {
     return http.post(`/userExpand/update/${id}`, form)
   },
   userRegsiter(data) {
-    return http.post('/userExpand/regsiter',data)
+    return http.post('/userExpand/regsiter', data)
   }
 }
 

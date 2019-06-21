@@ -6,21 +6,21 @@ import http from '@/utils/http'
 
 const carAdmin = {
   // 左侧栏目
-  carList(form) {  // 获取列表
+  carList(form) { // 获取列表
     return http.get('/carInfo/list', {
       params: form
     })
   },
-  carAdd(params) {  // 添加列表数据
+  carAdd(params) { // 添加列表数据
     return http.post('/carInfo/create', params)
   },
-  carDeletes(ids) {  // 删除列表数据
+  carDeletes(ids) { // 删除列表数据
     return http.post(`/carInfo/deleteBatch/${ids}`)
   },
-  carFindId(id) {  // 查询列表数据
+  carFindId(id) { // 查询列表数据
     return http.get(`/carInfo/findById/${id}`)
   },
-  carUpdate(id, form) {  //更新列表数据
+  carUpdate(id, form) { // 更新列表数据
     return http.post(`/carInfo/update/${id}`, form)
   }
 }

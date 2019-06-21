@@ -4,34 +4,32 @@ import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
- import getPageTitle from '@/utils/get-page-title'
+import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login','/auth-redirect'] // no redirect whitelist
+const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
 
 // 把前端的路由表存储到后端 由后端返回
 router.beforeEach(async(to, from, next) => {
   NProgress.start()
   document.title = getPageTitle(to.meta.title)
-  const hasToken = getToken();
-  if(hasToken) {
+  const hasToken = getToken()
+  if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
       next({ path: '/' })
       NProgress.done()
-    }else{
+    } else {
       const hasGetUserInfo = store.getters.name
-      if(hasGetUserInfo) {
+      if (hasGetUserInfo) {
         next()
-      }else{
+      } else {
         await store.dispatch('user/getInfo')
         const accessRoutes = await store.dispatch('permission/generateRoutes', [])
         router.addRoutes(accessRoutes)
         next()
       }
-      
-      
       // const hasRoles = store.getters.roles && store.getters.roles.length > 0;
       // console.log(hasRoles)
       // if(hasRoles) {
@@ -43,7 +41,7 @@ router.beforeEach(async(to, from, next) => {
       //     next()
       // }
     }
-  }else{
+  } else {
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
       next()
@@ -54,11 +52,8 @@ router.beforeEach(async(to, from, next) => {
     }
   }
 
-  
-  
-  //const hasToken = getToken()
+  // const hasToken = getToken()
   // 不是登录页进来的话，还是需要动态的加载路由的
-
 })
 
 router.afterEach(() => {

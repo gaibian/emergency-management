@@ -10,9 +10,9 @@ const punchInRecord = {
       params: form
     })
   },
-  punchInRecordDeletes(ids) {  // 删除列表数据
+  punchInRecordDeletes(ids) { // 删除列表数据
     return http.post(`/clockRecord/deleteBatch/${ids}`)
-  },
+  }
 }
 
 export default punchInRecord

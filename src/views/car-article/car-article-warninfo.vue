@@ -13,7 +13,7 @@
         <el-table-column  label="告警描述"  prop="remark"></el-table-column>
         </el-table>
         <div ref="btmGroup" class="btm-group">
-            <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+            <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
         </div>
     </div>
 </div>
@@ -36,8 +36,8 @@ export default {
             tableHeight:null,
             deviceName:[],
             queryForm: {
-                pageIndex:1,
-                pageSize:10
+                page:1,
+                size:10
             },
         }
     },
