@@ -39,7 +39,7 @@ import pageMixins from '@/mixins'
 // import { centerAdmin } from '@/api'
 import centerOptea from './component/center-optea'
 export default {
-    name:'centralinfo',
+    name:'centralInfo',
     components:{
         centerOptea
     },

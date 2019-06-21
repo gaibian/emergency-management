@@ -3,7 +3,7 @@
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
                 <el-select class="filter-item" v-model="queryForm.centerInfoId" placeholder="请选择所属中心" clearable style="width:200px">
-                    <el-option v-for="item in centerOptions" :key="item.value" :label="item.name" :value="item.id"></el-option>
+                    <el-option v-for="item in centerOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
                 <el-input class="filter-item" v-model="queryForm.personNameLike" placeholder="请输入姓名" style="width:200px;"></el-input>
                 <el-input class="filter-item" v-model="queryForm.carNo" placeholder="请输入车牌号" style="width:200px"></el-input>
@@ -77,7 +77,6 @@ export default {
             }
         },
         formatDate(value) {
-            console.log(value)
             if (value === null) {
                 return '空'
             } else {

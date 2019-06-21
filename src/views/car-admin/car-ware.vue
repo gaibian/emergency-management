@@ -24,7 +24,7 @@ import { setTimeout } from 'timers';
 import Pagination from '@/components/Pagination'
 
 export default {
-    name: 'carWarn',
+    name: 'carArticleWarninfo',
     components:{
         Pagination,
     },

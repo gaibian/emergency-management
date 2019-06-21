@@ -6,7 +6,7 @@ import http from '@/utils/http'
 
 const carWare = {
   carWareList(form) {
-    return http.get('/carAlarmInfo/list', {
+    return http.get('/carAlarmInfo/page', {
       params: form
     })
   }

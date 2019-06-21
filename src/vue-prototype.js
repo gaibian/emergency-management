@@ -14,7 +14,7 @@ class dataDictionary {
     // 在职状态
     this.workStatusOptions = [{ name: '在职', id: 1 }, { name: '离职', id: 0 }]
     // 车辆状态
-    this.carStatusOptions = [{name:'未上班/下班',id:0},{name:'任务中',id:1},{name:'待命中',id:2}]
+    this.carStatusOptions = [{ name: '未上班/下班', id: 0 }, { name: '任务中', id: 1 }, { name: '待命中', id: 2 }]
   }
 }
 // 全局的数据字典
