@@ -16,9 +16,10 @@ export const Account = {
       component: () => import('@/views/account/role.vue'),
       meta: { title: '角色信息', icon: 'accountNumber' }
     },{
-      path: 'power',
-      name: 'power',
-      component: () => import('@/views/account/power.vue'),
-      meta: { title: '权限信息', icon: 'accountNumber' }
-    }] 
+      path: 'menu',
+      name: 'menuAdmin',
+      component: () => import('@/views/account/menu.vue'),
+      meta: { title: '资源列表', icon: 'accountNumber' }
+    },
+  ] 
 }

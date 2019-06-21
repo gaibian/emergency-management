@@ -77,7 +77,6 @@ export default {
             }
         },
         formatDate(value) {
-            console.log(value)
             if (value === null) {
                 return '空'
             } else {

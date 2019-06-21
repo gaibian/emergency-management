@@ -1,10 +1,13 @@
 import http from '@/utils/http'
 const hostAdmin = {
   // 左侧栏目
-  hostList(form) {  // 获取列表
-    return http.get('/dataHost/list', {
+  hostPage(form) {  // 获取列表
+    return http.get('/dataHost/page', {
       params: form
     })
+  },
+  hostList() {  // 获取列表
+    return http.get('/dataHost/list')
   },
   hostAdd(params) {  // 添加列表数据
     return http.post('/dataHost/create', params)
@@ -21,7 +24,7 @@ const hostAdmin = {
 
   // => 主机绑定卡片
   hostBindList(form) { 
-    return http.get('/hostbindCard/list', {
+    return http.get('/hostbindCard/page', {
       params: form
     })
   },
@@ -43,7 +46,7 @@ const hostAdmin = {
 
   //=> 绑定卡片记录
   hostBindRecordList(form) { 
-    return http.get('/bindCardRecord/list', {
+    return http.get('/bindCardRecord/page', {
       params: form
     })
   },

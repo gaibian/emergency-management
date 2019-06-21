@@ -3,24 +3,26 @@
         <!-- <select-car :flag="flag" @change="handleChange"></select-car> -->
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
-                <!-- <div class="filter-item" style="width:300px;">
-                    <el-input v-model="plate" placeholder="车牌号">
-                        <el-button slot="append" icon="el-icon-search" @click="handleClick">选择车辆查询</el-button>
-                    </el-input>
-                </div> -->
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加物品</el-button>
+                <el-input class="filter-item" style="width:200px;" v-model="queryForm.name" placeholder="请输入物品名称"></el-input>
+                <el-input class="filter-item" style="width:200px;" v-model="queryForm.no" placeholder="请输入物品编号"></el-input>
+                <el-button class="filter-item" type="primary" @click="queryClick">查询</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-                <el-table-column label="所属中心" prop="jijiu"></el-table-column>
-                <el-table-column label="车牌号" prop="plate"></el-table-column>
-                <el-table-column label="车编号" prop="carnum"></el-table-column>
-                <el-table-column label="物品名称" prop="articleName"></el-table-column>
-                <el-table-column label="状态" prop="state"></el-table-column>
+                <el-table-column label="物品编号" prop="no"></el-table-column>
+                <el-table-column label="中心" prop="centerInfoName"></el-table-column>
+                <el-table-column label="物品名称" prop="name"></el-table-column>
+                <el-table-column label="物品卡号" prop="cardNo"></el-table-column>
+                <el-table-column label="操作" fixed="right" width="250">
+                    <template slot-scope="scope">
+                        <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
+                        <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
             <div ref="btmGroup" class="btm-group">
                 <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
-
         </div>
         <el-dialog title="物品信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="handleClose">
             <article-opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></article-opate>
@@ -28,14 +30,12 @@
     </div>
 </template>
 <script>
-// import selectCar from '@/components/selectCar'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import articleOpate from './component/article-opate'
 export default {
     name:'carArticleInfo',
     components:{
-        // selectCar,
         Pagination,
         articleOpate
     },
@@ -55,6 +55,8 @@ export default {
             queryForm: {
                 page: 1,
                 size: 20,
+                name:'',
+                no:'',
             },
         }
     },
@@ -62,11 +64,14 @@ export default {
         this.handlePag();
     },
     methods:{
+        queryClick() {
+            this.handlePag()
+        },
         handlePag(data) {
             this.tableLoading = true;
-            this.$api.articleAdmin.articleList(this.queryForm).then(res => {
-                this.tableData = res.data;
-                //this.total = res.tot
+            this.$api.articleAdmin.articlePage(this.queryForm).then(res => {
+                this.tableData = res.data.records;
+                this.total = res.data.total;
                 this.tableLoading = false;
             })
         },
@@ -76,20 +81,10 @@ export default {
             }
             this.dialogFormVisible = false;
         },
-        // handleClick() {
-        //     this.flag = true;
-        // },
-        // handleChange(data) {
-        //     if(data.keys) {
-        //         this.plate = data.carPlate;
-        //         console.log(data.keys)
-        //     }
-        //     this.flag = data.flag;
-        // },
         handleAdd() {
             this.dialogFormVisible = true;
         },
-        handleEdit() {
+        handleEdit(id) {
             this.dialogFormVisible = true;
             this.editFlag = true;
             this.editId = id

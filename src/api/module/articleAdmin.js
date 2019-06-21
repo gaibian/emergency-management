@@ -2,10 +2,13 @@
 import http from '@/utils/http'
 const articleAdmin = {
   // 左侧栏目
-  articleList(form) {  // 获取列表
-    return http.get('/articleInfo/list', {
+  articlePage(form) {  // 获取列表
+    return http.get('/articleInfo/page', {
       params: form
     })
+  },
+  articleList() {  // 获取列表
+    return http.get('/articleInfo/list')
   },
   articleAdd(params) {  // 添加列表数据
     return http.post('/articleInfo/create', params)

@@ -32,6 +32,10 @@ import hostAdmin from './module/hostAdmin'
 import taskRecord from './module/taskRecord'
 // 车辆物品模块
 import articleAdmin from './module/articleAdmin'
+// 菜单模块
+import menuAdmin from './module/menuAdmin'
+// 数据模块
+import dataAdmin from './module/dataAdmin'
 export default {
   login,
   carAdmin,
@@ -45,6 +49,8 @@ export default {
   deviceType,
   hostAdmin,
   taskRecord,
-  articleAdmin
+  articleAdmin,
+  menuAdmin,
+  dataAdmin
 }
 

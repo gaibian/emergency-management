@@ -11,9 +11,10 @@ import { carArticle } from './module/carArticle'
 import { carPersonnel } from './module/carPersonnel'
 import { Account } from './module/Account'
 import { emergencyManagement } from './module/emergencyManagement'
-import { centralInfo } from './module/centralInfo'
+import { centerInfo } from './module/centerInfo'
 import { hostConfig } from './module/hostConfig'
 import { deviceType } from './module/deviceType'
+import { dataAdmin } from './module/dataAdmin'
 
 /* Router Modules */
 // import componentsRouter from './modules/components'
@@ -98,9 +99,10 @@ export const constantRoutes = [
   carPersonnel,
   Account,
   emergencyManagement,
-  centralInfo,
+  centerInfo,
   hostConfig,
   deviceType,
+  dataAdmin,
   {
     path: '/icon',
     component: Layout,

@@ -10,22 +10,41 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="物品编号">
-                        <el-input v-model="form.cardNo" clearable></el-input>
+                    <el-form-item label='物品名称'>
+                        <el-input v-model="form.name" clearable placeholder="请填写物品名称"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label='物品名称'>
-                        <el-input v-model="form.name" clearable></el-input>
+                    <el-form-item label="物品编号">
+                        <el-input v-model="form.no" clearable placeholder="请填写物品编号"></el-input>
                     </el-form-item>
                 </el-col>
-                <!-- <el-col :span="6">
-                    <el-form-item label="状态">
-                        <el-select v-model="form.status" placeholder="请选择状态">
-                            <el-option v-for="(item,index) in statusOptions" :key="index" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
+                <el-col :span="6">
+                    <el-form-item label='物品卡号'>
+                        <el-input v-model="form.cardNo" clearable placeholder="请填写物品卡号"></el-input>
                     </el-form-item>
-                </el-col> -->
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="6">
+                    <el-form-item label='生产日期'>
+                        <el-date-picker
+                        v-model="form.proTime"
+                        align="right"
+                        type="date"
+                        placeholder="选择生产日期"
+                        format="yyyy-MM-dd" 
+                        value-format="yyyy-MM-dd"
+                        style="width:100%">
+                        </el-date-picker>
+                        <!-- <el-input v-model="form.proTime" clearable placeholder="请填写规格"></el-input> -->
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label='规格'>
+                        <el-input v-model="form.spec" clearable placeholder="请填写规格"></el-input>
+                    </el-form-item>
+                </el-col>
             </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -44,15 +63,9 @@ export default {
                 cardNo: '',
                 name: '',
                 no:'',
+                proTime:'',
                 spec:'',
             },
-            // statusOptions:[{
-            //     name:'启用',
-            //     id:1
-            // },{
-            //     name:'禁用',
-            //     id:0
-            // }],
             loading:false,
             centerOptions:[],
         }
@@ -75,12 +88,31 @@ export default {
             this.loading = true;
             this.$api.articleAdmin.articleFindId(this.editId).then(res => {
                 console.log(res)
-                this.form = res.data;
+                for(let i in this.form){
+                    if(i == 'proTime'){
+                            this.form[i] = this.formatDate(res.data[i])
+                    }else{
+                        this.form[i] = res.data[i]
+                    }
+                }
+                
                 this.loading = false;
             })
         }
     },
     methods:{
+        formatDate(datetime) {
+            console.log(datetime)
+            if (datetime === null) {
+                return '空'
+            } else {
+                var date = new Date(datetime); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+                let Y = date.getFullYear() + '-';
+                let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                let D = date.getDate() + '';
+                return Y + M + D;
+            }
+        },
         handleCancel() {
             this.$emit('dialogChange',false)
         },

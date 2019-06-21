@@ -3,25 +3,35 @@
         <el-form :model="form" ref="form" v-loading="loading" element-loading-text="数据加载中...">
             <el-row :gutter="20">
                 <el-col :span="6">
-                    <el-form-item label="主机编号">
-                        <el-input v-model="form.hostNumber" placeholder="请输入主机编号"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="车辆">
-                        <el-select v-model="form.carInfoId" placeholder="请选择车辆">
-                            <el-option v-for="(item,index) in carOptions" :key="index" :label="item.carNo" :value="item.id"></el-option>
+                    <el-form-item label="上级资源">
+                        <!-- <el-input v-model="form.name" clearable placeholder="请填写角色名称"></el-input> -->
+                        <el-select v-model="form.parentId" placeholder="请选择上级资源">
+                            <el-option v-for="(item,index) in parentOptions" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="固件版本号">
-                        <el-input v-model="form.firmwareVersion" placeholder="请输入固件版本号"></el-input>
+                    <el-form-item label="资源名称">
+                        <el-input v-model="form.name" clearable placeholder="请填写角色名称"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="软件版本号">
-                        <el-input v-model="form.softVersion" placeholder="请输入软件版本号"></el-input>
+                    <el-form-item label="sourceKey">
+                        <el-input v-model="form.sourceKey" clearable placeholder="请填写sourceKey"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="资源类型">
+                        <el-select v-model="form.type" placeholder="请选择资源类型">
+                            <el-option v-for="item in $dic.menuTypeOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="24">
+                    <el-form-item label="描述">
+                        <el-input v-model="form.description" clearable placeholder="请填写描述"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -32,23 +42,20 @@
         </div>
     </div>
 </template>
-
 <script>
-import changeObject from '@/utils/changeObject'
-import { setTimeout } from 'timers';
 export default {
-    name:'hostOpate',
+    name:'menuOpate',
     data() {
         return {
             form: {
-                hostNumber: '',
-                carInfoId: '',
-                firmwareVersion: '',
-                softVersion: '',
+                parentId:'',
+                name: '',
+                description: '',
+                sourceKey: '',
+                type:'',
             },
+            parentOptions:[],
             loading:false,
-            carOptions:[],
-          
         }
     },
     props:{
@@ -62,25 +69,21 @@ export default {
         }
     },
     async created() {
-        let attr = {
-            id: 'centerInfoId',
-            parendId: 'parentCenterId',
-            name: 'centerInfoName',
-            rootId: 1
-        };
-        await this.$api.carAdmin.carList().then(res => {
-            let data = this.$prototype.copyArr(res.data);
-            //this.carOptions = changeObject(data,attr)
-            this.carOptions = res.data
+        await this.$api.menuAdmin.menuList().then(res => {
+            console.log(res)
+            this.parentOptions = res.data;
+            this.parentOptions.unshift({
+                name:'顶级',
+                id:null
+            })
         })
         if(this.edit) {
             this.loading = true;
-            await this.$api.hostAdmin.hostFindId(this.editId).then(res => {
+            await this.$api.menuAdmin.menuFindId(this.editId).then(res => {
                 for(let i in this.form){
                     this.form[i] = res.data[i]
                 }
                 this.loading = false;
-                
             })
         }
     },
@@ -89,7 +92,7 @@ export default {
             this.$emit('dialogChange',false)
         },
         addSubmit() {
-            this.$api.hostAdmin.hostAdd(this.form).then(res => {
+            this.$api.menuAdmin.menuAdd(this.form).then(res => {
                 this.$message({
                     message:'添加成功',
                     type:'success'
@@ -98,17 +101,15 @@ export default {
             })
         },
         editSubmit() {
-            this.$api.hostAdmin.hostUpdate(this.editId,this.form).then(res => {
-                console.log(res)
+            this.$api.menuAdmin.menuUpdate(this.editId,this.form).then(res => {
                 this.$message({
                     message:'更新成功',
                     type:'success'
                 })
                 this.$emit('dialogChange',true)
             })
-             
         },
-        handleEditdata(data1) {
+        handleEditdata() {
             if(!this.edit) {
                 this.addSubmit();
             }else{
