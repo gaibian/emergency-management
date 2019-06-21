@@ -61,7 +61,8 @@ export default {
     },
     async created() {
         await this.$api.carAdmin.carList().then(res => {
-            this.carOptions = res.data
+            console.log(res)
+            // this.carOptions = res.data
         })
         if(this.edit) {
             this.loading = true;

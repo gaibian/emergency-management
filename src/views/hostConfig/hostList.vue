@@ -5,14 +5,15 @@
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加主机</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-                <el-table-column label="配置编号" prop="configNum"></el-table-column>
-                <el-table-column label="车辆ID" prop="plateId"></el-table-column>
-                <el-table-column label="在线状态" prop="currentStatus"></el-table-column>
-                <el-table-column label="同步状态" prop="synStatus"></el-table-column>
+                <el-table-column label="主机编号" prop="hostNumber"></el-table-column>
+                <el-table-column label="车牌号" prop="carNo"></el-table-column>
+                <el-table-column label="车编号" prop="carNumber"></el-table-column>
+                <el-table-column label="在线状态" prop="onlineStatus"></el-table-column>
+                <el-table-column label="同步状态" prop="syncStatus"></el-table-column>
                 <el-table-column label="最后在线时间" prop="lastTime"></el-table-column>
-                <el-table-column label="固件版本号" prop="gVersionNum"></el-table-column>
-                <el-table-column label="软件版本号" prop="rVersionNum"></el-table-column>
-                <el-table-column label="操作" fixed="right" min-width="130">
+                <el-table-column label="固件版本号" prop="firmwareVersion"></el-table-column>
+                <el-table-column label="软件版本号" prop="softVersion"></el-table-column>
+                <el-table-column label="操作" fixed="right" width="250">
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
                         <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
@@ -21,7 +22,7 @@
                 </el-table-column>
             </el-table>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.pageIndex" :limit.sync="queryForm.pageSize" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
         </div>
         <el-dialog title="主机信息" close-on-click-modal v-model="dialogEditVisible" width="800px" :visible.sync="dialogEditVisible" @close="handleClose">
@@ -53,8 +54,8 @@ export default {
             hostId:'',
             queryForm:{
                 hostNumber:'',
-                pageIndex: 1,
-                pageSize: 20,
+                page: 1,
+                size: 20,
             },
             dialogEditVisible:false,
             dialogFormVisible:false,
@@ -108,8 +109,9 @@ export default {
         handlePag() {
             this.tableLoading = true;
             this.$api.hostAdmin.hostList(this.queryForm).then(res => {
-                this.tableData = res.data;
-                //this.total = res.total
+                this.tableData = res.data.records;
+                console.log(this.tableData)
+                this.total = res.data.total
                 this.tableLoading = false;
             })
         },

@@ -67,8 +67,11 @@ export default {
                 centerInfoId:'',
                 name: '',
                 post:'',
+                idcard:'',
                 jobNo: '',
                 status: '',
+                telphone:'',
+                sex:''
             },
             loading:false,
             centerOptions:[],
@@ -91,9 +94,10 @@ export default {
         if(this.edit) {
             this.loading = true;
             this.$api.personInfo.personFindId(this.editId).then(res => {
-                console.log(res)
-                // this.form = res.data;
-                // this.loading = false;
+                for(let i in this.form){
+                    this.form[i] = res.data[i]
+                }
+                this.loading = false;
             })
         }
     },
