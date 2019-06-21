@@ -4,16 +4,24 @@
         <div class="table-box">
             <div class="top-info-box filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加车辆</el-button>
-                <div class="filter-item" style="width:300px;">
+                <!-- <div class="filter-item" style="width:300px;">
                     <el-input v-model="queryForm.carNo" placeholder="车牌号">
                         <el-button slot="append" icon="el-icon-search">选择车辆查询</el-button>
                     </el-input>
-                </div>
+                </div> -->
+                <el-input class="filter-item" style="width:200px;" v-model="queryForm.carNo" placeholder="请输入车牌号"></el-input>
+                <el-input class="filter-item" style="width:200px;" v-model="queryForm.carNumber" placeholder="请输入车编号"></el-input>
+                <el-button class="filter-item" type="primary" @click="handleQuery">查询</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-                <el-table-column label="所属中心" prop="centerInfoId"></el-table-column>
+                <el-table-column label="所属中心" prop="centerInfoName"></el-table-column>
                 <el-table-column label="车牌号" prop="carNo"></el-table-column>
                 <el-table-column label="车编号" prop="carNumber"></el-table-column>
+                <el-table-column label="状态">
+                    <template slot-scope="scope">
+                        <el-tag :type="carStatus(scope.row.status)">{{scope.row.status | statusFilter}}</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
                         <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
@@ -36,10 +44,6 @@ import selectCar from '@/components/selectCar'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import opate from './component/car-opate'
-// 导入车辆管理的api模块
-import { carAdmin } from '@/api'
-
-
 export default {
     name:'carAdmin',
     components:{
@@ -48,6 +52,21 @@ export default {
         opate
     },
     mixins:[pageMixins],
+    filters:{
+        statusFilter(value) {
+            switch(value) {
+                case 0:
+                    return '未上班/下班'
+                    break;
+                case 1:
+                    return '任务中'
+                    break;
+                case 2:
+                    return '待命中'
+                    break;
+            }
+        }
+    },
     data() {
         return {
             total:30,
@@ -71,6 +90,22 @@ export default {
         this.handlePag();
     },
     methods:{
+        handleQuery() {
+            this.handlePag()
+        },
+        carStatus(status) {
+            switch(status) {
+                case 0:
+                    return 'info'
+                    break;
+                case 1:
+                    return ''
+                    break;
+                case 2:
+                    return 'success'
+                    break;
+            }
+        },
         handleOpate(boo){
             if(boo) {
                 this.handlePag();
@@ -100,7 +135,7 @@ export default {
             this.tableLoading = true;
             this.$api.carAdmin.carList(this.queryForm).then(res => {
                 console.log(res)
-                this.tableData = res.data.list
+                this.tableData = res.data.records
                 this.total = res.data.total;
                 this.tableLoading = false;
             })

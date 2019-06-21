@@ -4,7 +4,7 @@
             <el-row :gutter="20">
                 <el-col :span="6">
                     <el-form-item label="用户名">
-                        <el-input v-model="form.username" clearable placeholder="请填写用户名"></el-input>
+                        <el-input v-model="form.userName" clearable placeholder="请填写用户名"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -16,45 +16,64 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="真实姓名">
-                        <el-input v-model="form.realName" clearable placeholder="请填写真实姓名"></el-input>
+                        <el-input v-model="form.nickName" clearable placeholder="请填写真实姓名"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="密码">
-                        <el-input v-model="form.password" clearable placeholder="请填写密码"></el-input>
+                        <el-input v-model="form.password" :disabled="edit" clearable placeholder="请填写密码"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="6">
-                    <el-form-item label="身份证">
-                        <el-input v-model="form.idCardNumber" clearable placeholder="请填写身份证"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
                     <el-form-item label="手机号">
-                        <el-input v-model="form.phone" clearable placeholder="请填写手机号"></el-input>
+                        <el-input v-model="form.telephone" clearable placeholder="请填写手机号"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="角色">
-                        <el-select v-model="form.roleId" placeholder="请选择角色">
-                            <el-option v-for="(item,index) in ruleOptions" :key="index" :label="item.name" :value="item.id"></el-option>
+                    <el-form-item label="生日">
+                        <el-date-picker
+                        v-model="form.birthday"
+                        align="right"
+                        type="date"
+                        placeholder="选择日期"
+                        format="yyyy-MM-dd" 
+                        value-format="yyyy-MM-dd"
+                        style="width:100%"
+                        :picker-options="pickerOptions">
+                        </el-date-picker>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="锁定">
+                        <el-select v-model="form.locked" placeholder="请选择是否锁定用户">
+                            <el-option v-for="(item,index) in $dic.statusOptions" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="性别">
-                        <el-select v-model="form.gender" placeholder="请选择性别">
-                            <el-option v-for="(item,index) in genderOptions" :key="index" :label="item.name" :value="item.id"></el-option>
+                        <el-select v-model="form.sex" placeholder="请选择性别">
+                            <el-option v-for="(item,index) in $dic.sexOptions" :key="index" :label="item.name" :value="item.id"></el-option>
                         </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="邮箱">
+                        <el-input v-model="form.email" clearable placeholder="请填写邮箱"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="18">
+                    <el-form-item label="地址信息">
+                        <el-input v-model="form.address" placeholder="请填写地址信息"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
-                <el-col :span="6">
-                    <el-form-item label="邮箱">
-                        <el-input v-model="form.email" clearable placeholder="请填写邮箱"></el-input>
+                <el-col :span="24">
+                    <el-form-item label="描述信息">
+                        <el-input v-model="form.description" placeholder="请填写描述信息"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -68,7 +87,6 @@
 
 
 <script>
-import { userAdmin,centerAdmin } from '@/api'
 export default {
     name:'userOpate',
     data() {
@@ -76,14 +94,43 @@ export default {
             form: {
                 centerInfoId: '',
                 email: '',
-                gender: '',
-                idCardNumber: '',
+                sex: '',
+                birthday:'',
+                //idCardNumber: '',
                 password:'',
-                phone:'',
-                realName:'',
-                roleId:'',
-                username:'',
+                telephone:'',
+                nickName:'',
+                address:'',
+                //roleId:'',
+                locked:'',
+                userName:'',
+                description:'',
             },
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                },
+                shortcuts: [{
+                    text: '今天',
+                    onClick(picker) {
+                    picker.$emit('pick', new Date());
+                    }
+                }, {
+                    text: '昨天',
+                    onClick(picker) {
+                    const date = new Date();
+                    date.setTime(date.getTime() - 3600 * 1000 * 24);
+                    picker.$emit('pick', date);
+                    }
+                }, {
+                    text: '一周前',
+                    onClick(picker) {
+                    const date = new Date();
+                    date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                    picker.$emit('pick', date);
+                    }
+                }]
+                },
             genderOptions:[{
                 name:'男',
                 id:'Male'
@@ -107,29 +154,43 @@ export default {
         }
     },
     async created() {
-        await centerAdmin.centerList().then(res => {
+
+        await this.$api.centerAdmin.centerList().then(res => {
             this.parentOptions = res.data
-            this.parentOptions.push({
-                name:'无',
-                id:null
-            })
         })
         if(this.edit) {
             this.loading = true;
-            userAdmin.userFindId(this.editId).then(res => {
+            this.$api.userAdmin.userFindId(this.editId).then(res => {
                 for(let i in this.form){
-                    this.form[i] = res.data[i]
+                    if(i == 'birthday'){
+                        this.form[i] = this.formatDate(res.data[i])
+                    }else{
+                        this.form[i] = res.data[i]
+                    }
+                    
                 }
                 this.loading = false;
             })
         }
     },
     methods:{
+        formatDate(datetime) {
+            console.log(datetime)
+            if (datetime === null) {
+                return '空'
+            } else {
+                var date = new Date(datetime); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+                let Y = date.getFullYear() + '-';
+                let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                let D = date.getDate() + ' ';
+                return Y + M + D;
+            }
+        },
         handleCancel() {
             this.$emit('dialogChange',false)
         },
         addSubmit() {
-            userAdmin.userAdd(this.form).then(res => {
+            this.$api.userAdmin.userAdd(this.form).then(res => {
                 this.$message({
                     message:'添加成功',
                     type:'success'
@@ -138,7 +199,7 @@ export default {
             })
         },
         editSubmit() {
-            userAdmin.userUpdate(this.editId,this.form).then(res => {
+            this.$api.userAdmin.userUpdate(this.editId,this.form).then(res => {
                 this.$message({
                     message:'更新成功',
                     type:'success'

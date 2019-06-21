@@ -12,16 +12,26 @@
                 <div class="filter-item" style="width:200px;">
                     <el-input v-model="queryForm.realNameLike" placeholder="请输入真实姓名"></el-input>
                 </div>
-                <el-button class="filter-item" type="primary">查询</el-button>
+                <el-button class="filter-item" type="primary" @click="handleQuery">查询</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-               <el-table-column label="用户名" prop="username"></el-table-column>
-                <el-table-column label="真实姓名" prop="realName"></el-table-column>
-                <el-table-column label="性别" prop="gender"></el-table-column>
-                <el-table-column label="身份证" prop="idCardNumber"></el-table-column>
-                <el-table-column label="手机号" prop="phone"></el-table-column>
+               <el-table-column label="急救中心" prop="centerInfoName"></el-table-column>
+               <el-table-column label="用户名" prop="userName"></el-table-column>
+                <el-table-column label="真实姓名" prop="nickName"></el-table-column>
+                <el-table-column label="性别">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.sex | sexFlter}}</span>
+                    </template>
+                </el-table-column>
+                <!-- <el-table-column label="身份证" prop="idCardNumber"></el-table-column> -->
+                <el-table-column label="手机号" prop="telephone"></el-table-column>
                 <!-- <el-table-column label="角色" prop="role"></el-table-column> -->
-                <el-table-column label="状态" prop="state"></el-table-column>
+                <el-table-column label="地址" prop="address"></el-table-column>
+                <el-table-column label="生日">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.birthday | formatDate}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
                         <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
@@ -33,7 +43,7 @@
                 <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate>
             </el-dialog>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
         </div>
     </div>
@@ -52,6 +62,27 @@ export default {
         opate
     },
     mixins:[pageMixins],
+    filters:{
+        sexFlter(value) {
+            if(value == 1) {
+                return '男'
+            }else{
+                return '女'
+            }
+        },
+        formatDate(value) {
+            if (value === null) {
+                return '空'
+            } else {
+                var date = new Date(value); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+                let Y = date.getFullYear() + '-';
+                let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+                let D = date.getDate() + ' ';
+                console.log(Y + M + D)
+                return Y + M + D;
+            }
+        }
+    },
     data() {
         return {
             editFlag:false,
@@ -66,22 +97,22 @@ export default {
                 centerInfoId:'',
                 usernameLike:'',
                 realNameLike:'',
-                pageIndex: 1,
-                pageSize: 20,
+                page: 1,
+                size: 20,
             },
         }
     },
     created() {
-        centerAdmin.centerList().then(res => {
+        this.$api.centerAdmin.centerList().then(res => {
             this.parentOptions = res.data
-            this.parentOptions.push({
-                name:'无',
-                id:null
-            })
+           
         })
         this.handlePag();
     },
     methods:{
+        handleQuery() {
+            this.handlePag();
+        },
         handleOpate(boo){
             if(boo) {
                 this.handlePag()
@@ -97,7 +128,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(()=>{
-                userAdmin.userDeletes(id).then(res => {
+                this.$api.userAdmin.userDeletes(id).then(res => {
                     this.$message({
                         message:'删除成功',
                         type:'success'
@@ -108,8 +139,8 @@ export default {
         },
         handlePag(data) {
             this.tableLoading = true;
-            userAdmin.userList(this.queryForm).then(res => {
-                this.tableData = res.data;
+            this.$api.userAdmin.userList(this.queryForm).then(res => {
+                this.tableData = res.data.records;
                 this.tableLoading = false;
             })
         },

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-form :model="form" ref="form" v-loading="loading">
+        <el-form :model="form" ref="form" v-loading="loading" element-loading-text="数据加载中...">
             <el-row :gutter="20">
                 <el-col :span="6">
                     <el-form-item label="所属中心">
@@ -91,8 +91,9 @@ export default {
         if(this.edit) {
             this.loading = true;
             this.$api.personInfo.personFindId(this.editId).then(res => {
-                this.form = res.data;
-                this.loading = false;
+                console.log(res)
+                // this.form = res.data;
+                // this.loading = false;
             })
         }
     },

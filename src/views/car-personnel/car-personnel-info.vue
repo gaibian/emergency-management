@@ -4,24 +4,24 @@
             <div class="filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加人员</el-button>
                 <div class="filter-item" style="width:200px;">
-                    <el-input  v-model="queryForm.name" placeholder="请输入姓名"></el-input>
+                    <el-input  v-model="queryForm.name" placeholder="请输入姓名" clearable></el-input>
                 </div>
                 <div class="filter-item" style="width:200px;">
-                    <el-input v-model="queryForm.jobNo" placeholder="请输入工号"></el-input>
+                    <el-input v-model="queryForm.jobNo" placeholder="请输入工号" clearable ></el-input>
                 </div>
                 <div class="filter-item">
                     <!-- centerInfoId是接口接收字段，queryForm下面 -->
-                <el-select v-model="queryForm.centerInfoId" placeholder="请选择所属中心">
+                <el-select v-model="queryForm.centerInfoId" placeholder="请选择所属中心" clearable>
                     <!-- centerOptions是下拉数组 -->
                     <el-option v-for="item in centerOptions" :key="item.value" :label="item.name" :value="item.id"></el-option>
                 </el-select>
                 </div>
                 <div class="filter-item">
-                <el-select v-model="queryForm.status" placeholder="请选择在职状态">
+                <el-select v-model="queryForm.status" placeholder="请选择在职状态" clearable>
                     <el-option v-for="item in $dic.workStatusOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
                 </div>
-                <el-button class="filter-item" type="primary">查询</el-button>
+                <el-button class="filter-item" type="primary" @click="queryClick">查询</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" :max-height="tableHeight" stripe v-loading="tableLoading" element-loading-text="数据加载中...">
                 <!-- 异步请求，根据接口返回的字段是centerInfo，下面的name -->
@@ -52,7 +52,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+            <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="handleClose">
                 <peropate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></peropate>
             </el-dialog>
             <div ref="btmGroup" class="btm-group">
@@ -132,6 +132,14 @@ export default {
         this.handlePag();
     },
     methods:{
+        handleClose() {
+            this.editFlag = false;
+            this.editId = '';
+            this.dialogFormVisible = false;
+        },
+        queryClick() {
+            this.handlePag();
+        },
         handleOpate(boo){
             if(boo) {
                 this.handlePag();

@@ -1,6 +1,5 @@
 <template>
     <div class="car-collection-box main-page" ref="mainContainer">
-        
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加中心</el-button>

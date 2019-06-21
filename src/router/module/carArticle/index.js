@@ -1,4 +1,3 @@
-
 import Layout from '@/layout'
 export const carArticle = {
   path: '/car-article',

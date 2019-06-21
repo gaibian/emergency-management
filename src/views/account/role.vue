@@ -3,14 +3,10 @@
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加角色</el-button>
-                <!-- <el-select class="filter-item" v-model="queryForm.centerInfoId" placeholder="请选择所属中心">
-                    <el-option v-for="(item,index) in parentOptions" :key="index" :label="item.name" :value="item.id"></el-option>
-                </el-select>
-                <el-button class="filter-item" type="primary">查询</el-button> -->
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                <el-table-column label="名称" prop="name"></el-table-column>
-                <el-table-column label="角色类型" prop="roleType"></el-table-column>
+                <el-table-column label="角色类型" prop="roleKey"></el-table-column>
                 <el-table-column label="描述" prop="description"></el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
@@ -23,7 +19,7 @@
                 <role-opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></role-opate>
             </el-dialog>
             <div ref="btmGroup" class="btm-group">
-                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.limit" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
+                <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
         </div>
     </div>
@@ -32,7 +28,6 @@
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import roleOpate from './component/role-opate'
-import { userAdmin,centerAdmin,roleAdmin } from '@/api'
 export default {
     name:'roleAdmin',
     components:{
@@ -51,22 +46,14 @@ export default {
             tableData:[],
             parentOptions:[],
             queryForm: {
-                centerInfoId:'',
-                usernameLike:'',
-                realNameLike:'',
-                pageIndex: 1,
-                pageSize: 20,
+                name:'',
+                roleKey:'',
+                page: 1,
+                size: 20,
             },
         }
     },
     created() {
-        // roleAdmin.roleList().then(res => {
-        //     this.parentOptions = res.data
-        //     this.parentOptions.push({
-        //         name:'无',
-        //         id:null
-        //     })
-        // })
         this.handlePag();
     },
     methods:{
@@ -85,7 +72,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning',
             }).then(()=>{
-                userAdmin.userDeletes(id).then(res => {
+                this.$api.roleAdmin.roleDeletes(id).then(res => {
                     this.$message({
                         message:'删除成功',
                         type:'success'
@@ -96,9 +83,10 @@ export default {
         },
         handlePag(data) {
             this.tableLoading = true;
-            roleAdmin.roleList(this.queryForm).then(res => {
+            this.$api.roleAdmin.roleList(this.queryForm).then(res => {
                 console.log(res)
-                this.tableData = res;
+                this.tableData = res.data.records;
+                this.total = res.data.total;
                 this.tableLoading = false;
             })
         },

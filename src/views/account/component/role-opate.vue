@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-form :model="form" ref="form">
+        <el-form :model="form" ref="form" v-loading="loading" element-loading-text="数据加载中...">
             <el-row :gutter="20">
                 <el-col :span="6">
                     <el-form-item label="角色名称">
@@ -8,21 +8,15 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="角色类型">
-                        <el-select v-model="form.roleType" placeholder="请选择角色类型">
-                            <el-option v-for="(item,index) in roleOptions" :key="index" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6">
-                    <el-form-item label="描述">
-                        <el-input v-model="form.description" clearable placeholder="请填写描述"></el-input>
+                    <el-form-item label="角色Key">
+                        <el-input v-model="form.roleKey" clearable placeholder="请填写角色Key"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="配置权限">
+                    <el-form-item label="描述">
+                        <el-input v-model="form.description" clearable placeholder="请填写描述"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -34,7 +28,6 @@
     </div>
 </template>
 <script>
-import { roleAdmin } from '@/api'
 export default {
     name:'roleOpate',
     data() {
@@ -42,10 +35,8 @@ export default {
             form: {
                 name: '',
                 description: '',
-                roleType: '',
-                permissions: '',
+                roleKey: '',
             },
-            roleOptions:[],
             loading:false,
         }
     },
@@ -62,7 +53,7 @@ export default {
     async created() {
         if(this.edit) {
             this.loading = true;
-            roleAdmin.roleFindId(this.editId).then(res => {
+            this.$api.roleAdmin.roleFindId(this.editId).then(res => {
                 for(let i in this.form){
                     this.form[i] = res.data[i]
                 }
@@ -75,7 +66,7 @@ export default {
             this.$emit('dialogChange',false)
         },
         addSubmit() {
-            roleAdmin.roleAdd(this.form).then(res => {
+            this.$api.roleAdmin.roleAdd(this.form).then(res => {
                 this.$message({
                     message:'添加成功',
                     type:'success'
@@ -84,7 +75,7 @@ export default {
             })
         },
         editSubmit() {
-            roleAdmin.roleUpdate(this.editId,this.form).then(res => {
+            this.$api.roleAdmin.roleUpdate(this.editId,this.form).then(res => {
                 this.$message({
                     message:'更新成功',
                     type:'success'
