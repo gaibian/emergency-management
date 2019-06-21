@@ -13,6 +13,7 @@ import { Account } from './module/Account'
 import { emergencyManagement } from './module/emergencyManagement'
 import { centralInfo } from './module/centralInfo'
 import { hostConfig } from './module/hostConfig'
+import { deviceType } from './module/deviceType'
 
 /* Router Modules */
 // import componentsRouter from './modules/components'
@@ -99,6 +100,7 @@ export const constantRoutes = [
   emergencyManagement,
   centralInfo,
   hostConfig,
+  deviceType,
   {
     path: '/icon',
     component: Layout,
