@@ -8,13 +8,18 @@
                <el-table-column label="名称" prop="name"></el-table-column>
                 <el-table-column label="角色类型" prop="roleKey"></el-table-column>
                 <el-table-column label="描述" prop="description"></el-table-column>
-                <el-table-column label="操作" fixed="right">
+                <el-table-column label="操作" fixed="right" width="250px">
                     <template slot-scope="scope">
-                        <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
-                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click="handleDelete(scope.row.id)">删除</svg-icon>
+                        <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
+                        <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
+                        <el-button type="primary" size="mini" @click="handleMenu(scope.row.id)">关联资源</el-button>
                     </template>
                 </el-table-column>
             </el-table>
+            <el-dialog title="关联资源" v-model="dialogMenuVisible" :visible.sync="dialogMenuVisible" width="300px" :close-on-click-modal="false" @close="dialogMenuClose">
+                <!-- <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate> -->
+                <choice-menu v-if="dialogMenuVisible" @changeClose="menuClose" :id="editId"></choice-menu>
+            </el-dialog>
             <el-dialog title="角色信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="dialogClose">
                 <role-opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></role-opate>
             </el-dialog>
@@ -28,11 +33,13 @@
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import roleOpate from './component/role-opate'
+import choiceMenu from './component/choiceMenu'
 export default {
     name:'roleAdmin',
     components:{
         Pagination,
-        roleOpate
+        roleOpate,
+        choiceMenu
     },
     mixins:[pageMixins],
     data() {
@@ -42,6 +49,7 @@ export default {
             tableLoading:true,
             tableHeight:null,
             dialogFormVisible: false,
+            dialogMenuVisible:false,
             total:10,
             tableData:[],
             parentOptions:[],
@@ -62,7 +70,18 @@ export default {
                 this.handlePag()
             }
             this.dialogFormVisible = false;
+        },
+        menuClose(flag) {
+            this.dialogMenuVisible = false;
         }, 
+        handleMenu(id) {
+            this.editId = id;
+            this.dialogMenuVisible = true;
+        },
+        dialogMenuClose() {
+            this.editId = '';
+            this.dialogMenuVisible = false;
+        },
         handleAdd() {
             this.dialogFormVisible = true;
         },
@@ -83,7 +102,7 @@ export default {
         },
         handlePag(data) {
             this.tableLoading = true;
-            this.$api.roleAdmin.roleList(this.queryForm).then(res => {
+            this.$api.roleAdmin.rolePage(this.queryForm).then(res => {
                 console.log(res)
                 this.tableData = res.data.records;
                 this.total = res.data.total;

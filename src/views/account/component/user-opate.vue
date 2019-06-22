@@ -156,6 +156,7 @@ export default {
     async created() {
 
         await this.$api.centerAdmin.centerList().then(res => {
+            console.log(res)
             this.parentOptions = res.data
         })
         if(this.edit) {

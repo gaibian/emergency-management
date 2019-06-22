@@ -2,7 +2,6 @@
     <div class="table-box">
         <div class="filter-container">
             <el-button class="filter-item" style="margin-bottom:0;" type="primary" size="mini" @click="handleBind">绑定卡片</el-button>
-            <el-button class="filter-item" style="margin-bottom:0;" type="primary" size="mini" @click="handleRecord">绑定记录</el-button>
         </div>
         <el-table :data="tableData" :header-row-class-name="'table-header-box'" :max-height="tableHeight" v-loading="loading" stripe element-loading-text="数据加载中...">
             <el-table-column label="所属主机">
@@ -61,6 +60,7 @@
                 </template>
             </el-table-column>
         </el-table>
+        <!---->
         <div class="btm-group">
             <pagination :total="total" v-show="total > 0" :page.sync="listQuery.page" :limit.sync="listQuery.size" @loadingChange="loading = true" @pagination="handlePag"></pagination>
         </div>
@@ -90,8 +90,10 @@
                         <el-input v-model="form.cardNo" placeholder="请输入设备名称"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="6" label="路数">
-                    <el-input v-model="form.hardwareChannels" placeholder="请输入路数"></el-input>
+                <el-col :span="6">
+                    <el-form-item label="路数">
+                        <el-input v-model="form.hardwareChannels" placeholder="请输入路数"></el-input>
+                    </el-form-item>
                 </el-col>
             </el-row>
             <el-row type="flex" align="middle" justify="end">
@@ -110,6 +112,10 @@ export default {
     props:{
         hostId:{
             type:[Number,String],
+            default:''
+        },
+        hostNumber:{
+            type:String,
             default:''
         }
     },
@@ -136,18 +142,17 @@ export default {
             },
             addFormFlag:false,
             form:{
-                //dataHostId:'',
+                dataHostId:'',
                 deviceName:'',
                 deviceNo:'',
                 cardNo:'',
                 hardwareChannels:'',
             },
-            modifyForm:{
-                dataHostId:'',
-                deviceName:'',
-                deviceNo:'',
-                cardNo:'',
-            },
+            // recordForm:{
+            //     page:1,
+            //     size:10,
+            //     hostNumberLike:'',
+            // },
             tableHeight:190,
             tableData:[],
             loading:true,
@@ -159,11 +164,6 @@ export default {
         this.handlePag()
     },
     methods:{
-        handleRecord() {  // 查看主机卡片的绑定记录
-            this.$api.hostAdmin.hostBindRecordFindId(this.hostId).then(res => {
-                console.log(res)
-            })
-        },
         handleClick(id) {  // 解绑
             this.$api.hostAdmin.hostUnBind(id).then(res => {
                 this.$message({

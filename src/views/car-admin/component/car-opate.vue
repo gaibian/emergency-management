@@ -11,12 +11,12 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="车牌号">
-                        <el-input v-model="form.carNo" clearable placeholder="请填写车牌号"></el-input>
+                        <el-input v-model="form.carNumber" clearable placeholder="请填写车牌号"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label='车编号'>
-                        <el-input v-model="form.carNumber" clearable placeholder="请填写车编号"></el-input>
+                        <el-input v-model="form.carNo" clearable placeholder="请填写车编号"></el-input>
                     </el-form-item>
                 </el-col>
                 <!-- <el-col :span="6">
@@ -54,7 +54,7 @@ export default {
             default:false
         },
         editId:{
-            type:[Number,Object,String],
+            type:[Number,String],
             default:''
         }
     },

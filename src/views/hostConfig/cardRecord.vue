@@ -2,18 +2,18 @@
     <div class="car-collection-box main-page" ref="mainContainer">
         <div class="table-box">
             <div class="top-info-box filter-container" ref="topAdd">
-                <el-button class="filter-item" type="primary" @click="handleAdd">添加主机</el-button>
+                <!-- <el-button class="filter-item" type="primary" @click="handleAdd">添加主机</el-button> -->
                 <!-- <el-input v-model="queryForm.carNo" placeholder="请输入卡片编号"></el-input> -->
                 <!-- <el-select class="filter-item" v-model="queryForm.dataHostId" placeholder="请选择主机">
                     <el-option v-for="(item) in hostOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select> -->
-                <el-input class="filter-item" v-model="queryForm.hostNumber" placeholder="请输入主机编号" style="width:200px"></el-input>
+                <el-input class="filter-item" v-model="queryForm.hostNumberLike" placeholder="请输入主机编号" style="width:200px"></el-input>
                 <el-button class="filter-item" type="primary" @click="queryClick">查询</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                 <el-table-column label="主机编号" prop="dataHost.hostNumber"></el-table-column>
-                <el-table-column label="车辆编号" prop="dataHost.carNumber"></el-table-column>
-                <el-table-column label="车牌号" prop="dataHost.carNo"></el-table-column>
+                <el-table-column label="车辆编号" prop="dataHost.carNo"></el-table-column>
+                <el-table-column label="车牌号" prop="dataHost.carNumber"></el-table-column>
                 <el-table-column label="主机编号" prop="dataHost.hostNumber"></el-table-column>
                 <el-table-column label="卡片编号" prop="cardNo"></el-table-column>
                 <el-table-column label="设备名称" prop="deviceName"></el-table-column>
@@ -60,7 +60,7 @@ export default {
             editId:'',
             hostId:'',
             queryForm:{
-                hostNumber:'',
+                hostNumberLike:'',
                 page: 1,
                 size: 20,
             },
@@ -69,18 +69,24 @@ export default {
             tableLoading:true,
             tableHeight:null,
             tableData:[],
-
         }
     },
     created() {
         this.handlePag();
     },
+    activated() {
+        this.queryInit()
+    },
     methods:{
+        queryInit() {
+            let queryNumber = this.$route.query.hostNumber;
+            if(queryNumber){
+                this.queryForm.hostNumberLike = queryNumber;
+                this.handlePag();
+            }
+        },
         queryClick() {
             this.handlePag();
-        },
-        handleAdd() {
-            this.dialogEditVisible = true;
         },
         handleDelete(id) {
             this.$confirm('确定删除该记录?','提示',{

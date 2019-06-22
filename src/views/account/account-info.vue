@@ -32,15 +32,21 @@
                         <span>{{scope.row.birthday | formatDate}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" fixed="right">
+                <el-table-column label="操作" fixed="right" width="250px">
                     <template slot-scope="scope">
-                        <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
-                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click="handleDelete(scope.row.id)">删除</svg-icon>
+                        <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
+                        <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
+                        <el-button type="primary" size="mini" @click="handleRole(scope.row.id)">关联角色</el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <el-dialog title="人员信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="dialogClose">
                 <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate>
+            </el-dialog>
+            <!--关联角色-->
+            <el-dialog title="关联角色" v-model="dialogRoleVisible" :visible.sync="dialogRoleVisible" width="300px" :close-on-click-modal="false" @close="dialogRoleClose">
+                <!-- <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate> -->
+                <choice-role v-if="dialogRoleVisible" @changeClose="roleClose" :id="editId"></choice-role>
             </el-dialog>
             <div ref="btmGroup" class="btm-group">
                 <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
@@ -49,17 +55,16 @@
     </div>
 </template>
 <script>
-import selectPresonnel from '@/components/selectPresonnel'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import opate from './component/user-opate'
-import { userAdmin,centerAdmin } from '@/api'
+import choiceRole from './component/choiceRole'
 export default {
     name:'accountInfo',
     components:{
-        selectPresonnel,
         Pagination,
-        opate
+        opate,
+        choiceRole
     },
     mixins:[pageMixins],
     filters:{
@@ -78,7 +83,6 @@ export default {
                 let Y = date.getFullYear() + '-';
                 let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
                 let D = date.getDate() + ' ';
-                console.log(Y + M + D)
                 return Y + M + D;
             }
         }
@@ -93,6 +97,7 @@ export default {
             total:10,
             tableData:[],
             parentOptions:[],
+            dialogRoleVisible:false,
             queryForm: {
                 centerInfoId:'',
                 usernameLike:'',
@@ -105,11 +110,18 @@ export default {
     created() {
         this.$api.centerAdmin.centerList().then(res => {
             this.parentOptions = res.data
-           
         })
         this.handlePag();
     },
     methods:{
+        roleClose(flag) {
+            console.log(flag)
+            this.dialogRoleVisible = false;
+        },
+        handleRole(id) { // 关联角色
+            this.editId = id;
+            this.dialogRoleVisible = true;
+        },
         handleQuery() {
             this.handlePag();
         },
@@ -143,6 +155,9 @@ export default {
                 this.tableData = res.data.records;
                 this.tableLoading = false;
             })
+        },
+        dialogRoleClose() {
+            this.dialogRoleClose = false;
         },
         dialogClose() {
             this.editFlag = false;

@@ -11,6 +11,9 @@ const carAdmin = {
         params:form
     })
   },
+  menuLists(id) {
+    return http.get(`/resource/list/${id}`)
+  },
   menuAdd(params) {  // 添加列表数据
     return http.post('/resource/create', params)
   },

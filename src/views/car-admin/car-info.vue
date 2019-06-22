@@ -9,14 +9,14 @@
                         <el-button slot="append" icon="el-icon-search">选择车辆查询</el-button>
                     </el-input>
                 </div> -->
-                <el-input class="filter-item" style="width:200px;" v-model="queryForm.carNo" placeholder="请输入车牌号"></el-input>
-                <el-input class="filter-item" style="width:200px;" v-model="queryForm.carNumber" placeholder="请输入车编号"></el-input>
+                <el-input class="filter-item" style="width:200px;" v-model="queryForm.carNo" placeholder="请输入车编号"></el-input>
+                <el-input class="filter-item" style="width:200px;" v-model="queryForm.carNumber" placeholder="请输入车牌号"></el-input>
                 <el-button class="filter-item" type="primary" @click="handleQuery">查询</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                 <el-table-column label="所属中心" prop="centerInfoName"></el-table-column>
-                <el-table-column label="车牌号" prop="carNo"></el-table-column>
-                <el-table-column label="车编号" prop="carNumber"></el-table-column>
+                <el-table-column label="车牌号" prop="carNumber"></el-table-column>
+                <el-table-column label="车编号" prop="carNo"></el-table-column>
                 <el-table-column label="状态">
                     <template slot-scope="scope">
                         <el-tag :type="carStatus(scope.row.status)">{{scope.row.status | statusFilter}}</el-tag>
@@ -24,8 +24,8 @@
                 </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
-                        <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
-                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click="handleDelete(scope.row.id)">删除</svg-icon>
+                        <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
+                        <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -33,7 +33,7 @@
                 <pagination :total="total" v-show="total > 0" :page.sync="queryForm.page" :limit.sync="queryForm.size" @loadingChange="tableLoading = true" @pagination="handlePag"></pagination>
             </div>
             <!-- 编辑 -->
-            <el-dialog title="车辆信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
+            <el-dialog title="车辆信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="handleClose">
                 <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate>
             </el-dialog>
         </div>
@@ -92,6 +92,11 @@ export default {
     methods:{
         handleQuery() {
             this.handlePag()
+        },
+        handleClose(){
+            this.dialogFormVisible = false;
+            this.editFlag = false;
+            this.editId = '';
         },
         carStatus(status) {
             switch(status) {

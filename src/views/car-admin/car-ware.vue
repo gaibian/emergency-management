@@ -3,9 +3,9 @@
     <div class="table-box">
         <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
         <!-- <el-table-column  label="车辆编号"  prop=""></el-table-column> -->
-        <el-table-column  label="车牌照"  prop="centerInfoName"></el-table-column>
-        <el-table-column  label="车牌照"  prop="carNo"></el-table-column>
+        <el-table-column  label="中心信息"  prop="centerInfoName"></el-table-column>
         <el-table-column  label="车牌号"  prop="carNumber"></el-table-column>
+        <el-table-column  label="车编号"  prop="carNo"></el-table-column>
         <el-table-column  label="设备名称" prop="deviceName"></el-table-column>
         <el-table-column  label="状态"  prop="status">
             <template slot-scope="scope">
@@ -96,13 +96,12 @@ export default {
                 })
             })
         },
-
         handlePag() { 
             this.tableLoading = true;
             this.$api.carWare.carWareList(this.queryForm).then(res => {
-                console.log(res)
                 this.tableData = res.data.records
                 this.total = res.data.total;
+                this.$store.dispatch('setCarWareNum',this.total);
                 this.tableLoading = false;
             })
         }

@@ -3,7 +3,7 @@ import http from '@/utils/http'
 const taskRecord = {
   // 左侧栏目
   zteTaskList(form) { // 获取任务记录列表
-    return http.get('/zteTask/list', {
+    return http.get('/zteTask/page', {
       params: form
     })
   },

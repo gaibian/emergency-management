@@ -4,10 +4,7 @@
             <el-row :gutter="20">
                 <el-col :span="6">
                     <el-form-item label="上级资源">
-                        <!-- <el-input v-model="form.name" clearable placeholder="请填写角色名称"></el-input> -->
-                        <el-select v-model="form.parentId" placeholder="请选择上级资源">
-                            <el-option v-for="(item,index) in parentOptions" :key="index" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
+                        <select-tree :id.sync="form.parentId" :placeholder.sync="treeVal" :data="treeData"></select-tree>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -43,8 +40,13 @@
     </div>
 </template>
 <script>
+import selectTree from '@/components/selectTree'
+import changeObject from '@/utils/changeObject'
 export default {
     name:'menuOpate',
+    components:{
+        selectTree
+    },
     data() {
         return {
             form: {
@@ -54,8 +56,11 @@ export default {
                 sourceKey: '',
                 type:'',
             },
+            treeVal:'请选择上级资源',
+            treeData:[],
             parentOptions:[],
             loading:false,
+            
         }
     },
     props:{
@@ -69,6 +74,19 @@ export default {
         }
     },
     async created() {
+        let attr = {
+            id: 'id',
+            parendId: 'parentId',
+            sourceKey:'sourceKey',
+            name: 'name',
+            type: 'type',
+            rootId: null
+        };
+        await this.$api.menuAdmin.menuList().then(res => {
+            console.log(res)
+            let data = this.$prototype.copyArr(res.data)
+            this.treeData = changeObject(data,attr)
+        })
         await this.$api.menuAdmin.menuList().then(res => {
             console.log(res)
             this.parentOptions = res.data;
@@ -88,6 +106,7 @@ export default {
         }
     },
     methods:{
+        
         handleCancel() {
             this.$emit('dialogChange',false)
         },

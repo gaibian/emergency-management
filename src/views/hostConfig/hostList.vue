@@ -6,18 +6,19 @@
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                 <el-table-column label="主机编号" prop="hostNumber"></el-table-column>
-                <el-table-column label="车牌号" prop="carNo"></el-table-column>
-                <el-table-column label="车编号" prop="carNumber"></el-table-column>
+                <el-table-column label="车牌号" prop="carNumber"></el-table-column>
+                <el-table-column label="车编号" prop="carNo"></el-table-column>
                 <el-table-column label="在线状态" prop="onlineStatus"></el-table-column>
                 <el-table-column label="同步状态" prop="syncStatus"></el-table-column>
                 <el-table-column label="最后在线时间" prop="lastTime"></el-table-column>
                 <el-table-column label="固件版本号" prop="firmwareVersion"></el-table-column>
                 <el-table-column label="软件版本号" prop="softVersion"></el-table-column>
-                <el-table-column label="操作" fixed="right" width="250">
+                <el-table-column label="操作" fixed="right" width="360">
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
                         <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
-                        <el-button type="primary" size="mini" @click="handleSee(scope.row.id)">卡片信息</el-button>
+                        <el-button type="primary" size="mini" @click="handleSee(scope)">卡片信息</el-button>
+                        <el-button type="primary" size="mini" @click="handleRecord(scope)">绑定卡片记录</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -29,7 +30,7 @@
             <host-opate :edit="editFlag" v-if="dialogEditVisible" :editId="editId" @dialogChange="handleOpate"></host-opate>
         </el-dialog>
         <el-dialog title="卡片信息" close-on-click-modal v-model="dialogFormVisible" width="900px" :visible.sync="dialogFormVisible">
-            <card :hostId="hostId" v-if="dialogFormVisible"></card>
+            <card :hostId="hostId" :hostNumber="hostNumber" v-if="dialogFormVisible"></card>
         </el-dialog>
     </div>
 </template>
@@ -52,6 +53,7 @@ export default {
             editFlag:false,
             editId:'',
             hostId:'',
+            hostNumber:'',
             queryForm:{
                 hostNumber:'',
                 page: 1,
@@ -71,6 +73,18 @@ export default {
         this.handlePag();
     },
     methods:{
+        handleRecord(scope) {  // 查看主机卡片的绑定记录
+            // this.recordForm.hostNumberLike = this.hostNumber;
+            // this.$api.hostAdmin.hostBindRecordList(this.recordForm).then(res => {
+            //     console.log(res)
+            // })
+            this.$router.push({
+                name:'cardRecord',
+                query:{
+                    hostNumber:scope.row.hostNumber
+                }
+            })
+        },
         handleAdd() {
             this.dialogEditVisible = true;
         },
@@ -105,8 +119,9 @@ export default {
             }
             this.dialogEditVisible = false;
         },
-        handleSee(id) {
-            this.hostId = id;
+        handleSee(scope) {
+            this.hostId = scope.row.id;
+            this.hostNumber = scope.row.hostNumber
             this.dialogFormVisible = true;
         },
         handlePag() {

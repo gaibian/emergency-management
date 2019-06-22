@@ -36,6 +36,10 @@ import articleAdmin from './module/articleAdmin'
 import menuAdmin from './module/menuAdmin'
 // 数据模块
 import dataAdmin from './module/dataAdmin'
+// 出车任务模块
+import taskInfoAdmin from './module/departureTask'
+// 任务节点模块
+import taskNodeAdmin from './module/taskNode'
 export default {
   login,
   carAdmin,
@@ -51,6 +55,8 @@ export default {
   taskRecord,
   articleAdmin,
   menuAdmin,
-  dataAdmin
+  dataAdmin,
+  taskInfoAdmin,
+  taskNodeAdmin
 }
 

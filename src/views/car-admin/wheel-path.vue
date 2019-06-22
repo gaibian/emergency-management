@@ -142,6 +142,9 @@ export default {
         console.log('重新加载了')
         this.$store.dispatch('setPageLoading',true)
     },
+    activated() {
+        this.queryInit()
+    },
     mounted() {
         this.map = new AMap.Map('wheelPath',{
             zoom:14,
@@ -167,6 +170,14 @@ export default {
         this.map = null;
     },
     methods:{
+        queryInit() {
+            let queryNumber = this.$route.query.id;
+            if(queryNumber){
+                console.log('获取到车辆id')
+                // this.queryForm.hostNumberLike = queryNumber;
+                // this.handlePag();
+            }
+        },
         // 初始化
         init() {
             this.progressMax = this.lineArr.length;

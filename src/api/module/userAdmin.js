@@ -1,8 +1,8 @@
-// 车辆管理的api
+// 用户的api
+import qs from 'qs'
 
 import http from '@/utils/http'
 const userAdmin = {
-  // 左侧栏目
   userList(form) {
     return http.get('/userExpand/list', {
       params: form
@@ -22,6 +22,10 @@ const userAdmin = {
   },
   userRegsiter(data) {
     return http.post('/userExpand/regsiter', data)
+  },
+  // 用户关联角色
+  userGrant(id,data) {
+    return http.post(`/userExpand/grant/${id}`,qs.stringify(data))
   }
 }
 

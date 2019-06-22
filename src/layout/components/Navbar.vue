@@ -13,8 +13,8 @@
         <i class="el-icon-warning"></i>
         <span>共有<em>100</em>辆车异常</span>
       </div> -->
-      <div class="right-menu-item">
-        <el-badge :value="12" class="badge-item">
+      <div class="right-menu-item" v-show="carWareNum == 0 ? false : true">
+        <el-badge :value="carWareNum" class="badge-item" @click.native="handleBadge">
           <svg-icon :icon-class="'car-admin'"></svg-icon>
         </el-badge>
       </div>
@@ -44,10 +44,21 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar',
-      'device'
+      'device',
+      'carWareNum'
     ])
   },
+  watch:{
+    carWareNum() {
+      console.log(this.carWareNum)
+    }
+  },
   methods: {
+    handleBadge() {
+      this.$router.push({
+        name:'carWare'
+      })
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
