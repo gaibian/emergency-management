@@ -1,12 +1,8 @@
 // 人员信息的api
-
 import http from '@/utils/http'
-// import qs from 'qs'
-// import base from '../base'
-
 const personInfo = {
   personList(form) {
-    return http.get('/person/list', {
+    return http.get('/person/page', {
       params: form
     })
   },

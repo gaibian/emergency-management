@@ -3,7 +3,7 @@
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
                 <el-select class="filter-item" v-model="queryForm.centerInfoId" placeholder="请选择所属中心" clearable style="width:200px">
-                    <el-option v-for="item in centerOptions" :key="item.value" :label="item.name" :value="item.id"></el-option>
+                    <el-option v-for="item in centerOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
                 </el-select>
                 <el-input class="filter-item" v-model="queryForm.personNameLike" placeholder="请输入姓名" style="width:200px;"></el-input>
                 <el-input class="filter-item" v-model="queryForm.carNo" placeholder="请输入车牌号" style="width:200px"></el-input>
@@ -13,26 +13,26 @@
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                 <el-table-column label="用户名" prop="personDto.name"></el-table-column>
-                <el-table-column label="性别">
+                <!-- <el-table-column label="性别">
                     <template slot-scope="scope">
-                        <span>{{scope.row.personDto.sex | sexFilter}}</span>
+                        <span>{{handleSex(scope.row.personDto.name)}}</span>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="中心" prop="personDto.centerInfoName"></el-table-column>
                 <el-table-column label="车牌号" prop="carInfoDto.carNo"></el-table-column>
                 <el-table-column label="车编号" prop="carInfoDto.carNumber"></el-table-column>
                 <el-table-column label="员工编号" prop="personDto.jobNo"></el-table-column>
-                <el-table-column label="职务">
+                <!-- <el-table-column label="职务">
                     <template slot-scope="scope">
                         <span>{{scope.row.personDto.post | postFilter}}</span>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="手机号" prop="personDto.telphone"></el-table-column>
-                <el-table-column label="状态">
+                <!-- <el-table-column label="状态">
                     <template slot-scope="scope">
                         <el-tag :type="scope.row.personDto.status == 1 ? 'danger' : ''">{{scope.row.personDto.status | statusFilter}}</el-tag>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="打卡时间">
                     <template slot-scope="scope">
                         <span>{{ scope.row.clockTime | formatDate }}</span>
@@ -135,10 +135,12 @@ export default {
         this.handlePag();
     },
     methods:{
+        handleSex(val) {
+            console.log(val)
+        },
         handlePag(data) {
             this.tableLoading = true;
             this.$api.punchInRecord.punchInRecordList(this.queryForm).then(res => {
-                console.log(res)
                 this.tableData = res.data.records
                 this.total = res.data.total;
                 this.tableLoading = false;

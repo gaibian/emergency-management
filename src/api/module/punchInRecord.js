@@ -6,13 +6,13 @@ import http from '@/utils/http'
 
 const punchInRecord = {
   punchInRecordList(form) {
-    return http.get('/clockRecord/list', {
+    return http.get('/clockRecord/page', {
       params: form
     })
   },
-  punchInRecordDeletes(ids) {  // 删除列表数据
+  punchInRecordDeletes(ids) { // 删除列表数据
     return http.post(`/clockRecord/deleteBatch/${ids}`)
-  },
+  }
 }
 
 export default punchInRecord

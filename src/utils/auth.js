@@ -4,7 +4,7 @@ const TokenKey = 'Admin-Token'
 
 export function getToken() {
   return Cookies.get(TokenKey)
-  //return 'shajdhak12768'
+  // return 'shajdhak12768'
 }
 
 export function setToken(token) {

@@ -3,13 +3,18 @@
         <el-form :model="form" ref="form" v-loading="loading" element-loading-text="数据加载中...">
             <el-row :gutter="20">
                 <el-col :span="6">
-                    <el-form-item label="设备编号">
-                        <el-input placeholder="请输入设备编号"></el-input>
+                    <el-form-item label="设备类型编号">
+                        <el-input v-model="form.no" placeholder="请输入设备类型编号"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item label="设备名称">
-                        <el-input v-model="form.firmware_version" placeholder="请输入设备名称"></el-input>
+                    <el-form-item label="设备类型名称">
+                        <el-input v-model="form.name" placeholder="请输入设备类型名称"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item label="公式">
+                        <el-input v-model="form.formula" placeholder="请输入公式"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -27,7 +32,9 @@ export default {
     data() {
         return {
             form: {
-                
+                no:'',
+                name:'',
+                formula:'',
             },
             loading:false,
           

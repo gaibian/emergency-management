@@ -1,6 +1,7 @@
 // 车辆管理的api
 
 import http from '@/utils/http'
+// eslint-disable-next-line no-unused-vars
 import qs from 'qs'
 // import base from '../base'
 

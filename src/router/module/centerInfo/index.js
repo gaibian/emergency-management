@@ -1,5 +1,6 @@
 
 import Layout from '@/layout'
+
 export const centerInfo = {
   path: '/center-info',
   component: Layout,

@@ -7,18 +7,17 @@ import '@/vue-prototype'
 import Element from 'element-ui'
 import './styles/element-variables.scss'
 
-
 import '@/styles/index.scss' // global css
 
 // 导入全局的组件
-import "./components";
+import './components'
 import App from './App'
 import store from './store'
 import router from './router'
 
 import './icons' // icon
 import './permission' // permission control
-//import './utils/error-log' // error log
+// import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 

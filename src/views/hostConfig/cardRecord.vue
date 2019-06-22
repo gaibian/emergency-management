@@ -61,7 +61,6 @@ export default {
             hostId:'',
             queryForm:{
                 hostNumber:'',
-                carNo:'',
                 page: 1,
                 size: 20,
             },
