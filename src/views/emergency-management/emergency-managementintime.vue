@@ -6,14 +6,14 @@
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                 <el-table-column label="任务编号" prop="taskNo" min-width="120px"></el-table-column>
-                <el-table-column label="任务时间" min-width="120px">
+                <el-table-column label="任务时间" min-width="150px">
                     <template slot-scope="scope">
                         <span>{{ scope.row.taskTime | formatDate}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="主叫号码" prop="telphone" min-width="120px"></el-table-column>
                 <el-table-column label="车牌号" prop="carNumber" min-width="120px"></el-table-column>
-                <el-table-column label="派车时间" min-width="120px">
+                <el-table-column label="派车时间" min-width="150px">
                     <template slot-scope="scope">
                         <span>{{ scope.row.sendTime | formatDate}}</span>
                     </template>
@@ -68,18 +68,7 @@ export default {
                     return '待命中'
                     break;
             }
-        },
-        formatDate(value) {
-            if (value === null) {
-                return '空'
-            } else {
-                var date = new Date(value); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                let Y = date.getFullYear() + '-';
-                let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-                let D = date.getDate() + '';
-                return Y + M + D;
-            }
-        },
+        }
     },
     mixins:[pageMixins],
     data() {
@@ -87,7 +76,7 @@ export default {
             tableLoading:true,
             tableHeight:null,
             dialogFormVisible: false,
-            total:10,
+            total:0,
             editId:'',
             tableData:[],
             queryForm: {

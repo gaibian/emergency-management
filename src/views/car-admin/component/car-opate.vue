@@ -4,9 +4,7 @@
             <el-row :gutter="20">
                 <el-col :span="6">
                     <el-form-item label="所属中心">
-                        <el-select v-model="form.centerInfoId" placeholder="请选择中心信息">
-                            <el-option v-for="(item,index) in centerOptions" :key="index" :value="item.id" :label="item.name"></el-option>
-                        </el-select>
+                        <select-tree :id.sync="form.centerInfoId" :placeholder.sync="treeVal" :data="treeData"></select-tree>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -35,8 +33,13 @@
     </div>
 </template>
 <script>
+import selectTree from '@/components/selectTree'
+import changeObject from '@/utils/changeObject'
 export default {
     name:'opate',
+    components:{
+        selectTree
+    },
     data() {
         return {
             form: {
@@ -44,8 +47,10 @@ export default {
                 carNumber: '',
                 carNo: '',
             },
+            treeVal:'请选择中心信息',
+            listData:[],
+            treeData:[],
             loading:false,
-            centerOptions:[],
         }
     },
     props:{
@@ -59,16 +64,28 @@ export default {
         }
     },
     async created() {
+        let attr = {
+            id: 'id',
+            parendId: 'parentId',
+            name: 'name',
+            rootId: null
+        };
         await this.$api.centerAdmin.centerList().then(res => {
-            this.centerOptions = res.data
+            this.listData = this.$prototype.copyArr(res.data)
+            let data = this.$prototype.copyArr(res.data)
+            this.treeData = changeObject(data,attr)
         })
         if(this.edit) {
             this.loading = true;
             this.$api.carAdmin.carFindId(this.editId).then(res => {
-                console.log(res)
                 for(let i in this.form){
                     this.form[i] = res.data[i]
                 }
+                this.listData.forEach(item => {
+                    if(item.id === this.form.centerInfoId) {
+                        this.treeVal = item.name;
+                    }
+                })
                 this.loading = false;
             })
         }

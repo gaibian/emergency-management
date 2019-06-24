@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import Cookies from 'js-cookie'
-
+import filter from '@/filters'
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import '@/vue-prototype'
 import Element from 'element-ui'
@@ -48,6 +48,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  filters:filter,
   store,
   render: h => h(App)
 })

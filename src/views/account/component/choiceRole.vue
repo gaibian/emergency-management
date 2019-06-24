@@ -1,20 +1,14 @@
 <template>
-    <div>
-        <!-- <el-tree
-        v-loading="loading"
-        :data="treeData"
-        show-checkbox
-        default-expand-all
-        node-key="id"
-        ref="tree"
-        @check="checkChange"
-        highlight-current
-        :props="defaultProps">
-        </el-tree> -->
-        <el-select v-model="form.roleIds" multiple placeholder="请选择角色">
-            <el-option v-for="(item,index) in roleOptions" :key="index" :label="item.name" :value="item.id"></el-option>
-        </el-select>
-        <el-row :gutter="20" class="row-button">
+    <div style="margin-top:12px;">
+        <el-form v-model="form" label-position="left" v-loading="loading" element-loading-text="数据加载中...">
+            <el-form-item label="角色">
+                <el-checkbox-group 
+                    v-model="form.roleIds">
+                    <el-checkbox v-for="city in cities" :label="city.id" :key="city.id">{{city.name}}</el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+        </el-form>
+        <el-row class="row-button" type="flex" justify="start" style="padding-left:0;">
             <el-button size="mini" @click="handleCancel">取消</el-button>
             <el-button type="primary" size="mini" @click="handleSure">确定</el-button>
         </el-row>
@@ -34,6 +28,9 @@ export default {
     data() {
         return {
             treeData:[],
+            checkedCities:[],
+            cities:[],
+            loading:false,
             defaultProps:{
                 children: 'children',
                 label: 'name'
@@ -48,7 +45,6 @@ export default {
                 size: 20,
             },
             loading:false,
-            roleOptions:[],
         }
     },
     async created() {
@@ -62,7 +58,7 @@ export default {
         };
         this.loading = true;
         await this.$api.roleAdmin.roleList(this.id).then(res => {
-            this.roleOptions = res.data.roleList;
+            this.cities = res.data.roleList;
             res.data.userRoleIds.forEach(item => {
                 this.form.roleIds.push(item)
             })
@@ -89,7 +85,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .row-button{
-    padding:20px 12px;
+    padding:0px 12px 20px 12px;
     box-sizing:border-box;
 }
 </style>

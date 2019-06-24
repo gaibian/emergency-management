@@ -1,16 +1,20 @@
 <template>
     <div>
-        <el-tree
-        v-loading="loading"
-        :data="treeData"
-        show-checkbox
-        default-expand-all
-        node-key="id"
-        ref="tree"
-        @check="checkChange"
-        highlight-current
-        :props="defaultProps">
-        </el-tree>
+        <div style="height:300px;max-height:300px;overflow:hidden;">
+            <el-scrollbar style="height:100%">
+                <el-tree
+                v-loading="loading"
+                :data="treeData"
+                show-checkbox
+                default-expand-all
+                node-key="id"
+                ref="tree"
+                @check="checkChange"
+                highlight-current
+                :props="defaultProps">
+                </el-tree>
+            </el-scrollbar>
+        </div>
         <el-row :gutter="20" class="row-button">
             <el-button size="mini" @click="handleCancel">取消</el-button>
             <el-button type="primary" size="mini" @click="handleSure">确定</el-button>

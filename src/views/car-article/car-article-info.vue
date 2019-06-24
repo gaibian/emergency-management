@@ -46,7 +46,7 @@ export default {
             editId:'',
             editFlag:false,
             dialogFormVisible:false,
-            total:30,
+            total:0,
             tableData:[],
             queryForm: {
                 page: 1,

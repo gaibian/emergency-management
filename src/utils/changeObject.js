@@ -2,11 +2,8 @@
 function toTreeData(data, attributes) {
   const resData = data
   const tree = []
-  console.log(attributes.rootId)
   for (let i = 0; i < resData.length; i++) {
-    console.log(resData[i].parentId)
     if (resData[i].parentId === attributes.rootId) {
-      console.log('进来了')
       const obj = {
         id: resData[i][attributes.id],
         name: resData[i][attributes.name],

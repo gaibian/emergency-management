@@ -9,9 +9,10 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item label="上级中心">
-                        <el-select v-model="form.parentId" placeholder="请选择上级中心">
+                        <select-tree :id.sync="form.parentId" :placeholder.sync="treeVal" :data="treeData"></select-tree>
+                        <!-- <el-select v-model="form.parentId" placeholder="请选择上级中心">
                             <el-option v-for="(item,index) in parentOptions" :key="index" :label="item.name" :value="item.id"></el-option>
-                        </el-select>
+                        </el-select> -->
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -54,8 +55,13 @@
     </div>
 </template>
 <script>
+import selectTree from '@/components/selectTree'
+import changeObject from '@/utils/changeObject'
 export default {
     name:'centerOpate',
+    components:{
+        selectTree
+    },
     data() {
         return {
             form: {
@@ -67,6 +73,9 @@ export default {
                 remark:'',
                 status:'',
             },
+            treeVal:'请选择上级中心',
+            listData:[],
+            treeData:[],
             loading:false,
             parentOptions:[],
         }
@@ -82,12 +91,16 @@ export default {
         }
     },
     async created() {
+        let attr = {
+            id: 'id',
+            parendId: 'parentId',
+            name: 'name',
+            rootId: null
+        };
         await this.$api.centerAdmin.centerList().then(res => {
-            this.parentOptions = res.data
-            this.parentOptions.push({
-                name:'无',
-                id:null
-            })
+            this.listData = this.$prototype.copyArr(res.data)
+            let data = this.$prototype.copyArr(res.data)
+            this.treeData = changeObject(data,attr)
         })
         if(this.edit) {
             this.loading = true;
@@ -95,6 +108,13 @@ export default {
                 for(let i in this.form){
                     this.form[i] = res.data[i]
                 }
+                this.listData.forEach(item => {
+                    if(this.form.parentId === null) {
+                        this.treeVal = '顶级'
+                    }else if(item.id === this.form.parentId){
+                        this.treeVal = item.name;
+                    }
+                })
                 this.loading = false;
             })
         }

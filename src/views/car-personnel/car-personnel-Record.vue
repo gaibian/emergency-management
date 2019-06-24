@@ -2,9 +2,12 @@
     <div class="car-collection-box main-page" ref="mainContainer">
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
-                <el-select class="filter-item" v-model="queryForm.centerInfoId" placeholder="请选择所属中心" clearable style="width:200px">
+                <!-- <el-select class="filter-item" v-model="queryForm.centerInfoId" placeholder="请选择所属中心" clearable style="width:200px">
                     <el-option v-for="item in centerOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                </el-select>
+                </el-select> -->
+                <div class="filter-item" style="width:200px;">
+                    <select-tree :id.sync="queryForm.centerInfoId" :placeholder.sync="treeVal" :data="treeData"></select-tree>
+                </div>
                 <el-input class="filter-item" v-model="queryForm.personNameLike" placeholder="请输入姓名" style="width:200px;"></el-input>
                 <el-input class="filter-item" v-model="queryForm.carNo" placeholder="请输入车牌号" style="width:200px"></el-input>
                 <el-input class="filter-item" v-model="queryForm.carNumber" placeholder="请输入车编号" style="width:200px;"></el-input>
@@ -33,7 +36,7 @@
                         <el-tag :type="scope.row.personDto.status == 1 ? 'danger' : ''">{{scope.row.personDto.status | statusFilter}}</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="打卡时间">
+                <el-table-column label="打卡时间" min-width="150px">
                     <template slot-scope="scope">
                         <span>{{ scope.row.clockTime | formatDate }}</span>
                     </template>
@@ -55,10 +58,13 @@
 <script>
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
+import selectTree from '@/components/selectTree'
+import changeObject from '@/utils/changeObject'
 export default {
     name:'carPersonnelRecord',
     components:{
-        Pagination
+        Pagination,
+        selectTree
     },
     mixins:[pageMixins],
     filters:{
@@ -74,17 +80,6 @@ export default {
                 return '下班'
             }else{
                 return '上班'
-            }
-        },
-        formatDate(value) {
-            if (value === null) {
-                return '空'
-            } else {
-                var date = new Date(value); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                let Y = date.getFullYear() + '-';
-                let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-                let D = date.getDate() + '';
-                return Y + M + D;
             }
         },
         postFilter(value) {
@@ -106,8 +101,11 @@ export default {
             tableLoading:true,
             tableHeight:null,
             queryTime:'',
-            total:30,
+            total:0,
             tableData:[],
+            treeVal:'请选择中心信息',
+            listData:[],
+            treeData:[],
             queryForm: {
                 page:1,
                 size:10,
@@ -119,7 +117,6 @@ export default {
                 endTime:'',
                 type:'',
             },
-            centerOptions:[],
         }
     },
     watch:{
@@ -129,8 +126,16 @@ export default {
         }
     },
     created() {
+        let attr = {
+            id: 'id',
+            parendId: 'parentId',
+            name: 'name',
+            rootId: null
+        };
         this.$api.centerAdmin.centerList().then(res => {
-            this.centerOptions = res.data;
+            this.listData = this.$prototype.copyArr(res.data)
+            let data = this.$prototype.copyArr(res.data)
+            this.treeData = changeObject(data,attr)
         })
         this.handlePag();
     },

@@ -44,7 +44,7 @@
                 <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate>
             </el-dialog>
             <!--关联角色-->
-            <el-dialog title="关联角色" v-model="dialogRoleVisible" :visible.sync="dialogRoleVisible" width="300px" :close-on-click-modal="false" @close="dialogRoleClose">
+            <el-dialog title="关联角色" v-model="dialogRoleVisible" :visible.sync="dialogRoleVisible" width="500px" :close-on-click-modal="false" @close="dialogRoleClose">
                 <!-- <opate :edit="editFlag" v-if="dialogFormVisible" :editId="editId" @dialogChange="handleOpate"></opate> -->
                 <choice-role v-if="dialogRoleVisible" @changeClose="roleClose" :id="editId"></choice-role>
             </el-dialog>

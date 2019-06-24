@@ -51,7 +51,7 @@ export default {
     mixins:[pageMixins],
     data() {
         return {
-            total:29,
+            total:0,
             editFlag:false,
             editId:'',
             hostId:'',

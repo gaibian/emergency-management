@@ -14,7 +14,7 @@
                 <el-table-column label="纬度值" prop="longitude"></el-table-column>
                 <el-table-column label="卫星数量" prop="satelliteNum"></el-table-column>
                 <el-table-column label="速度" prop="speed"></el-table-column>
-                <el-table-column label="创建时间">
+                <el-table-column label="创建时间" min-width="150px">
                     <template slot-scope="scope">
                         <span>{{scope.row.createTime | formatDate}}</span>
                     </template>
@@ -47,22 +47,9 @@ export default {
         opate
     },
     mixins:[pageMixins],
-    filters:{
-        formatDate(value) {
-            if (value === null) {
-                return '空'
-            } else {
-                var date = new Date(value); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                let Y = date.getFullYear() + '-';
-                let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-                let D = date.getDate() + '';
-                return Y + M + D;
-            }
-        },
-    },
     data() {
         return {
-            total:30,
+            total:0,
             tableLoading:true,
             tableHeight:null,
             dialogFormVisible: false,

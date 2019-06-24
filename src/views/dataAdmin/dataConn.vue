@@ -14,7 +14,7 @@
                 <el-table-column label="通讯类型" prop="type"></el-table-column>
                 <el-table-column label="传输方式" prop="conn_type"></el-table-column>
            <el-table-column label="JSON数据包" prop="json_data"></el-table-column>
-                <el-table-column label="创建时间">
+                <el-table-column label="创建时间" min-width="150px">
                     <template slot-scope="scope">
                         <span>{{scope.row.createTime | formatDate}}</span>
                     </template>
@@ -55,18 +55,7 @@ export default {
             }else{
                 return '模拟量'
             }
-        },
-        formatDate(value) {
-            if (value === null) {
-                return '空'
-            } else {
-                var date = new Date(value); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-                let Y = date.getFullYear() + '-';
-                let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-                let D = date.getDate() + '';
-                return Y + M + D;
-            }
-        },
+        }
     },
     watch:{
         queryTime() {
@@ -76,7 +65,7 @@ export default {
     },
     data() {
         return {
-            total:30,
+            total:0,
             tableLoading:true,
             tableHeight:null,
             dialogFormVisible: false,

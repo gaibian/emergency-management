@@ -9,12 +9,8 @@
                 <div class="filter-item" style="width:200px;">
                     <el-input v-model="queryForm.jobNo" placeholder="请输入工号" clearable ></el-input>
                 </div>
-                <div class="filter-item">
-                    <!-- centerInfoId是接口接收字段，queryForm下面 -->
-                <el-select v-model="queryForm.centerInfoId" placeholder="请选择所属中心" clearable>
-                    <!-- centerOptions是下拉数组 -->
-                    <el-option v-for="item in centerOptions" :key="item.value" :label="item.name" :value="item.id"></el-option>
-                </el-select>
+                <div class="filter-item" style="width:200px">
+                    <select-tree :id.sync="queryForm.centerInfoId" :placeholder.sync="treeVal" :data="treeData"></select-tree>
                 </div>
                 <div class="filter-item">
                 <el-select v-model="queryForm.status" placeholder="请选择在职状态" clearable>
@@ -46,8 +42,8 @@
                 </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template slot-scope="scope">
-                        <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
-                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click="handleDelete(scope.row.id)">删除</svg-icon>
+                        <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
+                        <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -64,12 +60,15 @@
 import Pagination from '@/components/Pagination'
 import peropate from './component/per-opate'
 import pageMixins from '@/mixins'
+import selectTree from '@/components/selectTree'
+import changeObject from '@/utils/changeObject'
 
 export default {
     name:'carPersonnelInfo',
     components:{
         Pagination,
-        peropate
+        peropate,
+        selectTree
     },
     mixins:[pageMixins],
     filters: {
@@ -109,8 +108,11 @@ export default {
             dialogFormVisible: false,
             editFlag:false,
             editId:'',
-            total:30,
+            total:0,
             tableData:[],
+            treeVal:'请选择中心信息',
+            listData:[],
+            treeData:[],
             queryForm: {
                 centerInfoId:'',
                 nameLike:'',
@@ -120,12 +122,19 @@ export default {
                 page:1,
                 size:10,
             },
-            centerOptions:[],
         }
     },
     created() {
+        let attr = {
+            id: 'id',
+            parendId: 'parentId',
+            name: 'name',
+            rootId: null
+        };
         this.$api.centerAdmin.centerList().then(res => {
-            this.centerOptions = res.data;
+            this.listData = this.$prototype.copyArr(res.data)
+            let data = this.$prototype.copyArr(res.data)
+            this.treeData = changeObject(data,attr)
         })
         // 默认加载列表
         this.handlePag();

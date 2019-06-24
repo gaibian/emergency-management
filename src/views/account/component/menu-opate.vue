@@ -60,6 +60,7 @@ export default {
             treeData:[],
             parentOptions:[],
             loading:false,
+            listData:[],
             
         }
     },
@@ -83,17 +84,9 @@ export default {
             rootId: null
         };
         await this.$api.menuAdmin.menuList().then(res => {
-            console.log(res)
+            this.listData = this.$prototype.copyArr(res.data)
             let data = this.$prototype.copyArr(res.data)
             this.treeData = changeObject(data,attr)
-        })
-        await this.$api.menuAdmin.menuList().then(res => {
-            console.log(res)
-            this.parentOptions = res.data;
-            this.parentOptions.unshift({
-                name:'顶级',
-                id:null
-            })
         })
         if(this.edit) {
             this.loading = true;
@@ -101,6 +94,14 @@ export default {
                 for(let i in this.form){
                     this.form[i] = res.data[i]
                 }
+                this.listData.forEach(item => {
+                    if(this.form.parentId === null || this.form.parentId == '') {
+                        this.treeVal = '顶级'
+                    }else if(item.id === this.form.parentId){
+                        this.treeVal = item.name;
+                    }
+                })
+                
                 this.loading = false;
             })
         }
