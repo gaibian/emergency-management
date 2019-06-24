@@ -12,7 +12,7 @@ const carWare = {
   },
   carWareDeletes(ids) {
     return http.post(`/carAlarmInfo/deleteBatch/${ids}`)
-  },
+  }
 }
 
 export default carWare

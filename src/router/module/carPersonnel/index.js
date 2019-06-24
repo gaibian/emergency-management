@@ -15,4 +15,4 @@ export const carPersonnel = {
     name: 'carPersonnelRecord',
     component: () => import('@/views/car-personnel/car-personnel-Record.vue'),
     meta: { title: '考勤刷卡记录', icon: 'checkWorkAttendance' }
-}] }
+  }] }

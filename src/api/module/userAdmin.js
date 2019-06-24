@@ -24,8 +24,8 @@ const userAdmin = {
     return http.post('/userExpand/regsiter', data)
   },
   // 用户关联角色
-  userGrant(id,data) {
-    return http.post(`/userExpand/grant/${id}`,qs.stringify(data))
+  userGrant(id, data) {
+    return http.post(`/userExpand/grant/${id}`, qs.stringify(data))
   }
 }
 

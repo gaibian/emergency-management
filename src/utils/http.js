@@ -10,7 +10,7 @@ const CancelToken = axios.CancelToken
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api 的 base_url
-  //baseURL: 'http://192.168.3.195:8000',
+  // baseURL: 'http://192.168.3.195:8000',
   baseURL: 'http://192.168.3.201:8000',
   timeout: 5000 // 请求超时时间
 })
@@ -73,7 +73,7 @@ service.interceptors.response.use(
     } else {
       // 断网了
       // 先关闭所有的message碳层 =》 只显示最后一层
-      Message.closeAll();
+      Message.closeAll()
       Message({
         message: '网络超时,请检查网络！',
         type: 'error'

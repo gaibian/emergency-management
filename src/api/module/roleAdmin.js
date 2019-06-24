@@ -8,7 +8,7 @@ const roleAdmin = {
       params: form
     })
   },
-  roleList(id){
+  roleList(id) {
     return http.get(`/role/list/${id}`)
   },
   roleAdd(params) {
@@ -24,8 +24,8 @@ const roleAdmin = {
     return http.post(`/role/update/${id}`, form)
   },
   // 角色关联资源
-  roleGrant(id,form) {
-    return http.post(`/role/grant/${id}`,qs.stringify(form))
+  roleGrant(id, form) {
+    return http.post(`/role/grant/${id}`, qs.stringify(form))
   }
 }
 

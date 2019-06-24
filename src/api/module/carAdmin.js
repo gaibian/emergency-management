@@ -6,12 +6,12 @@ import http from '@/utils/http'
 
 const carAdmin = {
   // 左侧栏目
-  carPage(form) {  // 获取列表
+  carPage(form) { // 获取列表
     return http.get('/carInfo/page', {
       params: form
     })
   },
-  carList() {  // 获取列表
+  carList() { // 获取列表
     return http.get('/carInfo/list')
   },
   carAdd(params) { // 添加列表数据

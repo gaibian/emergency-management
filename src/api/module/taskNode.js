@@ -13,9 +13,9 @@ const taskNodeAdmin = {
   taskNodeAdd(params) { // 添加列表数据
     return http.post('/taskNode/create', params)
   },
-//   articleDeletes(ids) { // 删除列表数据
-//     return http.post(`/articleInfo/deleteBatch/${ids}`)
-//   },
+  //   articleDeletes(ids) { // 删除列表数据
+  //     return http.post(`/articleInfo/deleteBatch/${ids}`)
+  //   },
   taskNodeFindId(id) { // 查询列表数据
     return http.get(`/taskNode/findByTaskId/${id}`)
   },

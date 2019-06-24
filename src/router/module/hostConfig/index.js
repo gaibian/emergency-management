@@ -9,7 +9,7 @@ export const hostConfig = {
     name: 'hostList',
     component: () => import('@/views/hostConfig/hostList.vue'),
     meta: { title: '主机列表', icon: 'hostConfig' }
-  },{
+  }, {
     path: 'cardRecord',
     name: 'cardRecord',
     component: () => import('@/views/hostConfig/cardRecord.vue'),

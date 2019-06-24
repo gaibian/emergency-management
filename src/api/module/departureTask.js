@@ -1,7 +1,7 @@
 // 出车任务的api
 import http from '@/utils/http'
 const taskInfoAdmin = {
-    taskInfoPage(form) {
+  taskInfoPage(form) {
     return http.get('/taskInfo/page', {
       params: form
     })
