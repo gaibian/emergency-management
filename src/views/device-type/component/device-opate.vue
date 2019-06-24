@@ -76,7 +76,6 @@ export default {
         },
         editSubmit() {
             this.$api.deviceType.deviceTypeUpdate(this.editId,this.form).then(res => {
-                console.log(res)
                 this.$message({
                     message:'更新成功',
                     type:'success'

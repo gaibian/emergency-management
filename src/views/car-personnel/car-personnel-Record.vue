@@ -18,7 +18,6 @@
                         <span>{{scope.row.personDto.sex | sexFilter}}</span>
                     </template>
                 </el-table-column>
-
                 <el-table-column label="中心" prop="personDto.centerInfoName"></el-table-column>
                 <el-table-column label="车牌号" prop="carInfoDto.carNo"></el-table-column>
                 <el-table-column label="车编号" prop="carInfoDto.carNumber"></el-table-column>

@@ -22,11 +22,12 @@
                 <el-table-column prop="remark" label="备注"></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                         <svg-icon :icon-class="'edit'" style="font-size:18px;cursor:pointer;margin-right:8px;color:#409EFF" @click="handleEdit(scope.row.id)">编辑</svg-icon>
-                        <svg-icon :icon-class="'delete'" style="font-size:18px;cursor:pointer;color:#F56C6C" @click="handleDelete(scope.row.id)">删除</svg-icon>
+                        <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
+                        <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
+            <div ref="btmGroup" class="btm-group"></div>
         </div>
         <!-- 编辑 -->
         <el-dialog title="中心信息" v-model="dialogFormVisible" :visible.sync="dialogFormVisible" :close-on-click-modal="false" @close="dialogClose">
@@ -36,7 +37,6 @@
 </template>
 <script>
 import pageMixins from '@/mixins'
-// import { centerAdmin } from '@/api'
 import centerOptea from './component/center-optea'
 export default {
     name:'centerInfo',
@@ -70,7 +70,6 @@ export default {
         handlePag() {
             this.loading = true;
             this.$api.centerAdmin.centerTreeList().then(res => {
-                console.log(res)
                 this.tableData = res.data;
                 this.loading = false;
             })

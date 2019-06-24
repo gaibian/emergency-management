@@ -43,14 +43,10 @@
 <script>
 import pageMixins from '@/mixins'
 import Pagination from '@/components/Pagination'
-//import card from './component/card'
-//import hostOpate from './component/host-opate'
 export default {
     name:'cardRecord',
     components:{
         Pagination,
-        // card,
-        // hostOpate
     },
     mixins:[pageMixins],
     data() {
@@ -118,7 +114,6 @@ export default {
             this.tableLoading = true;
             this.$api.hostAdmin.hostBindRecordList(this.queryForm).then(res => {
                 this.tableData = res.data.records;
-                console.log(this.tableData)
                 this.total = res.data.total
                 this.tableLoading = false;
             })

@@ -2,7 +2,7 @@
     <div class="car-collection-box main-page" ref="mainContainer">
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
-                <!-- <el-button class="filter-item" type="primary">导出数据</el-button> -->
+  
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
                 <el-table-column label="任务编号" prop="taskNo" min-width="120px"></el-table-column>
@@ -86,12 +86,9 @@ export default {
     mixins:[pageMixins],
     data() {
         return {
-            flag:false,
-            plate:'',
             tableLoading:true,
             tableHeight:null,
             dialogFormVisible: false,
-            value6:'',
             total:30,
             editId:'',
             tableData:[],
@@ -127,7 +124,6 @@ export default {
         handlePag(data) {
             this.tableLoading = true;
             this.$api.taskRecord.zteTaskList(this.queryForm).then(res => {
-                console.log(res)
                 this.tableData = res.data.records;
                 this.total = res.data.total;
                 this.tableLoading = false;

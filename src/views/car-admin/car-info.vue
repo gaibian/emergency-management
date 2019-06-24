@@ -1,14 +1,8 @@
 <template>
     <div class="car-collection-box main-page" ref="mainContainer">
-        <!-- <select-car :flag="flag" :radio="true" @change="handleChange"></select-car> -->
         <div class="table-box">
             <div class="top-info-box filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加车辆</el-button>
-                <!-- <div class="filter-item" style="width:300px;">
-                    <el-input v-model="queryForm.carNo" placeholder="车牌号">
-                        <el-button slot="append" icon="el-icon-search">选择车辆查询</el-button>
-                    </el-input>
-                </div> -->
                 <el-input class="filter-item" style="width:200px;" v-model="queryForm.carNo" placeholder="请输入车编号"></el-input>
                 <el-input class="filter-item" style="width:200px;" v-model="queryForm.carNumber" placeholder="请输入车牌号"></el-input>
                 <el-button class="filter-item" type="primary" @click="handleQuery">查询</el-button>
@@ -40,14 +34,12 @@
     </div>
 </template>
 <script>
-import selectCar from '@/components/selectCar'
 import Pagination from '@/components/Pagination'
 import pageMixins from '@/mixins'
 import opate from './component/car-opate'
 export default {
     name:'carAdmin',
     components:{
-        selectCar,
         Pagination,
         opate
     },
@@ -139,7 +131,6 @@ export default {
         handlePag() {  //初始化加载列表 或者是更新列表
             this.tableLoading = true;
             this.$api.carAdmin.carPage(this.queryForm).then(res => {
-                console.log(res)
                 this.tableData = res.data.records
                 this.total = res.data.total;
                 this.tableLoading = false;

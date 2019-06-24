@@ -13,7 +13,7 @@
                 <el-table-column label="最后在线时间" prop="lastTime"></el-table-column>
                 <el-table-column label="固件版本号" prop="firmwareVersion"></el-table-column>
                 <el-table-column label="软件版本号" prop="softVersion"></el-table-column>
-                <el-table-column label="操作" fixed="right" width="360">
+                <el-table-column label="操作" fixed="right" width="370">
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
                         <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
@@ -67,17 +67,10 @@ export default {
         }
     },
     created() {
-        this.$api.hostAdmin.hostBindRecordList({page:1,size:10,dataHostId:'',carNo:''}).then(res => {
-            console.log(res)
-        })
         this.handlePag();
     },
     methods:{
         handleRecord(scope) {  // 查看主机卡片的绑定记录
-            // this.recordForm.hostNumberLike = this.hostNumber;
-            // this.$api.hostAdmin.hostBindRecordList(this.recordForm).then(res => {
-            //     console.log(res)
-            // })
             this.$router.push({
                 name:'cardRecord',
                 query:{
@@ -128,7 +121,6 @@ export default {
             this.tableLoading = true;
             this.$api.hostAdmin.hostPage(this.queryForm).then(res => {
                 this.tableData = res.data.records;
-                console.log(this.tableData)
                 this.total = res.data.total
                 this.tableLoading = false;
             })

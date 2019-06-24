@@ -84,12 +84,9 @@ export default {
     mixins:[pageMixins],
     data() {
         return {
-            flag:false,
-            plate:'',
             tableLoading:true,
             tableHeight:null,
             dialogFormVisible: false,
-            value6:'',
             total:10,
             editId:'',
             tableData:[],
@@ -130,7 +127,6 @@ export default {
             })
         },
         handleOpate(boo) {
-            console.log(boo)
             this.tableLoading = true;
             setTimeout(() => {
                 this.tableLoading = false;
@@ -140,7 +136,6 @@ export default {
         handlePag(data) {
             this.tableLoading = true;
             this.$api.taskInfoAdmin.taskInfoPage(this.queryForm).then(res => {
-                console.log(res)
                 this.tableData = res.data.records;
                 this.total = res.data.total;
                 this.tableLoading = false;

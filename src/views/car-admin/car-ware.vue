@@ -2,7 +2,6 @@
 <div class="car-collection-box main-page" ref="mainContainer">
     <div class="table-box">
         <el-table :data="tableData" :header-row-class-name="'table-header-box'" stripe :max-height="tableHeight" v-loading="tableLoading" element-loading-text="数据加载中...">
-        <!-- <el-table-column  label="车辆编号"  prop=""></el-table-column> -->
         <el-table-column  label="中心信息"  prop="centerInfoName"></el-table-column>
         <el-table-column  label="车牌号"  prop="carNumber"></el-table-column>
         <el-table-column  label="车编号"  prop="carNo"></el-table-column>
@@ -26,7 +25,6 @@
 </div>
 </template>
 <script>
-// import selectCar from '@/components/selectCar'
 import { setTimeout } from 'timers';
 import Pagination from '@/components/Pagination'
 
@@ -56,7 +54,6 @@ export default {
             tableLoading:true,
             tableData:[],
             tableHeight:null,
-            deviceName:[],
             queryForm: {
                 page:1,
                 size:10

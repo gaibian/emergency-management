@@ -77,7 +77,7 @@ export default {
             default:false
         },
         editId:{
-            type:[Number,Object,String],
+            type:[Number,String],
             default:''
         }
     },
@@ -114,7 +114,6 @@ export default {
         },
         editSubmit() {
             this.$api.centerAdmin.centerUpdate(this.editId,this.form).then(res => {
-                console.log(res)
                 this.$message({
                     message:'更新成功',
                     type:'success'

@@ -24,7 +24,6 @@
                 <el-button class="filter-item" type="primary" @click="queryClick">查询</el-button>
             </div>
             <el-table :data="tableData" :header-row-class-name="'table-header-box'" :max-height="tableHeight" stripe v-loading="tableLoading" element-loading-text="数据加载中...">
-                <!-- 异步请求，根据接口返回的字段是centerInfo，下面的name -->
                 <el-table-column label="急救中心" prop="centerInfoName"></el-table-column>
                 <el-table-column label="姓名" prop="name"></el-table-column>
                 <el-table-column label="员工工号" prop="jobNo"></el-table-column>

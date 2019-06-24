@@ -1,16 +1,13 @@
 import axios from 'axios'
-// eslint-disable-next-line no-unused-vars
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 import router from '../router'
-// eslint-disable-next-line no-unused-vars
-const CancelToken = axios.CancelToken
 
 // 创建axios实例
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api 的 base_url
-  // baseURL: 'http://192.168.3.195:8000',
+  //baseURL: 'http://192.168.3.195:8000',
   baseURL: 'http://192.168.3.201:8000',
   timeout: 5000 // 请求超时时间
 })
@@ -48,7 +45,6 @@ service.interceptors.request.use(
 )
 // response 拦截器
 service.interceptors.response.use(
-  // res => res.status === 200 ? Promise.resolve(res.data) : Promise.reject(res),
   res => {
     if (res.status === 200) {
       if (res.data.code === -1) {

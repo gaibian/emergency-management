@@ -1,6 +1,5 @@
 <template>
     <div class="car-collection-box main-page" ref="mainContainer">
-        <!-- <select-car :flag="flag" @change="handleChange"></select-car> -->
         <div class="table-box">
             <div class="filter-container" ref="topAdd">
                 <el-button class="filter-item" type="primary" @click="handleAdd">添加物品</el-button>
@@ -42,9 +41,6 @@ export default {
     mixins:[pageMixins],
     data() {
         return {
-            fenbu:'',
-            flag:false,
-            plate:'',
             tableLoading:false,
             tableHeight:null,
             editId:'',

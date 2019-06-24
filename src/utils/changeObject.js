@@ -2,7 +2,6 @@
 function toTreeData(data, attributes) {
   const resData = data
   const tree = []
-
   console.log(attributes.rootId)
   for (let i = 0; i < resData.length; i++) {
     console.log(resData[i].parentId)
