@@ -5,16 +5,9 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
-
-import { carAdmin } from './module/carAdmin'
-import { carArticle } from './module/carArticle'
 import { carPersonnel } from './module/carPersonnel'
 import { Account } from './module/Account'
-import { emergencyManagement } from './module/emergencyManagement'
 import { centerInfo } from './module/centerInfo'
-import { hostConfig } from './module/hostConfig'
-import { deviceType } from './module/deviceType'
-import { dataAdmin } from './module/dataAdmin'
 
 /* Router Modules */
 // import componentsRouter from './modules/components'
@@ -94,27 +87,21 @@ export const constantRoutes = [
       }
     ]
   },
-  carAdmin,
-  carArticle,
   carPersonnel,
   Account,
-  emergencyManagement,
   centerInfo,
-  hostConfig,
-  deviceType,
-  dataAdmin,
-  {
-    path: '/icon',
-    component: Layout,
-    children: [
-      {
-        path: 'svgicon',
-        component: () => import('@/views/icons/index'),
-        name: 'svgIcon',
-        meta: { title: 'svg图标', icon: 'home' }
-      }
-    ]
-  },
+  // {
+  //   path: '/icon',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'svgicon',
+  //       component: () => import('@/views/icons/index'),
+  //       name: 'svgIcon',
+  //       meta: { title: 'svg图标', icon: 'home' }
+  //     }
+  //   ]
+  // },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

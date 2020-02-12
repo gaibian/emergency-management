@@ -4,6 +4,7 @@ import base from '../base'
 
 const login = {
   login(data) {
+    console.log('调用api')
     return http.post('/auth/login', data)
   },
   logout() {

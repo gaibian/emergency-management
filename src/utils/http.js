@@ -8,7 +8,7 @@ import router from '../router'
 const service = axios.create({
   // baseURL: process.env.BASE_API, // api 的 base_url
   //baseURL: 'http://192.168.3.195:8000',
-  baseURL: 'http://192.168.3.201:8000',
+  baseURL: 'http://10.1.0.7:8001/',
   timeout: 5000 // 请求超时时间
 })
 // 异常状态码判断
@@ -20,11 +20,12 @@ const errorHandle = (status, message) => {
         type: 'error',
         duration: 1500
       })
-      setTimeout(() => {
-        router.push({ path: '/login' })
-        // 需要删除一些登录的时候绑定的东西 并且刷新页面
-        location.reload()
-      }, 1000)
+      router.push({ path: '/login' })
+      // setTimeout(() => {
+      //   router.push({ path: '/login' })
+      //   // 需要删除一些登录的时候绑定的东西 并且刷新页面
+      //   location.reload()
+      // }, 1000)
       break
     case 1001:
       // 登录失效

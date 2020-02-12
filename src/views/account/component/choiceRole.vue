@@ -10,13 +10,14 @@
         </el-form>
         <el-row class="row-button" type="flex" justify="start" style="padding-left:0;">
             <el-button size="mini" @click="handleCancel">取消</el-button>
-            <el-button type="primary" size="mini" @click="handleSure">确定</el-button>
+            <el-button v-if="editShow" type="primary" size="mini" :disabled="submitDisabled" @click="handleSure">确定</el-button>
         </el-row>
     </div>
 </template>
 <script>
 import changeObject from '@/utils/changeObject'
 import { setTimeout } from 'timers';
+import { powerShow } from '@/utils/power-filter'
 export default {
     name:'choiceRole',
     props:{
@@ -31,6 +32,7 @@ export default {
             checkedCities:[],
             cities:[],
             loading:false,
+            submitDisabled:false,
             defaultProps:{
                 children: 'children',
                 label: 'name'
@@ -70,15 +72,25 @@ export default {
             this.$emit('changeClose',false)
         },
         handleSure() {
+            this.submitDisabled = true;
             let data = Object.assign({},this.form);
             data.roleIds = data.roleIds.join(',');
+            console.log(data.roleIds)
             this.$api.userAdmin.userGrant(this.id,data).then(res => {
                 this.$message({
                     message:'设置成功',
                     type:'success'
                 })
+                this.submitDisabled = false;
                 this.$emit('changeClose',true)
+            }).catch(() => {
+                this.submitDisabled = false;
             })
+        }
+    },
+    computed:{
+        editShow() {
+            return powerShow('user:grant')
         }
     }
 }

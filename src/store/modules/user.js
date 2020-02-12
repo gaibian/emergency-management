@@ -1,7 +1,7 @@
 // import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getToken, setToken, removeToken,setPower } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
-import { login } from '@/api'
+import api from '@/api'
 
 const state = {
   token: getToken(),
@@ -34,18 +34,26 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      // login.login({
-      //   username:username,
-      //   password:password
-      // }).then(res => {
-      //   console.log(res)
-      //   commit('SET_TOKEN',res.user.username)
-      //   setToken(res.token)
-      //   resolve()
-      // })
-      commit('SET_TOKEN','system')
-      setToken('xiaojun')
-      resolve()
+      console.log('开始登录',userInfo)
+      console.log('api',api)
+      api.login.login({
+        username:username,
+        password:password
+      }).then(res => {
+        console.log(res)
+        commit('SET_NAME',res.data.user.nickName)
+        commit('SET_TOKEN',res.data.token)
+        // setUserInfo(res.data.user)
+        // // 设置权限之前 角色的权限进行合并
+        setPower(res.data.user)
+        setToken(res.data.token)
+        resolve()
+      }).catch(err => {
+        reject(err)
+      }) 
+      // commit('SET_TOKEN','system')
+      // setToken('xiaojun')
+      // resolve()
     })
   },
 

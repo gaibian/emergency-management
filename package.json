@@ -38,6 +38,7 @@
     "url": "https://github.com/PanJiaChen/vue-element-admin/issues"
   },
   "dependencies": {
+    "@riophae/vue-treeselect": "^0.4.0",
     "axios": "0.18.0",
     "clipboard": "2.0.4",
     "codemirror": "5.45.0",
@@ -49,6 +50,7 @@
     "js-cookie": "2.2.0",
     "jsonlint": "1.6.3",
     "jszip": "3.2.1",
+    "lockr": "^0.8.5",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",

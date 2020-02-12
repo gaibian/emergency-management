@@ -193,7 +193,9 @@ export default {
           //this.$router.push('/')
           //  vuex 存储用户名
           setTimeout(() => {
+              console.log('aaaa')
               this.$store.dispatch('user/login',this.loginForm).then(() => {
+                console.log('登录成功')
                 this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
                 this.loading = false;
                 this.loginFlag = false;
